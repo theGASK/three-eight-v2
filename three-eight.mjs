@@ -2,14 +2,14 @@ import {
   PcData, NpcData, AnimalData,
   SmallVehicleData, LargeVehicleData, DroneData,
   ServerData, FactionData, BaseOfOperationsData
-} from "./module/data-models.mjs";
+} from "./module/data-model.mjs";
 
 import {
   GeneralObjectData, WeaponData, ContainerData,
   SkillData, SpellData, ModData,
   SpecialtyData, PowerData, QualityData,
   FlawData, AmmunitionData
-} from "./module/data-models.mjs";
+} from "./module/data-model.mjs";
 
 Hooks.once("init", () => {
   // ── Actor Data Models ───────────────────────────────

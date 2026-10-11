@@ -1,23 +1,13 @@
-import {
-    PcData, NpcData, AnimalData,
-    SmallVehicleData, LargeVehicleData, DroneData,
-    ServerData, FactionData, BaseOfOperationsData,
-    GeneralObjectData, WeaponData, ContainerData,
-    SkillData, SpellData, ModData, SpecialtyData,
-    SpecialtyData as _SD, PowerData, QualityData,
-    FlawData, AmmunitionData
-} from "./module/data-models.mjs";
-
 import { ThreeEightActor, ThreeEightItem } from "./module/documents.mjs";
 import { promptSkillRoll } from "./module/dice.mjs";
-import { SKILL_GROUPS } from "./constants.mjs";
+import { SKILL_GROUPS, lookupCharacteristic, characteristicDM, averageUp } from "./constants.mjs";
 
 
 Hooks.once("init", () => {
     // ── Document classes ────────────────────────────────
     CONFIG.Actor.documentClass = ThreeEightActor;
     CONFIG.Item.documentClass = ThreeEightItem;
-    
+
     // ── Actor Data Models ──────────────────────────────
     CONFIG.Actor.dataModels.pc = PcData;
     CONFIG.Actor.dataModels.npc = NpcData;
@@ -60,6 +50,57 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
             description: new HTMLField({ required: false, blank: true, initial: "" })
         };
     }
+
+    /** @override
+     * Derives DMs on primary characteristics, and derives secondary values
+     * (Wounds, Stress, Effort, Reputation label, Wealth label) from the
+     * primary scores via CHARACTERISTIC_TABLE. */
+    prepareDerivedData() {
+        const primary = this.attributes?.primary;
+        const secondary = this.attributes?.secondary;
+
+        if (primary) this.#derivePrimary(primary);
+        if (secondary) this.#deriveSecondary(primary, secondary);
+    }
+
+    /** Primary DMs + Effort (avg-up of Fitness and Morale). */
+    #derivePrimary(primary) {
+        for (const key of ["fitness", "agility", "intelligence", "morale"]) {
+            if (primary[key] !== undefined) {
+                primary[`${key}DM`] = characteristicDM(primary[key]);
+            }
+        }
+        if (primary.fitness !== undefined && primary.morale !== undefined) {
+            primary.effort = averageUp(primary.fitness, primary.morale);
+            primary.effortDM = characteristicDM(primary.effort);
+        }
+    }
+
+    /** Secondaries — Wounds/Stress from Fitness/Morale, Reputation/Wealth labels. */
+    #deriveSecondary(primary, secondary) {
+        if (primary?.fitness !== undefined) {
+            secondary.wounds = primary.fitness;                               // score = fitness score
+            secondary.woundsMax = lookupCharacteristic(primary.fitness).wounds;  // table lookup
+            secondary.woundsDM = characteristicDM(primary.fitness);
+        }
+        if (primary?.morale !== undefined) {
+            secondary.stress = primary.morale;                                // score = morale score
+            secondary.stressMax = lookupCharacteristic(primary.morale).stress;   // table lookup
+            secondary.stressDM = characteristicDM(primary.morale);
+        }
+        if (secondary.reputation !== undefined) {
+            secondary.reputationLabel = game.i18n.localize(
+                lookupCharacteristic(secondary.reputation).reputation
+            );
+            secondary.reputationDM = characteristicDM(secondary.reputation);
+        }
+        if (secondary.wealth !== undefined) {
+            secondary.wealthLabel = game.i18n.localize(
+                lookupCharacteristic(secondary.wealth).wealth
+            );
+            secondary.wealthDM = characteristicDM(secondary.wealth);
+        }
+    }
 }
 
 class ThreeEightItemData extends foundry.abstract.TypeDataModel {
@@ -88,8 +129,6 @@ class SecondaryCharacteristics extends foundry.abstract.DataModel {
     static defineSchema() {
         const { NumberField, SchemaField } = foundry.data.fields;
         return {
-            wounds: new NumberField({ required: true, integer: true, initial: 0 }),
-            stress: new NumberField({ required: true, integer: true, initial: 0 }),
             experience: new NumberField({ required: true, integer: true, initial: 0 }),
             reputation: new NumberField({ required: true, integer: true, initial: 0 }),
             wealth: new NumberField({ required: true, integer: true, initial: 0 })
@@ -119,8 +158,8 @@ export class PcData extends ThreeEightActorData {
         return {
             ...super.defineSchema(),
             attributes: new SchemaField({
-                primary: new SchemaField(new PrimaryCharacteristics()),
-                secondary: new SchemaField(new SecondaryCharacteristics())
+                primary: new SchemaField(PrimaryCharacteristics()),
+                secondary: new SchemaField(SecondaryCharacteristics())
             })
         };
     }
@@ -132,8 +171,8 @@ export class NpcData extends ThreeEightActorData {
         return {
             ...super.defineSchema(),
             attributes: new SchemaField({
-                primary: new SchemaField(new PrimaryCharacteristics()),
-                secondary: new SchemaField(new SecondaryCharacteristics())
+                primary: new SchemaField(PrimaryCharacteristics()),
+                secondary: new SchemaField(SecondaryCharacteristics())
             })
         };
     }
@@ -145,7 +184,7 @@ export class AnimalData extends ThreeEightActorData {
         return {
             ...super.defineSchema(),
             attributes: new SchemaField({
-                primary: new SchemaField(new PrimaryCharacteristics())
+                primary: new SchemaField(PrimaryCharacteristics())
             })
         };
     }
@@ -157,8 +196,8 @@ export class SmallVehicleData extends ThreeEightActorData {
         return {
             ...super.defineSchema(),
             attributes: new SchemaField({
-                primary: new SchemaField(new PrimaryCharacteristics()),
-                secondary: new SchemaField(new SecondaryCharacteristics())
+                primary: new SchemaField(PrimaryCharacteristics()),
+                secondary: new SchemaField(SecondaryCharacteristics())
             })
         };
     }
@@ -170,8 +209,8 @@ export class LargeVehicleData extends ThreeEightActorData {
         return {
             ...super.defineSchema(),
             attributes: new SchemaField({
-                primary: new SchemaField(new PrimaryCharacteristics()),
-                secondary: new SchemaField(new SecondaryCharacteristics())
+                primary: new SchemaField(PrimaryCharacteristics()),
+                secondary: new SchemaField(SecondaryCharacteristics())
             })
         };
     }
@@ -183,7 +222,7 @@ export class DroneData extends ThreeEightActorData {
         return {
             ...super.defineSchema(),
             attributes: new SchemaField({
-                primary: new SchemaField(new PrimaryCharacteristics())
+                primary: new SchemaField(PrimaryCharacteristics())
             })
         };
     }
@@ -195,7 +234,7 @@ export class ServerData extends ThreeEightActorData {
         return {
             ...super.defineSchema(),
             attributes: new SchemaField({
-                primary: new SchemaField(new PrimaryCharacteristics())
+                primary: new SchemaField(PrimaryCharacteristics())
             })
         };
     }
@@ -207,7 +246,7 @@ export class FactionData extends ThreeEightActorData {
         return {
             ...super.defineSchema(),
             attributes: new SchemaField({
-                secondary: new SchemaField(new SecondaryCharacteristics())
+                secondary: new SchemaField(SecondaryCharacteristics())
             })
         };
     }
@@ -219,7 +258,7 @@ export class BaseOfOperationsData extends ThreeEightActorData {
         return {
             ...super.defineSchema(),
             attributes: new SchemaField({
-                secondary: new SchemaField(new SecondaryCharacteristics())
+                secondary: new SchemaField(SecondaryCharacteristics())
             })
         };
     }

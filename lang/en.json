@@ -25,24 +25,23 @@
       "ammunition": "Ammunition"
     }
   },
-
   "THREEEIGHT": {
     "SkillGroup": {
-      "awareness":   "Awareness",
-      "behaviour":   "Behaviour",
-      "combat":      "Combat",
-      "control":     "Control",
-      "knowledge":   "Knowledge",
+      "awareness": "Awareness",
+      "behaviour": "Behaviour",
+      "combat": "Combat",
+      "control": "Control",
+      "knowledge": "Knowledge",
       "performance": "Performance",
-      "physical":    "Physical",
-      "technology":  "Technology"
+      "physical": "Physical",
+      "technology": "Technology"
     },
     "Difficulty": {
-      "trivial":    "Trivial",
-      "routine":    "Routine",
-      "average":    "Average",
-      "difficult":  "Difficult",
-      "heroic":     "Heroic",
+      "trivial": "Trivial",
+      "routine": "Routine",
+      "average": "Average",
+      "difficult": "Difficult",
+      "heroic": "Heroic",
       "formidable": "Formidable",
       "impossible": "Impossible"
     },
@@ -72,5 +71,23 @@
       "NotASkill": "Only Skill items can be rolled as a skill.",
       "InvalidTN": "A valid Target Number is required."
     }
+  },
+  "Reputation": {
+    "enemyOfState": "Enemy of the State",
+    "undesirable": "Undesirable",
+    "secondClass": "Second-class Citizen",
+    "normalCitizen": "Normal Citizen",
+    "locallyRenown": "Locally Renown",
+    "globallyRenown": "Globally Renown",
+    "historicalFigure": "Historical Figure"
+  },
+  "Wealth": {
+    "destitute": "Completely destitute",
+    "personalOnly": "Only personal possessions",
+    "modest": "Modest lifestyle",
+    "comfortable": "Comfortable lifestyle",
+    "affluent": "Affluent lifestyle",
+    "extravagant": "Extravagant lifestyle",
+    "oligarchy": "Member of the oligarchy"
   }
 }

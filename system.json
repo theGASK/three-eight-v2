@@ -6,7 +6,7 @@
     "minimum": "14",
     "verified": "14"
   },
-  "esmodules": ["three-eight-v2.mjs"],
+  "esmodules": ["three-eight.mjs"],
   "styles": ["styles/three-eight-v2.css"],
   "languages": [
     {
