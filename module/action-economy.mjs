@@ -29,6 +29,8 @@ const {
   EmbeddedDataField
 } = foundry.data.fields;
 
+import { request as requestAttack } from "./attack.mjs";
+
 /* ── Action Definition ──────────────────────────────── */
 
 /**
@@ -240,13 +242,16 @@ export async function declareAction(actor, type, {
     await postActionToChat(actor, type, action);
   }
 
-  // ── 5. Attack hook ──
-  // Attack actions should trigger attack resolution. The system does
-  // not implement attack logic yet; downstream code (a future module,
-  // or the eventual sheet integration) hooks into this event and
-  // performs the roll.
+  // ── 5. Attack resolution ──
+  // Attack actions route through the unified attack API. The module
+  // is a stub today; it emits a hook any future attack system can
+  // consume. Manual actions (isAttack: false) skip this entirely.
   if (action?.isAttack) {
-    Hooks.callAll("threeEightV2.declareAttack", actor, action, type);
+    try {
+      await requestAttack(actor, action, { economy: type });
+    } catch (err) {
+      console.error(`three-eight-v2 | Attack request failed: ${err.message}`);
+    }
   }
 
   return { economy: getEconomy(actor), action };

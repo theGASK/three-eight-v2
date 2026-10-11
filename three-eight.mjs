@@ -12,6 +12,8 @@ import { ThreeEightActor, ThreeEightItem } from "./module/documents.mjs";
 import { ThreeEightCombatant } from "./module/combatant.mjs";
 import { promptSkillRoll, parseModifierFormula } from "./module/dice.mjs";
 import * as Modifier from "./module/modifier.mjs";
+import * as ActionsCatalog from "./module/actions-catalog.mjs";
+import * as Attack from "./module/attack.mjs";
 
 
 
@@ -73,14 +75,24 @@ Hooks.once("init", () => {
       getModifierState: Modifier.getModifierState
     },
     action: {
-      Error: ActionEconomyError,
+      Error:              ActionEconomyError,
       ActionEconomy,
       ActionDefinition,
       ActionsData,
       canDeclare,
       declareAction,
-      reset: resetActionEconomy,
-      addKnownAction
+      reset:              resetActionEconomy,
+      addKnownAction,
+      // Catalog API
+      catalog:            ActionsCatalog.ACTIONS_BY_ECONOMY,
+      get:                ActionsCatalog.getAction,
+      getAttacks:         ActionsCatalog.getAttackActions,
+      resolve:            ActionsCatalog.resolveAction,
+      resolved:           ActionsCatalog.resolvedCatalog
+    },
+    attack: {
+      Error:   Attack.AttackError,
+      request: Attack.request
     }
   });
 });

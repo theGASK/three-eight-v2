@@ -28,6 +28,236 @@
     }
   },
   "THREEEIGHT": {
+    "Attack": {
+      "Summary": "Attack",
+      "Pending": "Attack resolution is not yet implemented.",
+      "Err": {
+        "NoActor": "No actor provided for the attack request.",
+        "NotAnAttack": "This action is not an attack."
+      }
+    },
+    "Actions": {
+      "persuade": {
+        "name": "Persuade",
+        "description": "Verbally convince a listener who can hear you to adopt a certain belief or course of action."
+      },
+      "coordinate": {
+        "name": "Coordinate",
+        "description": "Direct allies who can hear you to act in a synchronized or tactical manner."
+      },
+      "unarmedAttack": {
+        "name": "Unarmed Attack",
+        "description": "Strike an enemy in the same hex or adjacent square using only your body while unarmed."
+      },
+      "meleeAttack": {
+        "name": "Melee Attack",
+        "description": "Strike an enemy in the same hex or adjacent square with a handheld melee weapon."
+      },
+      "rangedAttack": {
+        "name": "Ranged Attack",
+        "description": "Fire a ranged weapon at a target."
+      },
+      "sniperAim": {
+        "name": "Sniper Aim",
+        "description": "Carefully aim a weapon equipped with an optical sight to make a precise, long-range shot."
+      },
+      "grapple": {
+        "name": "Grapple",
+        "description": "Attempt to seize and physically restrain an enemy in the same hex or adjacent square while unarmed."
+      },
+      "breakFree": {
+        "name": "Break Free",
+        "description": "Attempt to escape from a grapple while you are grappled."
+      },
+      "standGuard": {
+        "name": "Stand Guard",
+        "description": "Hold a position and watch for enemy activity when an enemy is in the same hex or adjacent square."
+      },
+      "clearJam": {
+        "name": "Clear Jam",
+        "description": "Spend time fixing a malfunctioning or stuck weapon."
+      },
+      "shootBow": {
+        "name": "Shoot Bow",
+        "description": "Fire an arrow or bolt from a bow or crossbow."
+      },
+      "throwWeapon": {
+        "name": "Throw Weapon",
+        "description": "Hurl a thrown weapon or hand grenade at a target."
+      },
+      "aimHeavyWeapon": {
+        "name": "Aim Heavy Weapon",
+        "description": "Steady and aim a heavy weapon before firing."
+      },
+      "fireHeavyWeapon": {
+        "name": "Fire Heavy Weapon",
+        "description": "Discharge a heavy weapon at a target."
+      },
+      "directIndirectFire": {
+        "name": "Direct Indirect Fire",
+        "description": "Guide indirect fire onto a target you can see."
+      },
+      "firstAid": {
+        "name": "First Aid",
+        "description": "Provide emergency medical treatment to a victim incapacitated by wounds."
+      },
+      "rally": {
+        "name": "Rally",
+        "description": "Attempt to restore composure to a victim incapacitated by stress."
+      },
+      "enterOrExitVehicle": {
+        "name": "Enter or Exit Vehicle",
+        "description": "Get into or out of a vehicle."
+      },
+      "getItemFromBackpack": {
+        "name": "Get Item from Backpack",
+        "description": "Retrieve a stowed item from your backpack."
+      },
+      "climb": {
+        "name": "Climb",
+        "description": "Scale a climbable surface."
+      },
+      "hide": {
+        "name": "Hide",
+        "description": "Conceal yourself using cover, concealment, or darkness."
+      },
+      "swim": {
+        "name": "Swim",
+        "description": "Move through water."
+      },
+      "seekCover": {
+        "name": "Seek Cover",
+        "description": "Move to terrain providing cover to gain protection from enemy fire."
+      },
+      "fullToPartialCover": {
+        "name": "Full to Partial Cover",
+        "description": "Leave full protection to take a position of partial protection."
+      },
+      "run": {
+        "name": "Run",
+        "description": "Sprint a short distance to reposition when no enemy is in the same hex or adjacent square."
+      },
+      "crossLowBarrier": {
+        "name": "Cross Low Barrier",
+        "description": "Quickly move over a low obstacle."
+      },
+      "moveThroughDoor": {
+        "name": "Move Through Door",
+        "description": "Open and pass through a closed door."
+      },
+      "crawl": {
+        "name": "Crawl",
+        "description": "Move a short distance while prone."
+      },
+      "getUp": {
+        "name": "Get Up",
+        "description": "Rise from a prone position to standing."
+      },
+      "drawFromCombatGear": {
+        "name": "Draw from Combat Gear",
+        "description": "Quickly retrieve a readily accessible item from your combat gear."
+      },
+      "shove": {
+        "name": "Shove",
+        "description": "Push an enemy in the same hex or adjacent square to knock them off balance or move them."
+      },
+      "disarm": {
+        "name": "Disarm",
+        "description": "Attempt to knock an item from the grasp of a target who holds one."
+      },
+      "grappleAttack": {
+        "name": "Grapple Attack",
+        "description": "Make a quick attack against an opponent you are already grappling."
+      },
+      "retreat": {
+        "name": "Retreat",
+        "description": "Carefully back away from an enemy in the same hex or adjacent square."
+      },
+      "aim": {
+        "name": "Aim",
+        "description": "Quickly align a ranged weapon on a target."
+      },
+      "prepareBow": {
+        "name": "Prepare Bow",
+        "description": "Nock an arrow or load a bolt into a bow."
+      },
+      "assumeOverwatch": {
+        "name": "Assume Overwatch Position",
+        "description": "Ready a ranged weapon to fire at a target entering your field of fire."
+      },
+      "reload": {
+        "name": "Reload",
+        "description": "Swap out a magazine or otherwise reload a ranged weapon, which becomes a slow action if failed."
+      },
+      "activateExplosive": {
+        "name": "Activate Explosive",
+        "description": "Prime and trigger a grenade or explosive device."
+      },
+      "getOnRide": {
+        "name": "Get on a Bike / Ride",
+        "description": "Mount a motorcycle, bicycle, or similar ride."
+      },
+      "grabTheWheel": {
+        "name": "Grab the Wheel",
+        "description": "Seize control of a vehicle's steering."
+      },
+      "startEngine": {
+        "name": "Start Engine",
+        "description": "Ignite a vehicle's engine."
+      },
+      "drive": {
+        "name": "Drive",
+        "description": "Operate a vehicle to move it."
+      },
+      "useItem": {
+        "name": "Use Item",
+        "description": "Activate or employ a miscellaneous item, with effects varying by item."
+      },
+      "throwItem": {
+        "name": "Throw Item",
+        "description": "Hurl a miscellaneous item at a target or location, with effects varying by item."
+      },
+      "dropBackpack": {
+        "name": "Drop Backpack",
+        "description": "Shed a backpack or other bulky item to reduce encumbrance."
+      },
+      "readyShield": {
+        "name": "Ready Shield",
+        "description": "Bring a shield to a defensive position when an enemy is in the same hex or adjacent square."
+      },
+      "dropToGround": {
+        "name": "Drop to the Ground",
+        "description": "Immediately fall prone while standing up."
+      },
+      "dropHeldItem": {
+        "name": "Drop Held Item",
+        "description": "Release an item from your hand."
+      },
+      "partialToFullCover": {
+        "name": "Partial to Full Cover",
+        "description": "Slip fully behind cover from a partially protected position."
+      },
+      "shoutWords": {
+        "name": "Shout a Few Words",
+        "description": "Quickly communicate a short phrase to those who can hear you."
+      },
+      "handSignals": {
+        "name": "Hand Signals",
+        "description": "Wordlessly communicate a simple message with gestures."
+      },
+      "checkAmmo": {
+        "name": "Check Ammo or Gear",
+        "description": "Glance at your equipment to verify its status."
+      },
+      "blocking": {
+        "name": "Blocking",
+        "description": "Interpose an object or limb to deflect an incoming attack when you have something available to block with."
+      },
+      "overwatchFire": {
+        "name": "Overwatch Fire",
+        "description": "Fire your readied ranged weapon at a target that enters your field of fire while you are in overwatch."
+      }
+    },
     "SkillGroup": {
       "awareness": "Awareness",
       "behaviour": "Behaviour",

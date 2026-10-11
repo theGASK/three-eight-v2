@@ -49,3 +49,28 @@
 .three-eight-v2.chat-card.skill-roll.effect-marginalSuccess    .effect-tier { color: var(--color-level-warning); }
 .three-eight-v2.chat-card.skill-roll.effect-averageSuccess     .effect-tier,
 .three-eight-v2.chat-card.skill-roll.effect-exceptionalSuccess .effect-tier { color: var(--color-level-success); }
+
+.three-eight-v2.chat-card.attack-requested .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid var(--color-border-light-tertiary);
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+}
+.three-eight-v2.chat-card.attack-requested .action-type {
+  font-size: 0.85em;
+  font-weight: bold;
+  color: var(--color-text-dark-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.three-eight-v2.chat-card.attack-requested .attack-summary .label {
+  font-weight: bold;
+  margin-right: 0.25em;
+}
+.three-eight-v2.chat-card.attack-requested .notes {
+  margin-top: 6px;
+  font-style: italic;
+  color: var(--color-text-dark-secondary);
+}

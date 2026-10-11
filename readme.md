@@ -54,3 +54,13 @@ await game.threeEightV2.action.declareAction(this.actor, "fast", {
 });
 
 That last call consumes the first of two fast slots and posts a chat card. Because isAttack is true, it also fires Hooks.callAll("threeEightV2.declareAttack", actor, action, "fast"), which any future attack-resolution module can subscribe to.
+
+---
+Every isAttack: true action, regardless of economy, ends up here:
+javascript
+
+await game.threeEightV2.attack.request(actor, action, {
+  economy: "slow" | "fast" | "reactive",
+  weapon:  Item | null,
+  target:  Token | null
+});

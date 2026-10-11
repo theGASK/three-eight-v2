@@ -1,0 +1,15 @@
+<div class="three-eight-v2 chat-card attack-requested">
+  <header class="card-header">
+    <h3>{{actionName}}</h3>
+    {{#if economyLabel}}<span class="action-type">{{economyLabel}}</span>{{/if}}
+  </header>
+  <div class="card-content">
+    <div class="attack-summary">
+      <span class="label">{{localize "THREEEIGHT.Attack.Summary"}}:</span>
+      <span class="value">{{actorName}}</span>
+      {{#if weaponName}}<span class="weapon"> — {{weaponName}}</span>{{/if}}
+      {{#if targetName}}<span class="target"> → {{targetName}}</span>{{/if}}
+    </div>
+    <p class="notes">{{localize "THREEEIGHT.Attack.Pending"}}</p>
+  </div>
+</div>
