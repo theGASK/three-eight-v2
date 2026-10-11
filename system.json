@@ -1,0 +1,46 @@
+{
+  "id": "three-eight-v2",
+  "title": "Three-Eight v2",
+  "version": "0.0.1",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14"
+  },
+  "esmodules": ["three-eight-v2.mjs"],
+  "styles": ["styles/three-eight-v2.css"],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "documentTypes": {
+    "Actor": {
+      "pc": { "htmlFields": ["description"] },
+      "npc": { "htmlFields": ["description"] },
+      "animal": { "htmlFields": ["description"] },
+      "smallVehicle": { "htmlFields": ["description"] },
+      "largeVehicle": { "htmlFields": ["description"] },
+      "drone": { "htmlFields": ["description"] },
+      "server": { "htmlFields": ["description"] },
+      "faction": { "htmlFields": ["description"] },
+      "baseOfOperations": { "htmlFields": ["description"] }
+    },
+    "Item": {
+      "generalObject": { "htmlFields": ["description"] },
+      "weapon": { "htmlFields": ["description"] },
+      "container": { "htmlFields": ["description"] },
+      "skill": { "htmlFields": ["description"] },
+      "spell": { "htmlFields": ["description"] },
+      "mod": { "htmlFields": ["description"] },
+      "specialty": { "htmlFields": ["description"] },
+      "power": { "htmlFields": ["description"] },
+      "quality": { "htmlFields": ["description"] },
+      "flaw": { "htmlFields": ["description"] },
+      "ammunition": { "htmlFields": ["description"] }
+    }
+  },
+  "initiative": "1d20 + @attributes.agility.mod",
+  "primaryTokenAttribute": "secondary.wounds"
+}

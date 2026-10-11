@@ -1,0 +1,21 @@
+.three-eight-v2.chat-card.skill-roll .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid var(--color-border-light-tertiary);
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+}
+.three-eight-v2.chat-card.skill-roll .dice-result {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1em;
+}
+.three-eight-v2.chat-card.skill-roll .outcome {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-weight: bold;
+}
+.three-eight-v2.chat-card.skill-roll.success .result-label { color: var(--color-level-success); }
+.three-eight-v2.chat-card.skill-roll.failure .result-label { color: var(--color-level-error); }

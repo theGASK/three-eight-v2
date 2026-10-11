@@ -1,0 +1,76 @@
+{
+  "TYPES": {
+    "Actor": {
+      "pc": "PC",
+      "npc": "NPC",
+      "animal": "Animal",
+      "smallVehicle": "Small Vehicle",
+      "largeVehicle": "Large Vehicle",
+      "drone": "Drone",
+      "server": "Server",
+      "faction": "Faction",
+      "baseOfOperations": "Base of Operations"
+    },
+    "Item": {
+      "generalObject": "General Object",
+      "weapon": "Weapon",
+      "container": "Container",
+      "skill": "Skill",
+      "specialty": "Specialty",
+      "mod": "Mod",
+      "specialtyModItem": "Specialty (Modifier)",
+      "power": "Power",
+      "quality": "Quality",
+      "flaw": "Flaw",
+      "ammunition": "Ammunition"
+    }
+  },
+
+  "THREEEIGHT": {
+    "SkillGroup": {
+      "awareness":   "Awareness",
+      "behaviour":   "Behaviour",
+      "combat":      "Combat",
+      "control":     "Control",
+      "knowledge":   "Knowledge",
+      "performance": "Performance",
+      "physical":    "Physical",
+      "technology":  "Technology"
+    },
+    "Difficulty": {
+      "trivial":    "Trivial",
+      "routine":    "Routine",
+      "average":    "Average",
+      "difficult":  "Difficult",
+      "heroic":     "Heroic",
+      "formidable": "Formidable",
+      "impossible": "Impossible"
+    },
+    "Skill": {
+      "Group": "Group",
+      "GroupNone": "— Unassigned —",
+      "Value": "Skill Value",
+      "Specialties": "Specialties",
+      "Score": "Score"
+    },
+    "Dialog": {
+      "Difficulty": "Difficulty",
+      "CustomTN": "Custom Target Number",
+      "CustomTNHint": "optional",
+      "OverrideHint": "Leave blank to use the difficulty preset above.",
+      "RollTitle": "Roll {name}",
+      "Roll": "Roll",
+      "Custom": "Custom"
+    },
+    "Chat": {
+      "SkillValue": "Skill",
+      "TN": "TN",
+      "Success": "Success",
+      "Failure": "Failure"
+    },
+    "Warn": {
+      "NotASkill": "Only Skill items can be rolled as a skill.",
+      "InvalidTN": "A valid Target Number is required."
+    }
+  }
+}

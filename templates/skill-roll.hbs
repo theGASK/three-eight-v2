@@ -1,0 +1,18 @@
+<div class="three-eight-v2 chat-card skill-roll {{#if success}}success{{else}}failure{{/if}}">
+  <header class="card-header">
+    <h3>{{skillName}}</h3>
+    <span class="skill-value">{{localize "THREEEIGHT.Chat.SkillValue"}}: {{skillValue}}</span>
+  </header>
+  <div class="card-content">
+    <div class="dice-result">
+      <span class="dice-formula">{{formula}}</span>
+      <span class="dice-total">{{total}}</span>
+    </div>
+    <div class="outcome">
+      <span class="tn">{{localize "THREEEIGHT.Chat.TN"}} {{tn}}{{#if difficulty}} — {{difficulty}}{{/if}}</span>
+      <span class="result-label">
+        {{#if success}}{{localize "THREEEIGHT.Chat.Success"}}{{else}}{{localize "THREEEIGHT.Chat.Failure"}}{{/if}}
+      </span>
+    </div>
+  </div>
+</div>
