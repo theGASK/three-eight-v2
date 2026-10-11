@@ -44,7 +44,7 @@ export class ModifierError extends Error {
 /* ── Modifier Item types ───────────────────────────── */
 
 export const MODIFIER_ITEM_TYPES = Object.freeze([
-  "mod", "power", "quality", "flaw", "ammunition"
+  "mod", "power", "quality", "flaw", "ammunition", "disease"
 ]);
 
 /** @returns {boolean} True if the item is a Modifier-Type item. */

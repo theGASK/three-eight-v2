@@ -4,7 +4,7 @@ import {
   ServerData, FactionData, BaseOfOperationsData,
   GeneralObjectData, WeaponData, ContainerData,
   SkillData, SpellData, ModData, SpecialtyData,
-  PowerData, QualityData, FlawData, AmmunitionData
+  PowerData, QualityData, FlawData, AmmunitionData, DiseaseData
 } from "./module/data-model.mjs";
 
 import { ThreeEightActor, ThreeEightItem } from "./module/documents.mjs";
@@ -41,6 +41,7 @@ Hooks.once("init", () => {
   CONFIG.Item.dataModels.quality       = QualityData;
   CONFIG.Item.dataModels.flaw          = FlawData;
   CONFIG.Item.dataModels.ammunition    = AmmunitionData;
+  CONFIG.Item.dataModels.disease       = DiseaseData;
 
   // ── Public API ──────────────────────────────────────
   game.threeEightV2 = Object.freeze({

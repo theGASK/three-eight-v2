@@ -333,6 +333,7 @@ export class WeaponData extends ThreeEightItemData {
             type:        new StringField({ required: false, blank: true, initial: "" }),
             caliber:     new StringField({ required: false, blank: true, initial: "" }),
             rof:         new NumberField({ required: true, integer: true, min: 0, initial: 1 }),
+            reliability: new NumberField({ required: true, integer: true, initial: 0 }),
             damage:      new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
             critical:    new StringField({ required: false, blank: true, initial: "" }),
             blast:       new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
@@ -423,6 +424,7 @@ export class ModData     extends ModifierItemData { static defineSchema() { retu
 export class PowerData   extends ModifierItemData { static defineSchema() { return { ...super.defineSchema() }; } }
 export class QualityData extends ModifierItemData { static defineSchema() { return { ...super.defineSchema() }; } }
 export class FlawData    extends ModifierItemData { static defineSchema() { return { ...super.defineSchema() }; } }
+export class DiseaseData   extends ModifierItemData { static defineSchema() { return { ...super.defineSchema() }; } }
 
 export class AmmunitionData extends ModifierItemData {
     static defineSchema() {

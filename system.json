@@ -34,7 +34,8 @@
       "power": { "htmlFields": ["description"] },
       "quality": { "htmlFields": ["description"] },
       "flaw": { "htmlFields": ["description"] },
-      "ammunition": { "htmlFields": ["description"] }
+      "ammunition": { "htmlFields": ["description"] },
+      "disease": { "htmlFields": ["description"] }
     }
   },
   "initiative": "2d8",

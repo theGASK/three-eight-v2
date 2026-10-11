@@ -176,6 +176,21 @@ export const MODIFIER_OPERATORS = Object.freeze({
    "normal" is the default and contributes nothing. Add more
    entries here as your system defines them; each label is a
    localization key. */
+/* ── Roll Modifier Presets ──────────────────────────────
+   The dropdown on the skill-roll prompt. The `formula` string
+   is concatenated with whatever the user typed into the free-
+   text modifier field, then parsed as a single expression.
+
+   "normal" is the default and contributes nothing.
+   Each visibility entry carries a self-describing [Label]
+   so the chat card shows why the modifier was applied. */
 export const MODIFIER_PRESETS = Object.freeze({
-  normal: { label: "THREEEIGHT.ModifierPreset.normal", formula: "" }
+  normal:      { label: "THREEEIGHT.Visibility.normal",      formula: "" },
+  heavyRain:   { label: "THREEEIGHT.Visibility.heavyRain",   formula: "-1[Heavy Rain]" },
+  denseFog:    { label: "THREEEIGHT.Visibility.denseFog",    formula: "-1[Dense Fog]" },
+  dusk:        { label: "THREEEIGHT.Visibility.dusk",        formula: "-1[Dusk]" },
+  moonlight:   { label: "THREEEIGHT.Visibility.moonlight",   formula: "-2[Moonlight]" },
+  starlight:   { label: "THREEEIGHT.Visibility.starlight",   formula: "-2[Starlight]" },
+  cloudyNight: { label: "THREEEIGHT.Visibility.cloudyNight", formula: "-2[Cloudy Night]" },
+  indoor:      { label: "THREEEIGHT.Visibility.indoor",      formula: "-3[Indoor]" }
 });

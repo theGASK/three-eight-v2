@@ -21,7 +21,8 @@
       "power": "Power",
       "quality": "Quality",
       "flaw": "Flaw",
-      "ammunition": "Ammunition"
+      "ammunition": "Ammunition",
+      "disease": "Disease"
     }
   },
   "THREEEIGHT": {
@@ -59,7 +60,7 @@
       "Modifier": "Modifier",
       "ModifierHint": "e.g. 1d6[Lucky] or -2[Darkness]",
       "ModifierHintLong": "Add signed numbers or dice formulas. Optional labels in [brackets] are shown in the chat card.",
-      "Mode": "Roll Mode",
+      "Mode": "Visibility",
       "RollTitle": "Roll {name}",
       "Roll": "Roll",
       "Custom": "Custom"
@@ -127,6 +128,16 @@
       "InvalidTerm": "Invalid modifier term: \"{term}\".",
       "InvalidFormula": "Invalid modifier formula: \"{formula}\".",
       "UnclosedBracket": "Unclosed bracket in modifier: \"{input}\"."
-    }
+    },
+    "Visibility": {
+  "normal": "Normal",
+  "heavyRain": "Heavy Rain",
+  "denseFog": "Dense Fog",
+  "dusk": "Dusk",
+  "moonlight": "Moonlight",
+  "starlight": "Starlight",
+  "cloudyNight": "Cloudy Night",
+  "indoor": "Indoor"
+}
   }
 }
