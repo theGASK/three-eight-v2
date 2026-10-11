@@ -1,4 +1,4 @@
-<div class="three-eight-v2 chat-card skill-roll {{#if success}}success{{else}}failure{{/if}}">
+<div class="three-eight-v2 chat-card skill-roll effect-{{effectKey}} {{#if success}}success{{else}}failure{{/if}}">
   <header class="card-header">
     <h3>{{skillName}}</h3>
     <span class="skill-value">{{localize "THREEEIGHT.Chat.SkillValue"}}: {{skillValue}}</span>
@@ -13,6 +13,11 @@
       <span class="result-label">
         {{#if success}}{{localize "THREEEIGHT.Chat.Success"}}{{else}}{{localize "THREEEIGHT.Chat.Failure"}}{{/if}}
       </span>
+    </div>
+    <div class="effect">
+      <span class="effect-label">{{localize "THREEEIGHT.Chat.Effect"}}</span>
+      <span class="effect-value">{{effect}}</span>
+      <span class="effect-tier">{{effectLabel}}</span>
     </div>
   </div>
 </div>

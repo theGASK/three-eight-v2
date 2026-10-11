@@ -87,3 +87,60 @@ export function characteristicDM(score) {
 export function averageUp(a, b) {
   return Math.ceil((Number(a) + Number(b)) / 2);
 }
+
+/* ── Effect ─────────────────────────────────────────────
+   Effect = (roll total + DMs) − EFFECT_BASELINE.
+
+   The roll total already contains the Skill Value and any
+   extra DMs the caller supplied, so the arithmetic here is
+   simply `total − EFFECT_BASELINE`.
+
+   Rows below are ordered from most negative to most positive.
+   `aidingDM` and `chainDM` are prepared for later use; nothing
+   currently consumes them. */
+export const EFFECT_BASELINE = 10;
+
+export const EFFECT_TABLE = Object.freeze([
+  {
+    min: -Infinity, max: -8,
+    key: "exceptionalFailure",
+    label: "THREEEIGHT.Effect.exceptionalFailure",
+    aidingDM: -3, chainDM: -3
+  },
+  {
+    min: -7, max: -2,
+    key: "averageFailure",
+    label: "THREEEIGHT.Effect.averageFailure",
+    aidingDM: -2, chainDM: -2
+  },
+  {
+    min: -1, max: -1,
+    key: "marginalFailure",
+    label: "THREEEIGHT.Effect.marginalFailure",
+    aidingDM: -1, chainDM: -1
+  },
+  {
+    min: 0, max: 0,
+    key: "marginalSuccess",
+    label: "THREEEIGHT.Effect.marginalSuccess",
+    aidingDM: 0, chainDM: 1
+  },
+  {
+    min: 1, max: 7,
+    key: "averageSuccess",
+    label: "THREEEIGHT.Effect.averageSuccess",
+    aidingDM: 1, chainDM: 2
+  },
+  {
+    min: 8, max: Infinity,
+    key: "exceptionalSuccess",
+    label: "THREEEIGHT.Effect.exceptionalSuccess",
+    aidingDM: 2, chainDM: 3
+  }
+]);
+
+/** Return the EFFECT_TABLE row that contains a given Effect value. */
+export function effectRow(effect) {
+  const e = Math.floor(Number(effect) || 0);
+  return EFFECT_TABLE.find(r => e >= r.min && e <= r.max) ?? EFFECT_TABLE[0];
+}

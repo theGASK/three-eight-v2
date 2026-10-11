@@ -1,21 +1,23 @@
-.three-eight-v2.chat-card.skill-roll .card-header {
+.three-eight-v2.chat-card.skill-roll .effect {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  border-bottom: 1px solid var(--color-border-light-tertiary);
-  padding-bottom: 4px;
-  margin-bottom: 6px;
+  gap: 0.5em;
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px dashed var(--color-border-light-tertiary);
+  font-size: 0.95em;
 }
-.three-eight-v2.chat-card.skill-roll .dice-result {
-  display: flex;
-  justify-content: space-between;
-  font-size: 1.1em;
-}
-.three-eight-v2.chat-card.skill-roll .outcome {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 6px;
+.three-eight-v2.chat-card.skill-roll .effect-value {
   font-weight: bold;
+  margin-left: auto;
+  margin-right: 0.5em;
 }
-.three-eight-v2.chat-card.skill-roll.success .result-label { color: var(--color-level-success); }
-.three-eight-v2.chat-card.skill-roll.failure .result-label { color: var(--color-level-error); }
+
+/* Tier color coding — driven by the effect-{key} class on the root. */
+.three-eight-v2.chat-card.skill-roll.effect-exceptionalFailure .effect-tier,
+.three-eight-v2.chat-card.skill-roll.effect-averageFailure     .effect-tier { color: var(--color-level-error); }
+.three-eight-v2.chat-card.skill-roll.effect-marginalFailure    .effect-tier { color: var(--color-level-warning); }
+.three-eight-v2.chat-card.skill-roll.effect-marginalSuccess    .effect-tier { color: var(--color-level-warning); }
+.three-eight-v2.chat-card.skill-roll.effect-averageSuccess     .effect-tier,
+.three-eight-v2.chat-card.skill-roll.effect-exceptionalSuccess .effect-tier { color: var(--color-level-success); }
