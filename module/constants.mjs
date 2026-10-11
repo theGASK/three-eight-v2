@@ -144,3 +144,26 @@ export function effectRow(effect) {
   const e = Math.floor(Number(effect) || 0);
   return EFFECT_TABLE.find(r => e >= r.min && e <= r.max) ?? EFFECT_TABLE[0];
 }
+
+/* ── Modifier System ───────────────────────────────────
+   Synthetic targets are valid modifier targets that do not
+   correspond to a schema field. They are recognised by the
+   modifier system in addition to schema paths. */
+
+export const SYNTHETIC_TARGETS = Object.freeze({
+  "skills.roll": {
+    label: "THREEEIGHT.Modifier.Target.skillRoll",
+    scope: "actor"
+  }
+});
+
+/* Human-facing labels for modifier containers and operators. */
+export const MODIFIER_CONTAINERS = Object.freeze({
+  actor: "THREEEIGHT.Modifier.Container.actor",
+  item:  "THREEEIGHT.Modifier.Container.item"
+});
+
+export const MODIFIER_OPERATORS = Object.freeze({
+  "+": "THREEEIGHT.Modifier.Operator.add",
+  "-": "THREEEIGHT.Modifier.Operator.subtract"
+});
