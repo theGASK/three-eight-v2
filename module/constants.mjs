@@ -154,6 +154,10 @@ export const SYNTHETIC_TARGETS = Object.freeze({
   "skills.roll": {
     label: "THREEEIGHT.Modifier.Target.skillRoll",
     scope: "actor"
+  },
+  "initiative": {
+    label: "THREEEIGHT.Modifier.Target.initiative",
+    scope: "actor"
   }
 });
 
@@ -193,4 +197,30 @@ export const MODIFIER_PRESETS = Object.freeze({
   starlight:   { label: "THREEEIGHT.Visibility.starlight",   formula: "-2[Starlight]" },
   cloudyNight: { label: "THREEEIGHT.Visibility.cloudyNight", formula: "-2[Cloudy Night]" },
   indoor:      { label: "THREEEIGHT.Visibility.indoor",      formula: "-3[Indoor]" }
+});
+
+/* ── Initiative ─────────────────────────────────────────
+   Base initiative dice. Initiative is rolled as:
+     <INITIATIVE_FORMULA> + initiativeDM + initiativeBonus
+
+   initiativeDM    — derived in data-model.mjs from the actor's
+                     initiative characteristic(s). For types with
+                     two listed characteristics the higher DM wins.
+   initiativeBonus — sum of Modifier-Type contributions targeting
+                     the synthetic "initiative" path. */
+export const INITIATIVE_FORMULA = "1d20";
+
+/* Characteristic(s) that drive initiative, keyed by actor type.
+   Arrays with more than one entry mean "use the best DM".
+   Types not listed fall back to a +0 initiative DM. */
+export const INITIATIVE_CHARACTERISTICS = Object.freeze({
+  pc:               ["agility", "intelligence"],
+  npc:              ["agility", "intelligence"],
+  animal:           ["agility", "intelligence"],
+  smallVehicle:     ["speed"],
+  largeVehicle:     ["speed"],
+  drone:            ["speed"],
+  server:           ["speed"],
+  faction:          ["morale"],
+  baseOfOperations: ["speed"]
 });

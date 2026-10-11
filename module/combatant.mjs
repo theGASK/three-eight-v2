@@ -1,38 +1,28 @@
-// module/documents/combatant.mjs
+// module/combatant.mjs
+import { INITIATIVE_FORMULA } from "./constants.mjs";
 
 /**
- * Custom Combatant that resolves the initiative formula
- * per actor type.
+ * Custom Combatant that resolves the initiative formula per actor type.
  *
- * Priority:
- *   1. Agility  (PC, NPC, Animal)
- *   2. Speed    (SmallVehicle, LargeVehicle, Drone, Server, BaseOfOperations)
- *   3. Fallback (Faction — Morale only)
+ * Initiative is rolled as:
+ *     <INITIATIVE_FORMULA> + @initiativeDM + @initiativeBonus
  *
- * The fallback is 2d8 with no modifier, matching the
- * system's base dice formula.
+ * Both @initiativeDM and @initiativeBonus are derived on the actor
+ * by ThreeEightActorData#prepareDerivedData, so all per-type logic
+ * (Agility/Intelligence pick, Speed for vehicles, Morale for Faction,
+ * Modifier-Type contributions) is already baked into those two values.
+ *
+ * @see module/data-model.mjs  → #deriveInitiative
+ * @see module/constants.mjs   → INITIATIVE_CHARACTERISTICS
  */
 export class ThreeEightCombatant extends Combatant {
   /** @override
    * @returns {string} The initiative formula to use for this combatant. */
   _getInitiativeFormula() {
-    const actor = this.actor;
-    if (!actor) return "2d8";
+    // If the combatant isn't linked to an actor (rare, but possible for
+    // bare combatants), fall back to a flat roll.
+    if (!this.actor) return INITIATIVE_FORMULA;
 
-    const primary = actor.system?.attributes?.primary;
-    if (!primary) return "2d8";
-
-    // Agility — PC, NPC, Animal
-    if (primary.agility !== undefined) {
-      return "2d8 + @attributes.primary.agilityDM";
-    }
-
-    // Speed — vehicles, drones, servers, bases of operations
-    if (primary.speed !== undefined) {
-      return "2d8 + @attributes.primary.speedDM";
-    }
-
-    // Fallback — Faction (Morale only)
-    return "2d8";
+    return `${INITIATIVE_FORMULA} + @initiativeDM + @initiativeBonus`;
   }
 }

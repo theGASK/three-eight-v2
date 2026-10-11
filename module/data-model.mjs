@@ -2,7 +2,8 @@ import {
   SKILL_GROUPS,
   lookupCharacteristic,
   characteristicDM,
-  averageUp
+  averageUp,
+  INITIATIVE_CHARACTERISTICS
 } from "./constants.mjs";
 
 const {
@@ -42,6 +43,7 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
         if (primary)   this.#derivePrimary(primary, contributions);
         this.#deriveWounds(primary, contributions);
         this.#deriveEffort(primary, contributions);
+        this.#deriveInitiative(primary, contributions);
         if (secondary) this.#deriveSecondary(primary, secondary, contributions);
     }
 
@@ -88,6 +90,33 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
         this.effortEffective = effective;
         this.effortModifier  = modifier;
         this.effortDM        = characteristicDM(effective);
+    }
+    /**
+     * Derives the initiative DM and the initiative bonus.
+     *
+     * initiativeDM    — the highest DM among the actor's initiative
+     *                   characteristics (per INITIATIVE_CHARACTERISTICS).
+     *                   Types with a single characteristic get that one.
+     *                   Types with no listed characteristics get 0.
+     * initiativeBonus — sum of Modifier-Type contributions whose
+     *                   target is the synthetic "initiative" path.
+     *
+     * These are exposed to roll formulas as @initiativeDM and
+     * @initiativeBonus, and are what Combatant#_getInitiativeFormula
+     * references.
+     */
+    #deriveInitiative(primary, contributions) {
+        const actorType = this.parent?.type;
+        const chars = INITIATIVE_CHARACTERISTICS[actorType] ?? [];
+
+        let dm = 0;
+        for (const key of chars) {
+            const value = primary?.[`${key}DM`];
+            if (Number.isFinite(value)) dm = Math.max(dm, value);
+        }
+
+        this.initiativeDM    = dm;
+        this.initiativeBonus = sumContributions(contributions, "initiative");
     }
 
     #deriveSecondary(primary, secondary, contributions) {

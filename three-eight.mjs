@@ -4,11 +4,12 @@ import {
   ServerData, FactionData, BaseOfOperationsData,
   GeneralObjectData, WeaponData, ContainerData,
   SkillData, SpellData, ModData, SpecialtyData,
-  PowerData, QualityData, FlawData, AmmunitionData, DiseaseData
+  PowerData, QualityData, FlawData, AmmunitionData, 
+  DiseaseData, IndividualArmorData, VehicleArmorData
 } from "./module/data-model.mjs";
 
 import { ThreeEightActor, ThreeEightItem } from "./module/documents.mjs";
-import { ThreeEightCombatant } from "./module/documents/combatant.mjs";
+import { ThreeEightCombatant } from "./module/combatant.mjs";
 import { promptSkillRoll, parseModifierFormula } from "./module/dice.mjs";
 import * as Modifier from "./module/modifier.mjs";
 
@@ -40,8 +41,10 @@ Hooks.once("init", () => {
   CONFIG.Item.dataModels.power         = PowerData;
   CONFIG.Item.dataModels.quality       = QualityData;
   CONFIG.Item.dataModels.flaw          = FlawData;
-  CONFIG.Item.dataModels.ammunition    = AmmunitionData;
-  CONFIG.Item.dataModels.disease       = DiseaseData;
+  CONFIG.Item.dataModels.ammunition      = AmmunitionData;
+  CONFIG.Item.dataModels.disease         = DiseaseData;
+  CONFIG.Item.dataModels.individualArmor = IndividualArmorData;
+  CONFIG.Item.dataModels.vehicleArmor    = VehicleArmorData;
 
   // ── Public API ──────────────────────────────────────
   game.threeEightV2 = Object.freeze({

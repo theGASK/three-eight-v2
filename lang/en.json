@@ -22,10 +22,11 @@
       "quality": "Quality",
       "flaw": "Flaw",
       "ammunition": "Ammunition",
-      "disease": "Disease"
+      "disease": "Disease",
+      "individualArmor": "Individual Armor",
+      "vehicleArmor": "Vehicle Armor"
     }
   },
-
   "THREEEIGHT": {
     "SkillGroup": {
       "awareness": "Awareness",
@@ -37,7 +38,6 @@
       "physical": "Physical",
       "technology": "Technology"
     },
-
     "Difficulty": {
       "trivial": "Trivial",
       "routine": "Routine",
@@ -47,7 +47,6 @@
       "formidable": "Formidable",
       "impossible": "Impossible"
     },
-
     "Visibility": {
       "normal": "Normal",
       "heavyRain": "Heavy Rain",
@@ -58,7 +57,6 @@
       "cloudyNight": "Cloudy Night",
       "indoor": "Indoor"
     },
-
     "Actor": {
       "Description": "Description",
       "Wounds": "Wounds",
@@ -95,17 +93,24 @@
         "StressDM": "Stress DM"
       }
     },
-
     "Item": {
       "Description": "Description",
       "Cost": "Cost",
-      "Legal": "Legal"
+      "Legal": "Legal",
+      "Value": "Current",
+      "Max": "Max",
+      "IndividualArmor": {
+        "RangedProtection": "Ranged Protection",
+        "MeleeProtection": "Melee Protection"
+      },
+      "VehicleArmor": {
+        "Protection": "Protection",
+        "Soak": "Soak"
+      }
     },
-
     "GeneralObject": {
       "Encumbrance": "Encumbrance"
     },
-
     "Weapon": {
       "Type": "Type",
       "Caliber": "Caliber",
@@ -120,19 +125,16 @@
       "MagazineMax": "Magazine (Max)",
       "Penetration": "Penetration"
     },
-
     "Container": {
       "Capacity": "Capacity",
       "CapacityValue": "Capacity (Current)",
       "CapacityMax": "Capacity (Max)"
     },
-
     "Spell": {
       "Level": "Level",
       "CastingCost": "Casting Cost",
       "School": "School"
     },
-
     "Skill": {
       "Group": "Group",
       "GroupNone": "— Unassigned —",
@@ -140,21 +142,17 @@
       "Specialties": "Specialties",
       "Score": "Score"
     },
-
     "Specialty": {
       "Score": "Score"
     },
-
     "Ammunition": {
       "Quantity": "Quantity"
     },
-
     "ModifierItem": {
       "Modifiers": "Modifiers",
       "AddModifier": "Add Modifier",
       "RemoveModifier": "Remove Modifier"
     },
-
     "Dialog": {
       "Difficulty": "Difficulty",
       "CustomTN": "Custom Target Number",
@@ -168,11 +166,9 @@
       "Roll": "Roll",
       "Custom": "Custom"
     },
-
     "ModifierPreset": {
       "normal": "Normal"
     },
-
     "Modifier": {
       "Container": {
         "actor": "Actor",
@@ -183,7 +179,8 @@
         "subtract": "−"
       },
       "Target": {
-        "skillRoll": "Skill Roll"
+        "skillRoll": "Skill Roll",
+        "initiative": "Initiative"
       },
       "Field": {
         "Container": "Container",
@@ -203,7 +200,6 @@
         "UnclosedBracket": "Unclosed bracket in modifier: \"{input}\"."
       }
     },
-
     "Chat": {
       "SkillValue": "Skill",
       "TN": "TN",
@@ -212,12 +208,10 @@
       "Effect": "Effect",
       "Modifier": "Modifier"
     },
-
     "Warn": {
       "NotASkill": "Only Skill items can be rolled as a skill.",
       "InvalidTN": "A valid Target Number is required."
     },
-
     "Reputation": {
       "enemyOfState": "Enemy of the State",
       "undesirable": "Undesirable",
@@ -227,7 +221,6 @@
       "globallyRenown": "Globally Renown",
       "historicalFigure": "Historical Figure"
     },
-
     "Wealth": {
       "destitute": "Completely destitute",
       "personalOnly": "Only personal possessions",
@@ -237,7 +230,6 @@
       "extravagant": "Extravagant lifestyle",
       "oligarchy": "Member of the oligarchy"
     },
-
     "Effect": {
       "exceptionalFailure": "Exceptional Failure",
       "averageFailure": "Average Failure",
