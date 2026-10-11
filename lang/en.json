@@ -56,16 +56,24 @@
       "CustomTN": "Custom Target Number",
       "CustomTNHint": "optional",
       "OverrideHint": "Leave blank to use the difficulty preset above.",
+      "Modifier": "Modifier",
+      "ModifierHint": "e.g. 1d6[Lucky] or -2[Darkness]",
+      "ModifierHintLong": "Add signed numbers or dice formulas. Optional labels in [brackets] are shown in the chat card.",
+      "Mode": "Roll Mode",
       "RollTitle": "Roll {name}",
       "Roll": "Roll",
       "Custom": "Custom"
+    },
+    "ModifierPreset": {
+      "normal": "Normal"
     },
     "Chat": {
       "SkillValue": "Skill",
       "TN": "TN",
       "Success": "Success",
       "Failure": "Failure",
-      "Effect": "Effect"
+      "Effect": "Effect",
+      "Modifier": "Modifier"
     },
     "Warn": {
       "NotASkill": "Only Skill items can be rolled as a skill.",
@@ -115,8 +123,10 @@
       "NoRule": "No rule provided for validation.",
       "ContainerMismatch": "Modifier targets a {container}, but was applied to a {type} ({expected}).",
       "TypeNotAllowed": "Modifier does not apply to type \"{type}\". Allowed: {allowed}.",
-      "TargetMissing": "Target \"{target}\" does not exist on {type}. Cannot apply modifier."
+      "TargetMissing": "Target \"{target}\" does not exist on {type}. Cannot apply modifier.",
+      "InvalidTerm": "Invalid modifier term: \"{term}\".",
+      "InvalidFormula": "Invalid modifier formula: \"{formula}\".",
+      "UnclosedBracket": "Unclosed bracket in modifier: \"{input}\"."
     }
   }
 }
-

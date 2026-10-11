@@ -167,3 +167,15 @@ export const MODIFIER_OPERATORS = Object.freeze({
   "+": "THREEEIGHT.Modifier.Operator.add",
   "-": "THREEEIGHT.Modifier.Operator.subtract"
 });
+
+/* ── Roll Modifier Presets ──────────────────────────────
+   The dropdown on the skill-roll prompt. The `formula` string
+   is concatenated with whatever the user typed into the free-
+   text modifier field, then parsed as a single expression.
+
+   "normal" is the default and contributes nothing. Add more
+   entries here as your system defines them; each label is a
+   localization key. */
+export const MODIFIER_PRESETS = Object.freeze({
+  normal: { label: "THREEEIGHT.ModifierPreset.normal", formula: "" }
+});

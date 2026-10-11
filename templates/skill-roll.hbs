@@ -8,6 +8,12 @@
       <span class="dice-formula">{{formula}}</span>
       <span class="dice-total">{{total}}</span>
     </div>
+    {{#if modifier}}
+    <div class="modifier">
+      <span class="modifier-label">{{localize "THREEEIGHT.Chat.Modifier"}}</span>
+      <span class="modifier-value">{{modifier}}</span>
+    </div>
+    {{/if}}
     <div class="outcome">
       <span class="tn">{{localize "THREEEIGHT.Chat.TN"}} {{tn}}{{#if difficulty}} — {{difficulty}}{{/if}}</span>
       <span class="result-label">

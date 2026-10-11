@@ -1,4 +1,4 @@
-.three-eight-v2.chat-card.skill-roll .effect {
+.three-eight-v2.chat-card.skill-roll .modifier {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -8,10 +8,9 @@
   border-top: 1px dashed var(--color-border-light-tertiary);
   font-size: 0.95em;
 }
-.three-eight-v2.chat-card.skill-roll .effect-value {
+.three-eight-v2.chat-card.skill-roll .modifier-value {
+  font-family: var(--font-mono, monospace);
   font-weight: bold;
-  margin-left: auto;
-  margin-right: 0.5em;
 }
 
 /* Tier color coding — driven by the effect-{key} class on the root. */

@@ -9,7 +9,7 @@ import {
 
 import { ThreeEightActor, ThreeEightItem } from "./module/documents.mjs";
 import { ThreeEightCombatant } from "./module/documents/combatant.mjs";
-import { promptSkillRoll } from "./module/dice.mjs";
+import { promptSkillRoll, parseModifierFormula } from "./module/dice.mjs";
 import * as Modifier from "./module/modifier.mjs";
 
 Hooks.once("init", () => {
@@ -45,6 +45,7 @@ Hooks.once("init", () => {
   // ── Public API ──────────────────────────────────────
   game.threeEightV2 = Object.freeze({
     promptSkillRoll,
+    parseModifierFormula,
     modifier: {
       Error:                 Modifier.ModifierError,
       MODIFIER_ITEM_TYPES:   Modifier.MODIFIER_ITEM_TYPES,
