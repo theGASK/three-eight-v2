@@ -25,6 +25,7 @@
       "disease": "Disease"
     }
   },
+
   "THREEEIGHT": {
     "SkillGroup": {
       "awareness": "Awareness",
@@ -36,6 +37,7 @@
       "physical": "Physical",
       "technology": "Technology"
     },
+
     "Difficulty": {
       "trivial": "Trivial",
       "routine": "Routine",
@@ -45,6 +47,92 @@
       "formidable": "Formidable",
       "impossible": "Impossible"
     },
+
+    "Visibility": {
+      "normal": "Normal",
+      "heavyRain": "Heavy Rain",
+      "denseFog": "Dense Fog",
+      "dusk": "Dusk",
+      "moonlight": "Moonlight",
+      "starlight": "Starlight",
+      "cloudyNight": "Cloudy Night",
+      "indoor": "Indoor"
+    },
+
+    "Actor": {
+      "Description": "Description",
+      "Wounds": "Wounds",
+      "WoundsMax": "Wounds (Max)",
+      "WoundsDM": "Wounds DM",
+      "Effort": "Effort",
+      "EffortDM": "Effort DM",
+      "Primary": {
+        "Fitness": "Fitness",
+        "FitnessDM": "Fitness DM",
+        "Agility": "Agility",
+        "AgilityDM": "Agility DM",
+        "Intelligence": "Intelligence",
+        "IntelligenceDM": "Intelligence DM",
+        "Morale": "Morale",
+        "MoraleDM": "Morale DM",
+        "Class": "Class",
+        "ClassDM": "Class DM",
+        "Integrity": "Integrity",
+        "IntegrityDM": "Integrity DM",
+        "Speed": "Speed",
+        "SpeedDM": "Speed DM",
+        "Capacity": "Capacity",
+        "CapacityDM": "Capacity DM"
+      },
+      "Secondary": {
+        "Experience": "Experience",
+        "Reputation": "Reputation",
+        "ReputationDM": "Reputation DM",
+        "Wealth": "Wealth",
+        "WealthDM": "Wealth DM",
+        "Stress": "Stress",
+        "StressMax": "Stress (Max)",
+        "StressDM": "Stress DM"
+      }
+    },
+
+    "Item": {
+      "Description": "Description",
+      "Cost": "Cost",
+      "Legal": "Legal"
+    },
+
+    "GeneralObject": {
+      "Encumbrance": "Encumbrance"
+    },
+
+    "Weapon": {
+      "Type": "Type",
+      "Caliber": "Caliber",
+      "ROF": "Rate of Fire",
+      "Reliability": "Reliability",
+      "Damage": "Damage",
+      "Critical": "Critical",
+      "Blast": "Blast",
+      "Range": "Range",
+      "Magazine": "Magazine",
+      "MagazineValue": "Magazine (Current)",
+      "MagazineMax": "Magazine (Max)",
+      "Penetration": "Penetration"
+    },
+
+    "Container": {
+      "Capacity": "Capacity",
+      "CapacityValue": "Capacity (Current)",
+      "CapacityMax": "Capacity (Max)"
+    },
+
+    "Spell": {
+      "Level": "Level",
+      "CastingCost": "Casting Cost",
+      "School": "School"
+    },
+
     "Skill": {
       "Group": "Group",
       "GroupNone": "— Unassigned —",
@@ -52,6 +140,21 @@
       "Specialties": "Specialties",
       "Score": "Score"
     },
+
+    "Specialty": {
+      "Score": "Score"
+    },
+
+    "Ammunition": {
+      "Quantity": "Quantity"
+    },
+
+    "ModifierItem": {
+      "Modifiers": "Modifiers",
+      "AddModifier": "Add Modifier",
+      "RemoveModifier": "Remove Modifier"
+    },
+
     "Dialog": {
       "Difficulty": "Difficulty",
       "CustomTN": "Custom Target Number",
@@ -65,9 +168,42 @@
       "Roll": "Roll",
       "Custom": "Custom"
     },
+
     "ModifierPreset": {
       "normal": "Normal"
     },
+
+    "Modifier": {
+      "Container": {
+        "actor": "Actor",
+        "item": "Core-Item"
+      },
+      "Operator": {
+        "add": "+",
+        "subtract": "−"
+      },
+      "Target": {
+        "skillRoll": "Skill Roll"
+      },
+      "Field": {
+        "Container": "Container",
+        "AppliesTo": "Applies To",
+        "Target": "Target",
+        "Operator": "Operator",
+        "Value": "Value"
+      },
+      "Err": {
+        "NoDocument": "No target document provided for modifier validation.",
+        "NoRule": "No rule provided for validation.",
+        "ContainerMismatch": "Modifier targets a {container}, but was applied to a {type} ({expected}).",
+        "TypeNotAllowed": "Modifier does not apply to type \"{type}\". Allowed: {allowed}.",
+        "TargetMissing": "Target \"{target}\" does not exist on {type}. Cannot apply modifier.",
+        "InvalidTerm": "Invalid modifier term: \"{term}\".",
+        "InvalidFormula": "Invalid modifier formula: \"{formula}\".",
+        "UnclosedBracket": "Unclosed bracket in modifier: \"{input}\"."
+      }
+    },
+
     "Chat": {
       "SkillValue": "Skill",
       "TN": "TN",
@@ -76,10 +212,12 @@
       "Effect": "Effect",
       "Modifier": "Modifier"
     },
+
     "Warn": {
       "NotASkill": "Only Skill items can be rolled as a skill.",
       "InvalidTN": "A valid Target Number is required."
     },
+
     "Reputation": {
       "enemyOfState": "Enemy of the State",
       "undesirable": "Undesirable",
@@ -89,6 +227,7 @@
       "globallyRenown": "Globally Renown",
       "historicalFigure": "Historical Figure"
     },
+
     "Wealth": {
       "destitute": "Completely destitute",
       "personalOnly": "Only personal possessions",
@@ -98,6 +237,7 @@
       "extravagant": "Extravagant lifestyle",
       "oligarchy": "Member of the oligarchy"
     },
+
     "Effect": {
       "exceptionalFailure": "Exceptional Failure",
       "averageFailure": "Average Failure",
@@ -106,38 +246,5 @@
       "averageSuccess": "Average Success",
       "exceptionalSuccess": "Exceptional Success"
     }
-  },
-  "Modifier": {
-    "Container": {
-      "actor": "Actor",
-      "item": "Core-Item"
-    },
-    "Operator": {
-      "add": "+",
-      "subtract": "−"
-    },
-    "Target": {
-      "skillRoll": "Skill Roll"
-    },
-    "Err": {
-      "NoDocument": "No target document provided for modifier validation.",
-      "NoRule": "No rule provided for validation.",
-      "ContainerMismatch": "Modifier targets a {container}, but was applied to a {type} ({expected}).",
-      "TypeNotAllowed": "Modifier does not apply to type \"{type}\". Allowed: {allowed}.",
-      "TargetMissing": "Target \"{target}\" does not exist on {type}. Cannot apply modifier.",
-      "InvalidTerm": "Invalid modifier term: \"{term}\".",
-      "InvalidFormula": "Invalid modifier formula: \"{formula}\".",
-      "UnclosedBracket": "Unclosed bracket in modifier: \"{input}\"."
-    },
-    "Visibility": {
-  "normal": "Normal",
-  "heavyRain": "Heavy Rain",
-  "denseFog": "Dense Fog",
-  "dusk": "Dusk",
-  "moonlight": "Moonlight",
-  "starlight": "Starlight",
-  "cloudyNight": "Cloudy Night",
-  "indoor": "Indoor"
-}
   }
 }
