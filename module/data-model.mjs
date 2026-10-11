@@ -1,4 +1,3 @@
-// module/data-model.mjs
 import {
   SKILL_GROUPS,
   lookupCharacteristic,
@@ -18,9 +17,13 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
     }
 
     /** @override
-     * Derives DMs on primary characteristics, and secondary values
-     * (Wounds, Stress, Effort, Reputation label, Wealth label) from the
-     * primary scores via CHARACTERISTIC_TABLE. */
+     * Derives DMs on every numeric characteristic that exists on this
+     * actor, plus the secondary values that can be derived from the
+     * primary scores present (Wounds from Fitness, Stress from Morale,
+     * Effort from Fitness+Morale, Reputation/Wealth labels).
+     *
+     * Every check is guarded with `!== undefined`, so actor types that
+     * omit some characteristics are handled without branching. */
     prepareDerivedData() {
         const primary   = this.attributes?.primary;
         const secondary = this.attributes?.secondary;
@@ -30,11 +33,21 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
     }
 
     #derivePrimary(primary) {
+        // Standard primaries (PC, NPC, Animal)
         for (const key of ["fitness", "agility", "intelligence", "morale"]) {
             if (primary[key] !== undefined) {
                 primary[`${key}DM`] = characteristicDM(primary[key]);
             }
         }
+
+        // Extended primaries (vehicles, drones, servers, bases)
+        for (const key of ["class", "integrity", "speed", "capacity"]) {
+            if (primary[key] !== undefined) {
+                primary[`${key}DM`] = characteristicDM(primary[key]);
+            }
+        }
+
+        // Effort requires both inputs — skipped when either is absent
         if (primary.fitness !== undefined && primary.morale !== undefined) {
             primary.effort   = averageUp(primary.fitness, primary.morale);
             primary.effortDM = characteristicDM(primary.effort);
@@ -42,22 +55,27 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
     }
 
     #deriveSecondary(primary, secondary) {
+        // Wounds requires Fitness — skipped on Faction (no Fitness)
         if (primary?.fitness !== undefined) {
             secondary.wounds    = primary.fitness;
             secondary.woundsMax = lookupCharacteristic(primary.fitness).wounds;
             secondary.woundsDM  = characteristicDM(primary.fitness);
         }
+
+        // Stress requires Morale — derived on Faction too
         if (primary?.morale !== undefined) {
             secondary.stress    = primary.morale;
             secondary.stressMax = lookupCharacteristic(primary.morale).stress;
             secondary.stressDM  = characteristicDM(primary.morale);
         }
+
         if (secondary.reputation !== undefined) {
             secondary.reputationLabel = game.i18n.localize(
                 lookupCharacteristic(secondary.reputation).reputation
             );
             secondary.reputationDM = characteristicDM(secondary.reputation);
         }
+
         if (secondary.wealth !== undefined) {
             secondary.wealthLabel = game.i18n.localize(
                 lookupCharacteristic(secondary.wealth).wealth
@@ -77,6 +95,7 @@ class ThreeEightItemData extends foundry.abstract.TypeDataModel {
 
 /* ── Characteristic DataModels ──────────────────────── */
 
+/** Full primary set: PC, NPC, Animal. */
 class PrimaryCharacteristics extends foundry.abstract.DataModel {
     static defineSchema() {
         return {
@@ -88,6 +107,16 @@ class PrimaryCharacteristics extends foundry.abstract.DataModel {
     }
 }
 
+/** Reduced primary set for Faction: Morale only. */
+class MoraleOnlyPrimary extends foundry.abstract.DataModel {
+    static defineSchema() {
+        return {
+            morale: new NumberField({ required: true, integer: true, initial: 0 })
+        };
+    }
+}
+
+/** Secondary set used by PC and Faction. */
 class SecondaryCharacteristics extends foundry.abstract.DataModel {
     static defineSchema() {
         return {
@@ -98,6 +127,7 @@ class SecondaryCharacteristics extends foundry.abstract.DataModel {
     }
 }
 
+/** Extended primary set: SmallVehicle, LargeVehicle, Drone, Server, Base of Operations. */
 class ExtendedPrimaryCharacteristics extends foundry.abstract.DataModel {
     static defineSchema() {
         return {
@@ -111,6 +141,7 @@ class ExtendedPrimaryCharacteristics extends foundry.abstract.DataModel {
 
 /* ── Actors ─────────────────────────────────────────── */
 
+/* PC — all primaries + all secondaries. */
 export class PcData extends ThreeEightActorData {
     static defineSchema() {
         const { SchemaField } = foundry.data.fields;
@@ -124,19 +155,20 @@ export class PcData extends ThreeEightActorData {
     }
 }
 
+/* NPC — primaries only. */
 export class NpcData extends ThreeEightActorData {
     static defineSchema() {
         const { SchemaField } = foundry.data.fields;
         return {
             ...super.defineSchema(),
             attributes: new SchemaField({
-                primary:   new EmbeddedDataField(PrimaryCharacteristics),
-                secondary: new EmbeddedDataField(SecondaryCharacteristics)
+                primary: new EmbeddedDataField(PrimaryCharacteristics)
             })
         };
     }
 }
 
+/* Animal — primaries only. */
 export class AnimalData extends ThreeEightActorData {
     static defineSchema() {
         const { SchemaField } = foundry.data.fields;
@@ -149,75 +181,83 @@ export class AnimalData extends ThreeEightActorData {
     }
 }
 
+/* SmallVehicle — extended primaries only. */
 export class SmallVehicleData extends ThreeEightActorData {
     static defineSchema() {
         const { SchemaField } = foundry.data.fields;
         return {
             ...super.defineSchema(),
             attributes: new SchemaField({
-                primary:   new EmbeddedDataField(PrimaryCharacteristics),
-                secondary: new EmbeddedDataField(SecondaryCharacteristics)
+                primary: new EmbeddedDataField(ExtendedPrimaryCharacteristics)
             })
         };
     }
 }
 
+/* LargeVehicle — extended primaries only. */
 export class LargeVehicleData extends ThreeEightActorData {
     static defineSchema() {
         const { SchemaField } = foundry.data.fields;
         return {
             ...super.defineSchema(),
             attributes: new SchemaField({
-                primary:   new EmbeddedDataField(PrimaryCharacteristics),
-                secondary: new EmbeddedDataField(SecondaryCharacteristics)
+                primary: new EmbeddedDataField(ExtendedPrimaryCharacteristics)
             })
         };
     }
 }
 
+/* Drone — extended primaries only. */
 export class DroneData extends ThreeEightActorData {
     static defineSchema() {
         const { SchemaField } = foundry.data.fields;
         return {
             ...super.defineSchema(),
             attributes: new SchemaField({
-                primary: new EmbeddedDataField(PrimaryCharacteristics)
+                primary: new EmbeddedDataField(ExtendedPrimaryCharacteristics)
             })
         };
     }
 }
 
+/* Server — extended primaries only. */
 export class ServerData extends ThreeEightActorData {
     static defineSchema() {
         const { SchemaField } = foundry.data.fields;
         return {
             ...super.defineSchema(),
             attributes: new SchemaField({
-                primary: new EmbeddedDataField(PrimaryCharacteristics)
+                primary: new EmbeddedDataField(ExtendedPrimaryCharacteristics)
             })
         };
     }
 }
 
+/* Faction — Morale (primary) + full secondary set.
+   Fitness, Agility and Intelligence are deliberately absent, which
+   means Effort and Wounds are not derived for this actor. Stress is,
+   because Morale is present. */
 export class FactionData extends ThreeEightActorData {
     static defineSchema() {
         const { SchemaField } = foundry.data.fields;
         return {
             ...super.defineSchema(),
             attributes: new SchemaField({
+                primary:   new EmbeddedDataField(MoraleOnlyPrimary),
                 secondary: new EmbeddedDataField(SecondaryCharacteristics)
             })
         };
     }
 }
 
+/* Base of Operations — extended primaries only. */
 export class BaseOfOperationsData extends ThreeEightActorData {
     static defineSchema() {
         const { SchemaField } = foundry.data.fields;
         return {
             ...super.defineSchema(),
             attributes: new SchemaField({
-                secondary: new EmbeddedDataField(SecondaryCharacteristics)
+                primary: new EmbeddedDataField(ExtendedPrimaryCharacteristics)
             })
         };
     }
@@ -233,19 +273,17 @@ export class GeneralObjectData extends ThreeEightItemData {
 
 export class WeaponData extends ThreeEightItemData {
     static defineSchema() {
-        const { NumberField } = foundry.data.fields;
         return {
             ...super.defineSchema(),
-            damage:      new StringField({ initial: "" }),
-            range:       new NumberField({ required: true, integer: true, initial: 0 }),
-            rateOfFire:  new NumberField({ required: true, integer: true, initial: 1 })
+            damage:     new StringField({ initial: "" }),
+            range:      new NumberField({ required: true, integer: true, initial: 0 }),
+            rateOfFire: new NumberField({ required: true, integer: true, initial: 1 })
         };
     }
 }
 
 export class ContainerData extends ThreeEightItemData {
     static defineSchema() {
-        const { NumberField } = foundry.data.fields;
         return {
             ...super.defineSchema(),
             capacity: new NumberField({ required: true, integer: true, initial: 0 })
@@ -255,7 +293,6 @@ export class ContainerData extends ThreeEightItemData {
 
 export class SpellData extends ThreeEightItemData {
     static defineSchema() {
-        const { NumberField } = foundry.data.fields;
         return {
             ...super.defineSchema(),
             level:  new NumberField({ required: true, integer: true, initial: 1 }),
@@ -269,7 +306,6 @@ export class SpellData extends ThreeEightItemData {
 
 class ModifierItemData extends ThreeEightItemData {
     static defineSchema() {
-        const { NumberField } = foundry.data.fields;
         return {
             ...super.defineSchema(),
             modifier:   new NumberField({ required: true, integer: true, initial: 0 }),
@@ -279,14 +315,13 @@ class ModifierItemData extends ThreeEightItemData {
     }
 }
 
-export class ModData       extends ModifierItemData { static defineSchema() { return { ...super.defineSchema() }; } }
-export class PowerData     extends ModifierItemData { static defineSchema() { return { ...super.defineSchema() }; } }
-export class QualityData   extends ModifierItemData { static defineSchema() { return { ...super.defineSchema() }; } }
-export class FlawData      extends ModifierItemData { static defineSchema() { return { ...super.defineSchema() }; } }
+export class ModData     extends ModifierItemData { static defineSchema() { return { ...super.defineSchema() }; } }
+export class PowerData   extends ModifierItemData { static defineSchema() { return { ...super.defineSchema() }; } }
+export class QualityData extends ModifierItemData { static defineSchema() { return { ...super.defineSchema() }; } }
+export class FlawData    extends ModifierItemData { static defineSchema() { return { ...super.defineSchema() }; } }
 
 export class AmmunitionData extends ModifierItemData {
     static defineSchema() {
-        const { NumberField } = foundry.data.fields;
         return {
             ...super.defineSchema(),
             quantity: new NumberField({ required: true, integer: true, initial: 0 })
@@ -324,7 +359,6 @@ export class SkillData extends ThreeEightItemData {
 
 export class SpecialtyData extends ThreeEightItemData {
     static defineSchema() {
-        const { NumberField } = foundry.data.fields;
         return {
             ...super.defineSchema(),
             score: new NumberField({
