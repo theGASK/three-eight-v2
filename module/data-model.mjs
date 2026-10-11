@@ -361,6 +361,57 @@ export class ContainerData extends ThreeEightItemData {
     }
 }
 
+/* ── Armor Items ────────────────────────────────────── */
+
+/**
+ * Individual Armor — worn or carried protection for a person.
+ * Two independent protection tracks, each with its own current
+ * and maximum value. Degradation, repair and coverage are not
+ * modelled here; the sheet stores and displays the numbers.
+ */
+export class IndividualArmorData extends ThreeEightItemData {
+    static defineSchema() {
+        return {
+            ...super.defineSchema(),
+
+            rangedProtection: new SchemaField({
+                value: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+                max:   new NumberField({ required: true, integer: true, min: 0, initial: 0 })
+            }),
+
+            meleeProtection: new SchemaField({
+                value: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+                max:   new NumberField({ required: true, integer: true, min: 0, initial: 0 })
+            })
+        };
+    }
+}
+
+/**
+ * Vehicle Armor — plating or shielding mounted on a vehicle.
+ * Protection is the general armor value; Soak is the amount the
+ * vehicle absorbs before its structure is affected. Both tracks
+ * carry a current and a maximum value.
+ */
+
+export class VehicleArmorData extends ThreeEightItemData {
+    static defineSchema() {
+        return {
+            ...super.defineSchema(),
+
+            protection: new SchemaField({
+                value: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+                max:   new NumberField({ required: true, integer: true, min: 0, initial: 0 })
+            }),
+
+            soak: new SchemaField({
+                value: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+                max:   new NumberField({ required: true, integer: true, min: 0, initial: 0 })
+            })
+        };
+    }
+}
+
 export class SpellData extends ThreeEightItemData {
     static defineSchema() {
         return {

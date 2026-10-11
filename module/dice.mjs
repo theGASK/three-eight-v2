@@ -182,14 +182,19 @@ export async function promptSkillRoll(item) {
 
   if (!formData) return null;
 
-  const customTn = Number(formData.customTn);
+   const customTn = Number(formData.customTn);
   const useCustom = Number.isFinite(customTn) && customTn > 0;
   const tn = useCustom ? customTn : Number(formData.presetTn);
 
-  const difficultyLabel = useCustom
-    ? game.i18n.localize("THREEEIGHT.Dialog.Custom")
+  // Resolve the difficulty label *key* here; localize exactly once,
+  // at the point of use. Both branches yield a key, so there is no
+  // double-localization and no risk of an unlocalized fallback string
+  // slipping through.
+  const difficultyKey = useCustom
+    ? "THREEEIGHT.Dialog.Custom"
     : Object.values(DIFFICULTIES)
-        .find(d => d.tn === Number(formData.presetTn))?.label ?? "";
+        .find(d => d.tn === Number(formData.presetTn))?.label
+        ?? "THREEEIGHT.Dialog.Custom";
 
   // Combine the preset formula (if any) with the user-typed modifier.
   const preset = MODIFIER_PRESETS[formData.mode] ?? MODIFIER_PRESETS.normal;
@@ -200,7 +205,7 @@ export async function promptSkillRoll(item) {
 
   return item.rollSkill({
     tn,
-    difficulty: game.i18n.localize(difficultyLabel),
+    difficulty: game.i18n.localize(difficultyKey),
     modifier: combinedModifier
   });
 }
