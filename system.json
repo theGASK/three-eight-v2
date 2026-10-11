@@ -13,15 +13,15 @@
   ],
   "documentTypes": {
     "Actor": {
-      "pc": { "htmlFields": ["description"] },
-      "npc": { "htmlFields": ["description"] },
-      "animal": { "htmlFields": ["description"] },
-      "smallVehicle": { "htmlFields": ["description"] },
-      "largeVehicle": { "htmlFields": ["description"] },
-      "drone": { "htmlFields": ["description"] },
-      "server": { "htmlFields": ["description"] },
-      "faction": { "htmlFields": ["description"] },
-      "baseOfOperations": { "htmlFields": ["description"] }
+      "pc":               { "htmlFields": ["description", "actions.known.*.description"] },
+      "npc":              { "htmlFields": ["description", "actions.known.*.description"] },
+      "animal":           { "htmlFields": ["description", "actions.known.*.description"] },
+      "smallVehicle":     { "htmlFields": ["description", "actions.known.*.description"] },
+      "largeVehicle":     { "htmlFields": ["description", "actions.known.*.description"] },
+      "drone":            { "htmlFields": ["description", "actions.known.*.description"] },
+      "server":           { "htmlFields": ["description", "actions.known.*.description"] },
+      "faction":          { "htmlFields": ["description", "actions.known.*.description"] },
+      "baseOfOperations": { "htmlFields": ["description", "actions.known.*.description"] }
     },
     "Item": {
       "generalObject": { "htmlFields": ["description"] },

@@ -1,0 +1,20 @@
+<div class="three-eight-v2 chat-card action-declared">
+  <header class="card-header">
+    <h3>{{actionName}}</h3>
+    <span class="action-type">{{typeLabel}}</span>
+  </header>
+  <div class="card-content">
+    {{#if actionDescription}}
+    <div class="action-description">{{{actionDescription}}}</div>
+    {{/if}}
+    {{#if actionRequisite}}
+    <div class="action-requisite">
+      <span class="label">{{localize "THREEEIGHT.Action.Requisite"}}:</span>
+      <span class="value">{{actionRequisite}}</span>
+    </div>
+    {{/if}}
+    {{#if actionIsAttack}}
+    <div class="action-attack">{{localize "THREEEIGHT.Action.IsAttack"}}</div>
+    {{/if}}
+  </div>
+</div>

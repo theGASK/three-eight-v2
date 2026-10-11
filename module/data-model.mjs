@@ -21,6 +21,8 @@ import {
     sumContributions
 } from "./modifier.mjs";
 
+import { ActionsData } from "./action-economy.mjs";
+
 
 /* ── Base Classes ───────────────────────────────────── */
 
@@ -29,7 +31,8 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
         return {
             description: new HTMLField({ required: false, blank: true, initial: "" }),
             wounds: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
-            effort: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
+            effort: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+            actions: new EmbeddedDataField(ActionsData)
         };
     }
 

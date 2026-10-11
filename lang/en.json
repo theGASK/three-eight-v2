@@ -237,6 +237,21 @@
       "marginalSuccess": "Marginal Success",
       "averageSuccess": "Average Success",
       "exceptionalSuccess": "Exceptional Success"
+    },
+    "Action": {
+      "Slow": "Slow",
+      "Fast": "Fast",
+      "Type": {
+        "slow": "Slow Action",
+        "fast": "Fast Action"
+      },
+      "Requisite": "Requisite",
+      "Description": "Description",
+      "IsAttack": "Attack",
+      "Err": {
+        "NoEconomy": "This actor has no Action Economy.",
+        "NoSlot": "No {type} slot available this round."
+      }
     }
   }
 }

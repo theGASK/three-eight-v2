@@ -12,6 +12,35 @@
   font-family: var(--font-mono, monospace);
   font-weight: bold;
 }
+.three-eight-v2.chat-card.action-declared .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid var(--color-border-light-tertiary);
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+}
+.three-eight-v2.chat-card.action-declared .action-type {
+  font-size: 0.85em;
+  font-weight: bold;
+  color: var(--color-text-dark-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.three-eight-v2.chat-card.action-declared .action-requisite {
+  margin-top: 4px;
+  font-size: 0.95em;
+}
+.three-eight-v2.chat-card.action-declared .action-requisite .label {
+  font-weight: bold;
+  margin-right: 0.25em;
+}
+.three-eight-v2.chat-card.action-declared .action-attack {
+  margin-top: 6px;
+  font-weight: bold;
+  color: var(--color-level-error);
+}
+
 
 /* Tier color coding — driven by the effect-{key} class on the root. */
 .three-eight-v2.chat-card.skill-roll.effect-exceptionalFailure .effect-tier,
