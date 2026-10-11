@@ -9,11 +9,7 @@
   "esmodules": ["three-eight.mjs"],
   "styles": ["styles/three-eight-v2.css"],
   "languages": [
-    {
-      "lang": "en",
-      "name": "English",
-      "path": "lang/en.json"
-    }
+    { "lang": "en", "name": "English", "path": "lang/en.json" }
   ],
   "documentTypes": {
     "Actor": {
@@ -41,6 +37,6 @@
       "ammunition": { "htmlFields": ["description"] }
     }
   },
-  "initiative": "1d20 + @attributes.agility.mod",
-  "primaryTokenAttribute": "secondary.wounds"
+  "initiative": "2d8",
+  "primaryTokenAttribute": "wounds"
 }

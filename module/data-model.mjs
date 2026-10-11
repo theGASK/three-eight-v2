@@ -12,70 +12,82 @@ const { HTMLField, NumberField, StringField, EmbeddedDataField } = foundry.data.
 class ThreeEightActorData extends foundry.abstract.TypeDataModel {
     static defineSchema() {
         return {
-            description: new HTMLField({ required: false, blank: true, initial: "" })
+            description: new HTMLField({ required: false, blank: true, initial: "" }),
+
+            // Universal characteristics — present on every actor type.
+            //
+            // wounds:
+            //   Auto-assigned from Fitness when Fitness exists
+            //   (PC, NPC, Animal). Otherwise it is a manual field —
+            //   no derivation logic writes to it for vehicles, drones,
+            //   servers, faction, or base of operations.
+            //
+            // effort:
+            //   Auto-assigned from avg↑(Fitness, Morale) when both exist.
+            //   Otherwise manual.
+            wounds: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+            effort: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
         };
     }
 
     /** @override
-     * Derives DMs on every numeric characteristic that exists on this
-     * actor, plus the secondary values that can be derived from the
-     * primary scores present (Wounds from Fitness, Stress from Morale,
-     * Effort from Fitness+Morale, Reputation/Wealth labels).
-     *
-     * Every check is guarded with `!== undefined`, so actor types that
-     * omit some characteristics are handled without branching. */
+     * Derives primary DMs, then conditionally overwrites wounds and
+     * effort from the primary scores when the inputs are present.
+     * Actors missing the required inputs keep whatever was stored. */
     prepareDerivedData() {
         const primary   = this.attributes?.primary;
         const secondary = this.attributes?.secondary;
 
-        if (primary)   this.#derivePrimary(primary);
+        if (primary) this.#derivePrimaryDMs(primary);
+        this.#deriveWounds(primary);
+        this.#deriveEffort(primary);
         if (secondary) this.#deriveSecondary(primary, secondary);
     }
 
-    #derivePrimary(primary) {
-        // Standard primaries (PC, NPC, Animal)
+    #derivePrimaryDMs(primary) {
         for (const key of ["fitness", "agility", "intelligence", "morale"]) {
             if (primary[key] !== undefined) {
                 primary[`${key}DM`] = characteristicDM(primary[key]);
             }
         }
-
-        // Extended primaries (vehicles, drones, servers, bases)
         for (const key of ["class", "integrity", "speed", "capacity"]) {
             if (primary[key] !== undefined) {
                 primary[`${key}DM`] = characteristicDM(primary[key]);
             }
         }
+    }
 
-        // Effort requires both inputs — skipped when either is absent
-        if (primary.fitness !== undefined && primary.morale !== undefined) {
-            primary.effort   = averageUp(primary.fitness, primary.morale);
-            primary.effortDM = characteristicDM(primary.effort);
+    #deriveWounds(primary) {
+        // Only auto-assign when Fitness is present.
+        if (primary?.fitness !== undefined) {
+            this.wounds    = primary.fitness;
+            this.woundsMax = lookupCharacteristic(primary.fitness).wounds;
         }
+        // DM is always computed from whatever wounds currently holds,
+        // so manually-entered values still resolve against the table.
+        this.woundsDM = characteristicDM(this.wounds);
+    }
+
+    #deriveEffort(primary) {
+        // Only auto-assign when both inputs are present.
+        if (primary?.fitness !== undefined && primary?.morale !== undefined) {
+            this.effort = averageUp(primary.fitness, primary.morale);
+        }
+        this.effortDM = characteristicDM(this.effort);
     }
 
     #deriveSecondary(primary, secondary) {
-        // Wounds requires Fitness — skipped on Faction (no Fitness)
-        if (primary?.fitness !== undefined) {
-            secondary.wounds    = primary.fitness;
-            secondary.woundsMax = lookupCharacteristic(primary.fitness).wounds;
-            secondary.woundsDM  = characteristicDM(primary.fitness);
-        }
-
-        // Stress requires Morale — derived on Faction too
         if (primary?.morale !== undefined) {
             secondary.stress    = primary.morale;
             secondary.stressMax = lookupCharacteristic(primary.morale).stress;
             secondary.stressDM  = characteristicDM(primary.morale);
         }
-
         if (secondary.reputation !== undefined) {
             secondary.reputationLabel = game.i18n.localize(
                 lookupCharacteristic(secondary.reputation).reputation
             );
             secondary.reputationDM = characteristicDM(secondary.reputation);
         }
-
         if (secondary.wealth !== undefined) {
             secondary.wealthLabel = game.i18n.localize(
                 lookupCharacteristic(secondary.wealth).wealth
@@ -116,7 +128,7 @@ class MoraleOnlyPrimary extends foundry.abstract.DataModel {
     }
 }
 
-/** Secondary set used by PC and Faction. */
+/** Secondary set used by PC and Faction (experience / reputation / wealth). */
 class SecondaryCharacteristics extends foundry.abstract.DataModel {
     static defineSchema() {
         return {
@@ -141,7 +153,7 @@ class ExtendedPrimaryCharacteristics extends foundry.abstract.DataModel {
 
 /* ── Actors ─────────────────────────────────────────── */
 
-/* PC — all primaries + all secondaries. */
+/* PC — all primaries + all secondaries. Wounds and Effort derived. */
 export class PcData extends ThreeEightActorData {
     static defineSchema() {
         const { SchemaField } = foundry.data.fields;
@@ -155,7 +167,7 @@ export class PcData extends ThreeEightActorData {
     }
 }
 
-/* NPC — primaries only. */
+/* NPC — primaries only. Wounds and Effort derived. */
 export class NpcData extends ThreeEightActorData {
     static defineSchema() {
         const { SchemaField } = foundry.data.fields;
@@ -168,7 +180,7 @@ export class NpcData extends ThreeEightActorData {
     }
 }
 
-/* Animal — primaries only. */
+/* Animal — primaries only. Wounds and Effort derived. */
 export class AnimalData extends ThreeEightActorData {
     static defineSchema() {
         const { SchemaField } = foundry.data.fields;
@@ -181,7 +193,8 @@ export class AnimalData extends ThreeEightActorData {
     }
 }
 
-/* SmallVehicle — extended primaries only. */
+/* SmallVehicle — extended primaries only.
+   Wounds and Effort are manual. */
 export class SmallVehicleData extends ThreeEightActorData {
     static defineSchema() {
         const { SchemaField } = foundry.data.fields;
@@ -194,7 +207,8 @@ export class SmallVehicleData extends ThreeEightActorData {
     }
 }
 
-/* LargeVehicle — extended primaries only. */
+/* LargeVehicle — extended primaries only.
+   Wounds and Effort are manual. */
 export class LargeVehicleData extends ThreeEightActorData {
     static defineSchema() {
         const { SchemaField } = foundry.data.fields;
@@ -207,7 +221,8 @@ export class LargeVehicleData extends ThreeEightActorData {
     }
 }
 
-/* Drone — extended primaries only. */
+/* Drone — extended primaries only.
+   Wounds and Effort are manual. */
 export class DroneData extends ThreeEightActorData {
     static defineSchema() {
         const { SchemaField } = foundry.data.fields;
@@ -220,7 +235,8 @@ export class DroneData extends ThreeEightActorData {
     }
 }
 
-/* Server — extended primaries only. */
+/* Server — extended primaries only.
+   Wounds and Effort are manual. */
 export class ServerData extends ThreeEightActorData {
     static defineSchema() {
         const { SchemaField } = foundry.data.fields;
@@ -233,10 +249,9 @@ export class ServerData extends ThreeEightActorData {
     }
 }
 
-/* Faction — Morale (primary) + full secondary set.
-   Fitness, Agility and Intelligence are deliberately absent, which
-   means Effort and Wounds are not derived for this actor. Stress is,
-   because Morale is present. */
+/* Faction — Morale (primary) + secondary set.
+   Wounds is manual (no Fitness).
+   Effort is manual (no Fitness, so avg↑ can't be computed). */
 export class FactionData extends ThreeEightActorData {
     static defineSchema() {
         const { SchemaField } = foundry.data.fields;
@@ -250,7 +265,8 @@ export class FactionData extends ThreeEightActorData {
     }
 }
 
-/* Base of Operations — extended primaries only. */
+/* Base of Operations — extended primaries only.
+   Wounds and Effort are manual. */
 export class BaseOfOperationsData extends ThreeEightActorData {
     static defineSchema() {
         const { SchemaField } = foundry.data.fields;

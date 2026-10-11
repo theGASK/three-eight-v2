@@ -1,4 +1,3 @@
-// three-eight.mjs — system entry point
 import {
   PcData, NpcData, AnimalData,
   SmallVehicleData, LargeVehicleData, DroneData,
@@ -9,22 +8,24 @@ import {
 } from "./module/data-model.mjs";
 
 import { ThreeEightActor, ThreeEightItem } from "./module/documents.mjs";
+import { ThreeEightCombatant } from "./module/documents/combatant.mjs";
 import { promptSkillRoll } from "./module/dice.mjs";
 
 Hooks.once("init", () => {
   // ── Document classes ────────────────────────────────
-  CONFIG.Actor.documentClass = ThreeEightActor;
-  CONFIG.Item.documentClass  = ThreeEightItem;
+  CONFIG.Actor.documentClass     = ThreeEightActor;
+  CONFIG.Item.documentClass      = ThreeEightItem;
+  CONFIG.Combatant.documentClass = ThreeEightCombatant;
 
   // ── Actor Data Models ───────────────────────────────
-  CONFIG.Actor.dataModels.pc              = PcData;
-  CONFIG.Actor.dataModels.npc             = NpcData;
-  CONFIG.Actor.dataModels.animal          = AnimalData;
-  CONFIG.Actor.dataModels.smallVehicle    = SmallVehicleData;
-  CONFIG.Actor.dataModels.largeVehicle    = LargeVehicleData;
-  CONFIG.Actor.dataModels.drone           = DroneData;
-  CONFIG.Actor.dataModels.server          = ServerData;
-  CONFIG.Actor.dataModels.faction         = FactionData;
+  CONFIG.Actor.dataModels.pc               = PcData;
+  CONFIG.Actor.dataModels.npc              = NpcData;
+  CONFIG.Actor.dataModels.animal           = AnimalData;
+  CONFIG.Actor.dataModels.smallVehicle     = SmallVehicleData;
+  CONFIG.Actor.dataModels.largeVehicle     = LargeVehicleData;
+  CONFIG.Actor.dataModels.drone            = DroneData;
+  CONFIG.Actor.dataModels.server           = ServerData;
+  CONFIG.Actor.dataModels.faction          = FactionData;
   CONFIG.Actor.dataModels.baseOfOperations = BaseOfOperationsData;
 
   // ── Item Data Models ────────────────────────────────
