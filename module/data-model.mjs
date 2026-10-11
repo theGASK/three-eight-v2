@@ -5,7 +5,21 @@ import {
   averageUp
 } from "./constants.mjs";
 
-const { HTMLField, NumberField, StringField, EmbeddedDataField } = foundry.data.fields;
+const {
+    HTMLField,
+    NumberField,
+    StringField,
+    BooleanField,
+    SchemaField,
+    ArrayField,
+    EmbeddedDataField
+} = foundry.data.fields;
+
+import {
+    computeActorContributions,
+    sumContributions
+} from "./modifier.mjs";
+
 
 /* ── Base Classes ───────────────────────────────────── */
 
@@ -13,86 +27,103 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
     static defineSchema() {
         return {
             description: new HTMLField({ required: false, blank: true, initial: "" }),
-
-            // Universal characteristics — present on every actor type.
-            //
-            // wounds:
-            //   Auto-assigned from Fitness when Fitness exists
-            //   (PC, NPC, Animal). Otherwise it is a manual field —
-            //   no derivation logic writes to it for vehicles, drones,
-            //   servers, faction, or base of operations.
-            //
-            // effort:
-            //   Auto-assigned from avg↑(Fitness, Morale) when both exist.
-            //   Otherwise manual.
             wounds: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
             effort: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
         };
     }
 
-    /** @override
-     * Derives primary DMs, then conditionally overwrites wounds and
-     * effort from the primary scores when the inputs are present.
-     * Actors missing the required inputs keep whatever was stored. */
+    /** @override */
     prepareDerivedData() {
+        const contributions = computeActorContributions(this.parent);
+
         const primary   = this.attributes?.primary;
         const secondary = this.attributes?.secondary;
 
-        if (primary) this.#derivePrimaryDMs(primary);
-        this.#deriveWounds(primary);
-        this.#deriveEffort(primary);
-        if (secondary) this.#deriveSecondary(primary, secondary);
+        if (primary)   this.#derivePrimary(primary, contributions);
+        this.#deriveWounds(primary, contributions);
+        this.#deriveEffort(primary, contributions);
+        if (secondary) this.#deriveSecondary(primary, secondary, contributions);
     }
 
-    #derivePrimaryDMs(primary) {
-        for (const key of ["fitness", "agility", "intelligence", "morale"]) {
-            if (primary[key] !== undefined) {
-                primary[`${key}DM`] = characteristicDM(primary[key]);
-            }
-        }
-        for (const key of ["class", "integrity", "speed", "capacity"]) {
-            if (primary[key] !== undefined) {
-                primary[`${key}DM`] = characteristicDM(primary[key]);
-            }
+    #derivePrimary(primary, contributions) {
+        for (const key of ["fitness", "agility", "intelligence", "morale",
+                           "class", "integrity", "speed", "capacity"]) {
+            if (primary[key] === undefined) continue;
+            const path       = `attributes.primary.${key}`;
+            const modifier   = sumContributions(contributions, path);
+            const base       = Number(primary[key]) || 0;
+            const effective  = base + modifier;
+
+            primary[`${key}Effective`] = effective;
+            primary[`${key}Modifier`]  = modifier;
+            primary[`${key}DM`]        = characteristicDM(effective);
         }
     }
 
-    #deriveWounds(primary) {
-        // Only auto-assign when Fitness is present.
-        if (primary?.fitness !== undefined) {
-            this.wounds    = primary.fitness;
-            this.woundsMax = lookupCharacteristic(primary.fitness).wounds;
+    #deriveWounds(primary, contributions) {
+        // Step 1: base value.
+        if (primary?.fitnessEffective !== undefined) {
+            this.wounds    = primary.fitnessEffective;
+            this.woundsMax = lookupCharacteristic(primary.fitnessEffective).wounds;
         }
-        // DM is always computed from whatever wounds currently holds,
-        // so manually-entered values still resolve against the table.
-        this.woundsDM = characteristicDM(this.wounds);
+
+        // Step 2: apply wounds-targeting modifiers on top of the base.
+        const modifier  = sumContributions(contributions, "wounds");
+        const effective = (Number(this.wounds) || 0) + modifier;
+
+        this.woundsEffective = effective;
+        this.woundsModifier  = modifier;
+        this.woundsDM        = characteristicDM(effective);
     }
 
-    #deriveEffort(primary) {
-        // Only auto-assign when both inputs are present.
-        if (primary?.fitness !== undefined && primary?.morale !== undefined) {
-            this.effort = averageUp(primary.fitness, primary.morale);
+    #deriveEffort(primary, contributions) {
+        if (primary?.fitnessEffective !== undefined &&
+            primary?.moraleEffective  !== undefined) {
+            this.effort = averageUp(primary.fitnessEffective, primary.moraleEffective);
         }
-        this.effortDM = characteristicDM(this.effort);
+
+        const modifier  = sumContributions(contributions, "effort");
+        const effective = (Number(this.effort) || 0) + modifier;
+
+        this.effortEffective = effective;
+        this.effortModifier  = modifier;
+        this.effortDM        = characteristicDM(effective);
     }
 
-    #deriveSecondary(primary, secondary) {
-        if (primary?.morale !== undefined) {
-            secondary.stress    = primary.morale;
-            secondary.stressMax = lookupCharacteristic(primary.morale).stress;
-            secondary.stressDM  = characteristicDM(primary.morale);
+    #deriveSecondary(primary, secondary, contributions) {
+        // Stress derives from Morale (effective).
+        if (primary?.moraleEffective !== undefined) {
+            secondary.stress    = primary.moraleEffective;
+            secondary.stressMax = lookupCharacteristic(primary.moraleEffective).stress;
         }
+        const stressModifier  = sumContributions(contributions, "attributes.secondary.stress");
+        const stressEffective = (Number(secondary.stress) || 0) + stressModifier;
+        secondary.stressEffective = stressEffective;
+        secondary.stressModifier  = stressModifier;
+        secondary.stressDM        = characteristicDM(stressEffective);
+
+        // Reputation.
         if (secondary.reputation !== undefined) {
-            secondary.reputationLabel = game.i18n.localize(
-                lookupCharacteristic(secondary.reputation).reputation
+            const mod       = sumContributions(contributions, "attributes.secondary.reputation");
+            const effective = (Number(secondary.reputation) || 0) + mod;
+            secondary.reputationEffective = effective;
+            secondary.reputationModifier  = mod;
+            secondary.reputationLabel     = game.i18n.localize(
+                lookupCharacteristic(effective).reputation
             );
-            secondary.reputationDM = characteristicDM(secondary.reputation);
+            secondary.reputationDM        = characteristicDM(effective);
         }
+
+        // Wealth.
         if (secondary.wealth !== undefined) {
-            secondary.wealthLabel = game.i18n.localize(
-                lookupCharacteristic(secondary.wealth).wealth
+            const mod       = sumContributions(contributions, "attributes.secondary.wealth");
+            const effective = (Number(secondary.wealth) || 0) + mod;
+            secondary.wealthEffective = effective;
+            secondary.wealthModifier  = mod;
+            secondary.wealthLabel     = game.i18n.localize(
+                lookupCharacteristic(effective).wealth
             );
-            secondary.wealthDM = characteristicDM(secondary.wealth);
+            secondary.wealthDM        = characteristicDM(effective);
         }
     }
 }
@@ -100,7 +131,11 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
 class ThreeEightItemData extends foundry.abstract.TypeDataModel {
     static defineSchema() {
         return {
-            description: new HTMLField({ required: false, blank: true, initial: "" })
+            description: new HTMLField({ required: false, blank: true, initial: "" }),
+
+            // Universal item fields — present on every item type.
+            cost:  new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+            legal: new BooleanField({ required: true, initial: true })
         };
     }
 }
@@ -283,7 +318,10 @@ export class BaseOfOperationsData extends ThreeEightActorData {
 
 export class GeneralObjectData extends ThreeEightItemData {
     static defineSchema() {
-        return { ...super.defineSchema() };
+        return {
+            ...super.defineSchema(),
+            encumbrance: new NumberField({ required: true, min: 0, initial: 0 })
+        };
     }
 }
 
@@ -291,9 +329,21 @@ export class WeaponData extends ThreeEightItemData {
     static defineSchema() {
         return {
             ...super.defineSchema(),
-            damage:     new StringField({ initial: "" }),
-            range:      new NumberField({ required: true, integer: true, initial: 0 }),
-            rateOfFire: new NumberField({ required: true, integer: true, initial: 1 })
+
+            type:        new StringField({ required: false, blank: true, initial: "" }),
+            caliber:     new StringField({ required: false, blank: true, initial: "" }),
+            rof:         new NumberField({ required: true, integer: true, min: 0, initial: 1 }),
+            damage:      new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+            critical:    new StringField({ required: false, blank: true, initial: "" }),
+            blast:       new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+            range:       new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+
+            magazine: new SchemaField({
+                value: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+                max:   new NumberField({ required: true, integer: true, min: 0, initial: 0 })
+            }),
+
+            penetration: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
         };
     }
 }
@@ -302,7 +352,10 @@ export class ContainerData extends ThreeEightItemData {
     static defineSchema() {
         return {
             ...super.defineSchema(),
-            capacity: new NumberField({ required: true, integer: true, initial: 0 })
+            capacity: new SchemaField({
+                value: new NumberField({ required: true, min: 0, initial: 0 }),
+                max:   new NumberField({ required: true, min: 0, initial: 0 })
+            })
         };
     }
 }
@@ -312,8 +365,43 @@ export class SpellData extends ThreeEightItemData {
         return {
             ...super.defineSchema(),
             level:  new NumberField({ required: true, integer: true, initial: 1 }),
-            cost:   new NumberField({ required: true, integer: true, initial: 0 }),
+            castingcost:  new NumberField({ required: true, integer: true, initial: 0 }),
             school: new StringField({ initial: "" })
+        };
+    }
+}
+
+/* ── Modifier Rule ──────────────────────────────────── */
+
+/**
+ * A single modifier instruction. Carried by Modifier-Type items
+ * (mod / power / quality / flaw / ammunition) inside their
+ * `system.modifiers` array.
+ *
+ * Targets are resolved against the container document's `system`
+ * object, e.g. "attributes.primary.fitness", "attributes.secondary.reputation",
+ * "damage" (for a Weapon item). See `modifier.mjs` for validation
+ * and application.
+ */
+class ModifierRule extends foundry.abstract.DataModel {
+    static defineSchema() {
+        return {
+            container: new StringField({
+                required: true,
+                choices: ["actor", "item"],
+                initial: "actor"
+            }),
+            // Actor types or item types this rule applies to.
+            // Empty array means "any type allowed by the container".
+            appliesTo: new ArrayField(new StringField(), { initial: [] }),
+            // Path within the container's `system` object.
+            target: new StringField({ required: true, blank: false, initial: "" }),
+            operator: new StringField({
+                required: true,
+                choices: ["+", "-"],
+                initial: "+"
+            }),
+            value: new NumberField({ required: true, integer: true, initial: 0 })
         };
     }
 }
@@ -367,9 +455,19 @@ export class SkillData extends ThreeEightItemData {
 
     get skillValue() {
         const specs = this.specialties;
-        if (specs.length === 0) return 0;
-        const sum = specs.reduce((acc, s) => acc + (Number(s.system.score) || 0), 0);
-        return Math.ceil(sum / specs.length);
+        let base = 0;
+        if (specs.length > 0) {
+            const sum = specs.reduce((acc, s) => acc + (Number(s.system.score) || 0), 0);
+            base = Math.ceil(sum / specs.length);
+        }
+
+        const actor = this.parent?.actor;
+        if (actor) {
+            const contributions = computeActorContributions(actor);
+            base += sumContributions(contributions, "skills.roll");
+        }
+
+        return base;
     }
 }
 

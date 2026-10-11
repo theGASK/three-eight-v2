@@ -97,5 +97,26 @@
       "averageSuccess": "Average Success",
       "exceptionalSuccess": "Exceptional Success"
     }
+  },
+  "Modifier": {
+    "Container": {
+      "actor": "Actor",
+      "item": "Core-Item"
+    },
+    "Operator": {
+      "add": "+",
+      "subtract": "−"
+    },
+    "Target": {
+      "skillRoll": "Skill Roll"
+    },
+    "Err": {
+      "NoDocument": "No target document provided for modifier validation.",
+      "NoRule": "No rule provided for validation.",
+      "ContainerMismatch": "Modifier targets a {container}, but was applied to a {type} ({expected}).",
+      "TypeNotAllowed": "Modifier does not apply to type \"{type}\". Allowed: {allowed}.",
+      "TargetMissing": "Target \"{target}\" does not exist on {type}. Cannot apply modifier."
+    }
   }
 }
+

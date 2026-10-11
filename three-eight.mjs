@@ -10,6 +10,7 @@ import {
 import { ThreeEightActor, ThreeEightItem } from "./module/documents.mjs";
 import { ThreeEightCombatant } from "./module/documents/combatant.mjs";
 import { promptSkillRoll } from "./module/dice.mjs";
+import * as Modifier from "./module/modifier.mjs";
 
 Hooks.once("init", () => {
   // ── Document classes ────────────────────────────────
@@ -42,5 +43,19 @@ Hooks.once("init", () => {
   CONFIG.Item.dataModels.ammunition    = AmmunitionData;
 
   // ── Public API ──────────────────────────────────────
-  game.threeEightV2 = Object.freeze({ promptSkillRoll });
+  game.threeEightV2 = Object.freeze({
+    promptSkillRoll,
+    modifier: {
+      Error:                 Modifier.ModifierError,
+      MODIFIER_ITEM_TYPES:   Modifier.MODIFIER_ITEM_TYPES,
+      isModifierItem:        Modifier.isModifierItem,
+      validateRule:          Modifier.validateRule,
+      validateItemForDrop:   Modifier.validateItemForDrop,
+      computeActorContributions: Modifier.computeActorContributions,
+      computeItemContributions:  Modifier.computeItemContributions,
+      sumContributions:      Modifier.sumContributions,
+      listContributors:      Modifier.listContributors,
+      getModifierState:      Modifier.getModifierState
+    }
+  });
 });

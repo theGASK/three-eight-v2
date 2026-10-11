@@ -5,7 +5,9 @@ import {
   effectRow
 } from "./constants.mjs";
 
-export class ThreeEightActor extends Actor {}
+import { validateItemForDrop } from "./modifier.mjs";
+
+export class ThreeEightActor extends Actor { }
 
 export class ThreeEightItem extends Item {
   static get embedded() {
@@ -100,5 +102,14 @@ export class ThreeEightItem extends Item {
       aidingDM: effectData.aidingDM,
       chainDM: effectData.chainDM
     };
+  }
+  /**
+ * Validate this item's modifier rules against a target document.
+ * Intended to be called from a sheet's drop handler before embedding.
+ * @param {Actor|Item} target
+ * @throws {ModifierError} if any rule is illegal for the target.
+ */
+  validateModifiers(target) {
+    return validateItemForDrop(target, this.toObject());
   }
 }
