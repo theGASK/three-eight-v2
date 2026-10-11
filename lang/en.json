@@ -18,7 +18,6 @@
       "skill": "Skill",
       "specialty": "Specialty",
       "mod": "Mod",
-      "specialtyModItem": "Specialty (Modifier)",
       "power": "Power",
       "quality": "Quality",
       "flaw": "Flaw",
@@ -67,36 +66,36 @@
       "Success": "Success",
       "Failure": "Failure",
       "Effect": "Effect"
+    },
+    "Warn": {
+      "NotASkill": "Only Skill items can be rolled as a skill.",
+      "InvalidTN": "A valid Target Number is required."
+    },
+    "Reputation": {
+      "enemyOfState": "Enemy of the State",
+      "undesirable": "Undesirable",
+      "secondClass": "Second-class Citizen",
+      "normalCitizen": "Normal Citizen",
+      "locallyRenown": "Locally Renown",
+      "globallyRenown": "Globally Renown",
+      "historicalFigure": "Historical Figure"
+    },
+    "Wealth": {
+      "destitute": "Completely destitute",
+      "personalOnly": "Only personal possessions",
+      "modest": "Modest lifestyle",
+      "comfortable": "Comfortable lifestyle",
+      "affluent": "Affluent lifestyle",
+      "extravagant": "Extravagant lifestyle",
+      "oligarchy": "Member of the oligarchy"
+    },
+    "Effect": {
+      "exceptionalFailure": "Exceptional Failure",
+      "averageFailure": "Average Failure",
+      "marginalFailure": "Marginal Failure",
+      "marginalSuccess": "Marginal Success",
+      "averageSuccess": "Average Success",
+      "exceptionalSuccess": "Exceptional Success"
     }
-  },
-  "Warn": {
-    "NotASkill": "Only Skill items can be rolled as a skill.",
-    "InvalidTN": "A valid Target Number is required."
-  },
-  "Reputation": {
-    "enemyOfState": "Enemy of the State",
-    "undesirable": "Undesirable",
-    "secondClass": "Second-class Citizen",
-    "normalCitizen": "Normal Citizen",
-    "locallyRenown": "Locally Renown",
-    "globallyRenown": "Globally Renown",
-    "historicalFigure": "Historical Figure"
-  },
-  "Wealth": {
-    "destitute": "Completely destitute",
-    "personalOnly": "Only personal possessions",
-    "modest": "Modest lifestyle",
-    "comfortable": "Comfortable lifestyle",
-    "affluent": "Affluent lifestyle",
-    "extravagant": "Extravagant lifestyle",
-    "oligarchy": "Member of the oligarchy"
-  },
-  "Effect": {
-    "exceptionalFailure": "Exceptional Failure",
-    "averageFailure": "Average Failure",
-    "marginalFailure": "Marginal Failure",
-    "marginalSuccess": "Marginal Success",
-    "averageSuccess": "Average Success",
-    "exceptionalSuccess": "Exceptional Success"
   }
 }
