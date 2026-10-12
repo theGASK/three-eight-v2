@@ -249,3 +249,135 @@ export const SHIELD_TARGETS = Object.freeze([
   "npc",
   "animal"
 ]);
+
+/* ══════════════════════════════════════════════════════════
+   RANGED COMBAT
+   Tables driving the Ranged Attack dialog and resolution.
+   ══════════════════════════════════════════════════════════ */
+
+/**
+ * Fire Mode table.
+ *
+ * `ammo` is one of:
+ *   - a number            → that many rounds
+ *   - "ROF"               → the weapon's full Rate of Fire
+ *   - "1d8"               → a rolled 1d8, capped at the weapon's ROF
+ *
+ * `damageBonus` is one of:
+ *   - null                → no bonus
+ *   - "halfROF"           → floor(ROF / 2)
+ *
+ * `onlyDrone` restricts the mode to actors of type "drone".
+ */
+export const RANGED_FIRE_MODES = Object.freeze([
+  { key: "normal",        label: "THREEEIGHT.Ranged.FireMode.normal",
+    dice: "2d8", dm: 0,  ammo: "1d8",  initial: true,  damageBonus: null,      onlyDrone: false },
+  { key: "single",        label: "THREEEIGHT.Ranged.FireMode.single",
+    dice: "2d8", dm: -1, ammo: 1,      initial: false, damageBonus: null,      onlyDrone: false },
+  { key: "fullAuto",      label: "THREEEIGHT.Ranged.FireMode.fullAuto",
+    dice: "3d8", dm: 1,  ammo: "ROF",  initial: false, damageBonus: "halfROF", onlyDrone: false },
+  { key: "droneSingle",   label: "THREEEIGHT.Ranged.FireMode.droneSingle",
+    dice: "3d8", dm: 3,  ammo: 1,      initial: false, damageBonus: null,      onlyDrone: true  },
+  { key: "droneNormal",   label: "THREEEIGHT.Ranged.FireMode.droneNormal",
+    dice: "3d8", dm: 3,  ammo: "1d8",  initial: false, damageBonus: null,      onlyDrone: true  },
+  { key: "droneFullAuto", label: "THREEEIGHT.Ranged.FireMode.droneFullAuto",
+    dice: "4d8", dm: 3,  ammo: "ROF",  initial: false, damageBonus: "halfROF", onlyDrone: true  }
+]);
+
+/** Target Type table. The chosen TN is the attack's Target Number. */
+export const RANGED_TARGET_TYPES = Object.freeze([
+  { key: "drone",    label: "THREEEIGHT.Ranged.TargetType.drone",    tn: 14, initial: false },
+  { key: "humanoid", label: "THREEEIGHT.Ranged.TargetType.humanoid", tn: 12, initial: true  },
+  { key: "vehicle",  label: "THREEEIGHT.Ranged.TargetType.vehicle",  tn: 10, initial: false },
+  { key: "building", label: "THREEEIGHT.Ranged.TargetType.building", tn: 5,  initial: false }
+]);
+
+/** Dialog group headers for the alteration menus, in display order. */
+export const RANGED_ALTERATION_GROUPS = Object.freeze([
+  { key: "special",          label: "THREEEIGHT.Ranged.AlterationGroup.special"          },
+  { key: "aim",              label: "THREEEIGHT.Ranged.AlterationGroup.aim"              },
+  { key: "range",            label: "THREEEIGHT.Ranged.AlterationGroup.range"            },
+  { key: "targetShape",      label: "THREEEIGHT.Ranged.AlterationGroup.targetShape"      },
+  { key: "targetTerrain",    label: "THREEEIGHT.Ranged.AlterationGroup.targetTerrain"    },
+  { key: "lightConditions",  label: "THREEEIGHT.Ranged.AlterationGroup.lightConditions"  },
+  { key: "attackerStance",   label: "THREEEIGHT.Ranged.AlterationGroup.attackerStance"   }
+]);
+
+/**
+ * Ranged Attack Alteration table.
+ *
+ * `group: null` entries are rendered as standalone tickboxes.
+ * `multiple: true` groups render as a multi-select and their
+ * selected DMs are summed.
+ */
+export const RANGED_ALTERATIONS = Object.freeze([
+  // ── Special (multiple) ─────────────────────────────
+  { key: "none",              label: "THREEEIGHT.Ranged.Alteration.none",              group: "special",         dm:  0, multiple: true,  initial: true  },
+  { key: "calledShot",        label: "THREEEIGHT.Ranged.Alteration.calledShot",        group: "special",         dm: -2, multiple: true,  initial: false },
+  { key: "oneHandedShort",    label: "THREEEIGHT.Ranged.Alteration.oneHandedShort",    group: "special",         dm: -2, multiple: true,  initial: false },
+  { key: "oneHandedLong",     label: "THREEEIGHT.Ranged.Alteration.oneHandedLong",     group: "special",         dm: -3, multiple: true,  initial: false },
+  // ── Aim ────────────────────────────────────────────
+  { key: "fastAim",           label: "THREEEIGHT.Ranged.Alteration.fastAim",           group: "aim",             dm:  0, multiple: false, initial: true  },
+  { key: "slowAim",           label: "THREEEIGHT.Ranged.Alteration.slowAim",           group: "aim",             dm:  1, multiple: false, initial: false },
+  { key: "quickshotShort",    label: "THREEEIGHT.Ranged.Alteration.quickshotShort",    group: "aim",             dm: -1, multiple: false, initial: false },
+  { key: "quickshotLong",     label: "THREEEIGHT.Ranged.Alteration.quickshotLong",     group: "aim",             dm: -2, multiple: false, initial: false },
+  { key: "bracedSlowAim",     label: "THREEEIGHT.Ranged.Alteration.bracedSlowAim",     group: "aim",             dm:  2, multiple: false, initial: false },
+  // ── Range ──────────────────────────────────────────
+  { key: "shortRange",        label: "THREEEIGHT.Ranged.Alteration.shortRange",        group: "range",           dm:  0, multiple: false, initial: true  },
+  { key: "mediumRange",       label: "THREEEIGHT.Ranged.Alteration.mediumRange",       group: "range",           dm: -1, multiple: false, initial: false },
+  { key: "longRange",         label: "THREEEIGHT.Ranged.Alteration.longRange",         group: "range",           dm: -2, multiple: false, initial: false },
+  { key: "extremeRange",      label: "THREEEIGHT.Ranged.Alteration.extremeRange",      group: "range",           dm: -3, multiple: false, initial: false },
+  { key: "closeCombatShort",  label: "THREEEIGHT.Ranged.Alteration.closeCombatShort",  group: "range",           dm: -1, multiple: false, initial: false },
+  { key: "closeCombatLong",   label: "THREEEIGHT.Ranged.Alteration.closeCombatLong",   group: "range",           dm: -2, multiple: false, initial: false },
+  // ── Target Shape ───────────────────────────────────
+  { key: "standingPartial",   label: "THREEEIGHT.Ranged.Alteration.standingPartial",   group: "targetShape",     dm:  0, multiple: false, initial: true  },
+  { key: "proneMoving",       label: "THREEEIGHT.Ranged.Alteration.proneMoving",       group: "targetShape",     dm: -1, multiple: false, initial: false },
+  { key: "fullCover",         label: "THREEEIGHT.Ranged.Alteration.fullCover",         group: "targetShape",     dm: -3, multiple: false, initial: false },
+  { key: "defenseless",       label: "THREEEIGHT.Ranged.Alteration.defenseless",       group: "targetShape",     dm:  3, multiple: false, initial: false },
+  { key: "smallTarget",       label: "THREEEIGHT.Ranged.Alteration.smallTarget",       group: "targetShape",     dm: -2, multiple: false, initial: false },
+  { key: "largeTarget",       label: "THREEEIGHT.Ranged.Alteration.largeTarget",       group: "targetShape",     dm:  2, multiple: false, initial: false },
+  // ── Target Terrain ─────────────────────────────────
+  { key: "openTerrain",       label: "THREEEIGHT.Ranged.Alteration.openTerrain",       group: "targetTerrain",   dm:  0, multiple: false, initial: true  },
+  { key: "shrubland",         label: "THREEEIGHT.Ranged.Alteration.shrubland",         group: "targetTerrain",   dm: -1, multiple: false, initial: false },
+  { key: "thickFoliage",      label: "THREEEIGHT.Ranged.Alteration.thickFoliage",      group: "targetTerrain",   dm: -2, multiple: false, initial: false },
+  // ── Light Conditions ───────────────────────────────
+  { key: "lightNormal",       label: "THREEEIGHT.Ranged.Alteration.lightNormal",       group: "lightConditions", dm:  0, multiple: false, initial: true  },
+  { key: "limited",           label: "THREEEIGHT.Ranged.Alteration.limited",           group: "lightConditions", dm: -1, multiple: false, initial: false },
+  { key: "darkness",          label: "THREEEIGHT.Ranged.Alteration.darkness",          group: "lightConditions", dm: -2, multiple: false, initial: false },
+  { key: "denseSmoke",        label: "THREEEIGHT.Ranged.Alteration.denseSmoke",        group: "lightConditions", dm: -3, multiple: false, initial: false },
+  // ── Attacker Stance (multiple) ─────────────────────
+  { key: "proneFiring",       label: "THREEEIGHT.Ranged.Alteration.proneFiring",       group: "attackerStance",  dm:  0, multiple: true,  initial: true  },
+  { key: "runningFiring",     label: "THREEEIGHT.Ranged.Alteration.runningFiring",     group: "attackerStance",  dm: -1, multiple: true,  initial: false },
+  { key: "travellingFiring",  label: "THREEEIGHT.Ranged.Alteration.travellingFiring",  group: "attackerStance",  dm: -2, multiple: true,  initial: false },
+  { key: "climbingFiring",    label: "THREEEIGHT.Ranged.Alteration.climbingFiring",    group: "attackerStance",  dm: -3, multiple: true,  initial: false },
+  // ── Ungrouped (tickboxes) ──────────────────────────
+  { key: "standingHeavy",     label: "THREEEIGHT.Ranged.Alteration.standingHeavy",     group: null,              dm: -3, multiple: false, initial: false },
+  { key: "fullAutoFire",      label: "THREEEIGHT.Ranged.Alteration.fullAutoFire",      group: null,              dm:  1, multiple: false, initial: false },
+  { key: "elevatedPosition",  label: "THREEEIGHT.Ranged.Alteration.elevatedPosition",  group: null,              dm:  1, multiple: false, initial: false },
+  { key: "spendEffort",       label: "THREEEIGHT.Ranged.Alteration.spendEffort",       group: null,              dm:  1, multiple: false, initial: false }
+]);
+
+/** Characteristic whose derived DM drives the ranged attack roll, by actor type. */
+export const RANGED_ATTACK_CHARACTERISTIC = Object.freeze({
+  pc:               "agility",
+  npc:              "agility",
+  animal:           "agility",
+  smallVehicle:     "speed",
+  drone:            "speed",
+  largeVehicle:     "speed",
+  server:           "speed",
+  baseOfOperations: "speed",
+  faction:          "morale"
+});
+
+/* ── Ranged lookup helpers ─────────────────────────── */
+
+export function getFireMode(key) {
+  return RANGED_FIRE_MODES.find(m => m.key === key) ?? null;
+}
+export function getTargetType(key) {
+  return RANGED_TARGET_TYPES.find(t => t.key === key) ?? null;
+}
+export function getAlteration(key) {
+  return RANGED_ALTERATIONS.find(a => a.key === key) ?? null;
+}

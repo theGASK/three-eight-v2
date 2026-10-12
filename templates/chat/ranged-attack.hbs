@@ -1,0 +1,69 @@
+<div class="three-eight-v2 chat-card ranged-attack">
+  <header class="card-header">
+    <h3>{{weaponName}}</h3>
+    <span class="fire-mode">{{fireModeLabel}}</span>
+  </header>
+  <div class="card-content">
+    <div class="attack-summary">
+      <span class="attacker">{{actorName}}</span>
+      <span class="target-type">→ {{targetTypeLabel}}</span>
+      {{#if hasTarget}}<span class="target">· {{targetName}}</span>{{/if}}
+    </div>
+
+    <div class="dice-result">
+      <span class="dice-formula">{{formula}}</span>
+      <span class="dice-total">{{rollTotal}}</span>
+    </div>
+
+    <div class="tn-line">
+      <span class="tn">{{localize "THREEEIGHT.Ranged.TN"}} {{tn}}</span>
+      <span class="difference">{{localize "THREEEIGHT.Ranged.Difference"}} {{differenceSigned}}</span>
+      <span class="result-label {{#if success}}success{{else}}failure{{/if}}">
+        {{#if success}}{{localize "THREEEIGHT.Chat.Success"}}{{else}}{{localize "THREEEIGHT.Chat.Failure"}}{{/if}}
+      </span>
+    </div>
+
+    <div class="penetration-line">
+      <span class="label">{{localize "THREEEIGHT.Ranged.Penetration"}}:</span>
+      <span class="value">{{penetration}}</span>
+    </div>
+
+    {{#if hasTarget}}
+    <div class="protection-line">
+      <span class="label">{{localize "THREEEIGHT.Ranged.TargetProtection"}}:</span>
+      <span class="value">{{protectionBefore}}</span>
+      {{#if penetrated}}<span class="penetrated">{{localize "THREEEIGHT.Ranged.Penetrated"}}</span>{{/if}}
+    </div>
+    {{/if}}
+
+    <div class="damage-line">
+      <span class="label">{{localize "THREEEIGHT.Ranged.TotalDamage"}}:</span>
+      <span class="value">{{damageTotal}}</span>
+      {{#if damageRofBonus}}<span class="rof-bonus">({{damageBase}} + {{damageRofBonus}})</span>{{/if}}
+    </div>
+
+    {{#if hasTarget}}
+    <div class="wound-line">
+      <span class="label">{{localize "THREEEIGHT.Ranged.WoundCalc"}}:</span>
+      <span class="value">{{damageTotal}} − {{protectionApplied}} = {{woundDamage}}</span>
+    </div>
+    {{#if critical}}
+    <div class="critical-wound">{{localize "THREEEIGHT.Ranged.CriticalWound"}}</div>
+    {{/if}}
+    {{/if}}
+
+    <div class="ammo-line">
+      <span class="label">{{localize "THREEEIGHT.Ranged.AmmoSpent"}}:</span>
+      <span class="value">{{ammoSpent}}</span>
+    </div>
+
+    {{#if hasTarget}}
+    <div class="gm-actions">
+      {{#if hasArmorUpdates}}
+      <button type="button" data-action="apply-armor">{{localize "THREEEIGHT.Ranged.ApplyArmor"}}</button>
+      {{/if}}
+      <button type="button" data-action="apply-wounds">{{localize "THREEEIGHT.Ranged.ApplyWounds"}}</button>
+    </div>
+    {{/if}}
+  </div>
+</div>

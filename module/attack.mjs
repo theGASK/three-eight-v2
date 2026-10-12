@@ -255,17 +255,20 @@ async function promptAndRequest(actor, attackType, { target = null } = {}) {
 async function runAttack(actor, attackType, { weapon, target = null } = {}) {
   if (!weapon) return null;
 
-  // Ranged attack with no ammo — surface the reload message and stop.
-  if (attackType === "ranged" && !Ranged.hasAmmo(weapon)) {
-    ui.notifications.warn(
-      game.i18n.localize("THREEEIGHT.Attack.Err.OutOfAmmo")
-    );
-    return null;
+  // Ranged attacks use their own dialog and resolution pipeline.
+  if (attackType === "ranged") {
+    if (!Ranged.hasAmmo(weapon)) {
+      ui.notifications.warn(
+        game.i18n.localize("THREEEIGHT.Attack.Err.OutOfAmmo")
+      );
+      return null;
+    }
+    return Ranged.promptRangedAttack(actor, weapon, { target });
   }
 
+  // Melee keeps the original placeholder-modifier flow.
   const modifierResult = await promptModifiers();
   if (!modifierResult) return null;
-
   return request(actor, null, {
     attackType,
     weapon,

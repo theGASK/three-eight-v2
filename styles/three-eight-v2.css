@@ -115,3 +115,77 @@
   font-weight: bold;
   margin-right: 0.25em;
 }
+
+/* ── Ranged attack dialog ─────────────────────────────── */
+.three-eight-v2.ranged-attack-dialog .ranged-attack-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+.three-eight-v2.ranged-attack-dialog select[multiple] {
+  min-height: 5em;
+}
+.three-eight-v2.ranged-attack-dialog .ungrouped-alterations label.checkbox {
+  display: block;
+  margin: 0.15em 0;
+}
+.three-eight-v2.ranged-attack-dialog .ranged-preview {
+  border-top: 1px dashed var(--color-border-light-tertiary);
+  margin-top: 0.5em;
+  padding-top: 0.5em;
+}
+.three-eight-v2.ranged-attack-dialog .formula-display,
+.three-eight-v2.ranged-attack-dialog .damage-display {
+  font-family: var(--font-mono, monospace);
+  font-weight: bold;
+}
+.three-eight-v2.ranged-attack-dialog .alt-list {
+  font-style: italic;
+}
+
+/* ── Ranged attack chat card ──────────────────────────── */
+.three-eight-v2.chat-card.ranged-attack .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid var(--color-border-light-tertiary);
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+}
+.three-eight-v2.chat-card.ranged-attack .fire-mode {
+  font-size: 0.85em;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-dark-secondary);
+}
+.three-eight-v2.chat-card.ranged-attack .tn-line,
+.three-eight-v2.chat-card.ranged-attack .penetration-line,
+.three-eight-v2.chat-card.ranged-attack .protection-line,
+.three-eight-v2.chat-card.ranged-attack .damage-line,
+.three-eight-v2.chat-card.ranged-attack .wound-line,
+.three-eight-v2.chat-card.ranged-attack .ammo-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95em;
+  margin-top: 2px;
+}
+.three-eight-v2.chat-card.ranged-attack .critical-wound {
+  margin-top: 6px;
+  font-weight: bold;
+  color: var(--color-level-error);
+}
+.three-eight-v2.chat-card.ranged-attack .penetrated {
+  color: var(--color-level-error);
+  font-weight: bold;
+}
+.three-eight-v2.chat-card.ranged-attack .gm-actions {
+  display: flex;
+  gap: 0.5em;
+  margin-top: 0.75em;
+  padding-top: 0.5em;
+  border-top: 1px dashed var(--color-border-light-tertiary);
+}
+.three-eight-v2.chat-card.ranged-attack .gm-actions button {
+  flex: 1;
+}

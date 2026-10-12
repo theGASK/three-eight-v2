@@ -17,6 +17,7 @@ import * as ActionsCatalog from "./module/action-catalog.mjs";
 import * as Attack from "./module/attack.mjs";
 import * as Conditions from "./module/conditions.mjs";
 import { registerEquipmentHooks } from "./module/equipment.mjs";
+import * as Ranged from "./module/attacks/ranged.mjs";
 
 Hooks.once("init", () => {
   // ── Document classes ────────────────────────────────
@@ -55,6 +56,34 @@ Hooks.once("init", () => {
   // ── Equipment rules ─────────────────────────────────
   registerEquipmentHooks();
 
+  /* ── Ranged attack chat card actions ────────────────────
+     Wires the GM confirmation buttons on ranged attack
+     cards. Buttons are hidden for non-GM users. */
+  Hooks.on("renderChatMessageHTML", (message, html) => {
+    const data = message.flags?.["three-eight-v2"]?.ranged;
+    if (!data) return;
+    if (!game.user.isGM) return;
+
+    const root = html instanceof HTMLElement ? html : html?.[0];
+    if (!root) return;
+
+    root.querySelectorAll("[data-action='apply-armor']").forEach(btn => {
+      if (data.armorApplied) { btn.disabled = true; return; }
+      btn.addEventListener("click", async () => {
+        await Ranged.applyRangedArmor(message);
+        ui.notifications.info(game.i18n.localize("THREEEIGHT.Ranged.ArmorApplied"));
+      });
+    });
+
+    root.querySelectorAll("[data-action='apply-wounds']").forEach(btn => {
+      if (data.woundsApplied) { btn.disabled = true; return; }
+      btn.addEventListener("click", async () => {
+        await Ranged.applyRangedWounds(message);
+        ui.notifications.info(game.i18n.localize("THREEEIGHT.Ranged.WoundsApplied"));
+      });
+    });
+  });
+
   /* ── Action Economy reset ───────────────────────────────
    Reset every combatant's slow/fast slots at the start of a
    new round. `combatStart` fires when combat begins;
@@ -62,7 +91,7 @@ Hooks.once("init", () => {
    call the same idempotent reset. */
   Hooks.on("combatStart", (combat) => onCombatRound(combat));
   Hooks.on("combatRound", (combat) => onCombatRound(combat));
-  
+
 
   // ── Public API ──────────────────────────────────────
   game.threeEightV2 = Object.freeze({
@@ -97,13 +126,30 @@ Hooks.once("init", () => {
       resolved: ActionsCatalog.resolvedCatalog
     },
     attack: {
-      Error:              Attack.AttackError,
-      request:            Attack.request,
-      listWeapons:        Attack.listWeapons,
-      listEligible:       Attack.listEligibleWeapons,
-      promptRanged:       Attack.promptRangedAttack,
-      promptMelee:        Attack.promptMeleeAttack,
-      promptFromWeapon:   Attack.promptFromWeapon
+      Error: Attack.AttackError,
+      request: Attack.request,
+      listWeapons: Attack.listWeapons,
+      listEligible: Attack.listEligibleWeapons,
+      promptRanged: Attack.promptRangedAttack,
+      promptMelee: Attack.promptMeleeAttack,
+      promptFromWeapon: Attack.promptFromWeapon,
+      // ── Ranged Combat ──────────────────────────────
+      ranged: {
+        FIRE_MODES: Ranged.RANGED_FIRE_MODES,
+        getAvailableFireModes: Ranged.getAvailableFireModes,
+        getRangedAttackDM: Ranged.getRangedAttackDM,
+        computeDamage: Ranged.computeDamage,
+        buildFormulaParts: Ranged.buildFormulaParts,
+        formulaFromParts: Ranged.formulaFromParts,
+        resolveAmmoSpent: Ranged.resolveAmmoSpent,
+        getTargetProtection: Ranged.getTargetRangedProtection,
+        planArmorReduction: Ranged.planArmorReduction,
+        resolve: Ranged.resolveRangedAttack,
+        prompt: Ranged.promptRangedAttack,
+        applyArmor: Ranged.applyRangedArmor,
+        applyWounds: Ranged.applyRangedWounds,
+        Dialog: Ranged.RangedAttackDialog
+      }
     },
     condition: {
       Error: Conditions.ConditionError,
