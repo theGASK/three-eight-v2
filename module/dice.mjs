@@ -1,4 +1,3 @@
-// module/dice.mjs
 import { DIFFICULTIES, MODIFIER_PRESETS } from "./constants.mjs";
 
 const { DialogV2 } = foundry.applications.api;

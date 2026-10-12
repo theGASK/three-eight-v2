@@ -12,17 +12,17 @@
     { "lang": "en", "name": "English", "path": "lang/en.json" }
   ],
   "documentTypes": {
-    "Actor": {
-      "pc":               { "htmlFields": ["description", "actions.known.*.description"] },
-      "npc":              { "htmlFields": ["description", "actions.known.*.description"] },
-      "animal":           { "htmlFields": ["description", "actions.known.*.description"] },
-      "smallVehicle":     { "htmlFields": ["description", "actions.known.*.description"] },
-      "largeVehicle":     { "htmlFields": ["description", "actions.known.*.description"] },
-      "drone":            { "htmlFields": ["description", "actions.known.*.description"] },
-      "server":           { "htmlFields": ["description", "actions.known.*.description"] },
-      "faction":          { "htmlFields": ["description", "actions.known.*.description"] },
-      "baseOfOperations": { "htmlFields": ["description", "actions.known.*.description"] }
-    },
+"Actor": {
+  "pc":               { "htmlFields": ["description", "actions.known.*.description", "conditions.entries.*.description"] },
+  "npc":              { "htmlFields": ["description", "actions.known.*.description", "conditions.entries.*.description"] },
+  "animal":           { "htmlFields": ["description", "actions.known.*.description", "conditions.entries.*.description"] },
+  "smallVehicle":     { "htmlFields": ["description", "actions.known.*.description", "conditions.entries.*.description"] },
+  "largeVehicle":     { "htmlFields": ["description", "actions.known.*.description", "conditions.entries.*.description"] },
+  "drone":            { "htmlFields": ["description", "actions.known.*.description", "conditions.entries.*.description"] },
+  "server":           { "htmlFields": ["description", "actions.known.*.description", "conditions.entries.*.description"] },
+  "faction":          { "htmlFields": ["description", "actions.known.*.description", "conditions.entries.*.description"] },
+  "baseOfOperations": { "htmlFields": ["description", "actions.known.*.description", "conditions.entries.*.description"] }
+},
     "Item": {
       "generalObject": { "htmlFields": ["description"] },
       "weapon": { "htmlFields": ["description"] },

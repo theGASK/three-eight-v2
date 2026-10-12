@@ -1,5 +1,3 @@
-// module/action-economy.mjs
-
 /**
  * Action Economy for Three-Eight v2.
  *

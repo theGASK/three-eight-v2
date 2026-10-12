@@ -1,5 +1,3 @@
-// module/modifier.mjs
-
 /**
  * Universal modifier system for Three-Eight v2.
  *
@@ -137,40 +135,59 @@ export function validateItemForDrop(document, itemSource) {
 /* ── Collection ────────────────────────────────────── */
 
 /**
- * Collect all modifier rules from Modifier-Type items embedded
- * in the given Actor.
- * @returns {Array<{ source: Item, rule: object }>}
+ * Collect all modifier rules from Modifier-Type items and from active
+ * Conditions on the given Actor.
+ *
+ * Each result carries a `multiplier` — 1 for item-sourced rules,
+ * the condition's stack count for condition-sourced rules. The
+ * multiplier is applied when contributions are computed.
+ *
+ * @returns {Array<{ source: object, rule: object, multiplier: number }>}
  */
 export function collectModifierRules(actor) {
   if (actor?.documentName !== "Actor") return [];
   const out = [];
+
+  // Items
   for (const item of actor.items) {
     if (!isModifierItem(item)) continue;
     const list = item.system?.modifiers ?? [];
-    for (const rule of list) out.push({ source: item, rule });
+    for (const rule of list) out.push({ source: item, rule, multiplier: 1 });
   }
+
+  // Conditions
+  const conditions = actor.system?.conditions?.active ?? [];
+  for (const condition of conditions) {
+    const list = condition.modifiers ?? [];
+    for (const rule of list) {
+      out.push({
+        source:     condition,
+        rule,
+        multiplier: condition.stacks
+      });
+    }
+  }
+
   return out;
 }
 
-/* ── Contribution computation ──────────────────────── */
-
 /**
- * Compute contributions from Modifier-Type items targeting the Actor
+ * Compute contributions from modifier rules targeting the Actor
  * itself (container === "actor").
  *
  * Rules that fail validation are skipped with a console warning —
- * this keeps a stale or misapplied item from breaking every actor
- * that owns it. To refuse the drop in the first place, call
+ * this keeps a stale or misapplied rule from breaking every actor
+ * that carries it. To refuse the drop in the first place, call
  * `validateItemForDrop` from the sheet's drop handler.
  *
  * @param {Actor} actor
- * @returns {Map<string, Array<{ sourceId: string, sourceName: string, value: number }>>}
+ * @returns {Map<string, Array<{ sourceId, sourceName, value }>>}
  */
 export function computeActorContributions(actor) {
   const map = new Map();
   if (!actor) return map;
 
-  for (const { source, rule } of collectModifierRules(actor)) {
+  for (const { source, rule, multiplier } of collectModifierRules(actor)) {
     if (rule.container !== "actor") continue;
 
     try {
@@ -181,11 +198,13 @@ export function computeActorContributions(actor) {
     }
 
     const signed = rule.operator === "-" ? -Math.abs(rule.value) : Math.abs(rule.value);
+    const scaled = signed * (Number(multiplier) || 1);
+
     if (!map.has(rule.target)) map.set(rule.target, []);
     map.get(rule.target).push({
-      sourceId: source.id,
+      sourceId:   source.id ?? source.key ?? null,
       sourceName: source.name,
-      value: signed
+      value:      scaled
     });
   }
 
@@ -194,29 +213,30 @@ export function computeActorContributions(actor) {
 
 /**
  * Compute contributions targeting Items of a given type on the Actor
- * (container === "item"). Not consumed yet — reserved for the future
- * Core-Item derivation, e.g. bonuses to Weapon damage from a Quality.
+ * (container === "item").
  *
  * @param {Actor}  actor
- * @param {string} itemType   e.g. "weapon", "skill"
+ * @param {string} itemType
  * @returns {Map<string, Array<{ sourceId, sourceName, value }>>}
  */
 export function computeItemContributions(actor, itemType) {
   const map = new Map();
   if (!actor) return map;
 
-  for (const { source, rule } of collectModifierRules(actor)) {
+  for (const { source, rule, multiplier } of collectModifierRules(actor)) {
     if (rule.container !== "item") continue;
 
     const appliesTo = Array.from(rule.appliesTo ?? []);
     if (appliesTo.length > 0 && !appliesTo.includes(itemType)) continue;
 
     const signed = rule.operator === "-" ? -Math.abs(rule.value) : Math.abs(rule.value);
+    const scaled = signed * (Number(multiplier) || 1);
+
     if (!map.has(rule.target)) map.set(rule.target, []);
     map.get(rule.target).push({
-      sourceId: source.id,
+      sourceId:   source.id ?? source.key ?? null,
       sourceName: source.name,
-      value: signed
+      value:      scaled
     });
   }
 

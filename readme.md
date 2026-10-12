@@ -64,3 +64,57 @@ await game.threeEightV2.attack.request(actor, action, {
   weapon:  Item | null,
   target:  Token | null
 });
+
+Add this hook registration alongside the existing combatStart/combatRound handlers — conditions tick before the action economy resets, so the ordering matches end-of-round semantics:
+javascript
+
+/* ── End-of-round condition tick ────────────────────────
+   Fires before the action economy reset on the same events
+   so ongoing effects land first. Order matters: register
+   this listener before the action-economy listener. */
+Hooks.on("combatRound", (combat) => Conditions.onCombatRound(combat));
+
+Applying a condition
+javascript
+
+// From the eventual sheet handler, a macro, or an end-of-turn effect
+await game.threeEightV2.condition.apply(actor, "burning");
+
+If burning isn't legal on the actor's type, an ConditionError is thrown with a localized message and nothing is stored. If it is legal and already present, its stacks increment by 1. Otherwise a fresh entry is created with stacks: 1.
+Increasing / decreasing stacks
+javascript
+
+await game.threeEightV2.condition.increment(actor, "burning", 2); // +2 stacks
+await game.threeEightV2.condition.decrement(actor, "burning", 1); // -1 stack
+// decrementing past zero removes the condition entirely
+
+Toggling
+javascript
+
+await game.threeEightV2.condition.toggle(actor, "burning");        // flip
+await game.threeEightV2.condition.toggle(actor, "burning", false); // force off
+
+A toggled-off condition keeps its stacks and remains visible on the sheet — it just stops contributing modifiers and is skipped during the tick.
+Continuous modifier contribution
+
+Every time prepareDerivedData runs on the actor, computeActorContributions walks:
+
+    Modifier-Type items (multiplier ×1).
+
+    Active conditions (multiplier × stacks).
+
+So a Burning condition with 2 stacks carrying { target: "wounds", operator: "-", value: 2 } adds -4 to the wounds path in the contribution map. The derived wound total — and any characteristic DM that flows off it — reflects that immediately, with no other code changes.
+End-of-round tick
+
+On combatRound, every combatant's active conditions fire threeEightV2.conditionTick. A future damage module hooks in:
+javascript
+
+Hooks.on("threeEightV2.conditionTick", (actor, active) => {
+  for (const entry of active) {
+    if (entry.key === "burning") {
+      // entry.stacks × the modifier value = damage to apply
+    }
+  }
+});
+
+Nothing mutates on tick today, which is what you asked for — the signal and the data are the two things the eventual condition list needs.

@@ -14,8 +14,7 @@ import { promptSkillRoll, parseModifierFormula } from "./module/dice.mjs";
 import * as Modifier from "./module/modifier.mjs";
 import * as ActionsCatalog from "./module/actions-catalog.mjs";
 import * as Attack from "./module/attack.mjs";
-
-
+import * as Conditions from "./module/conditions.mjs";
 
 Hooks.once("init", () => {
   // ── Document classes ────────────────────────────────
@@ -75,24 +74,41 @@ Hooks.once("init", () => {
       getModifierState: Modifier.getModifierState
     },
     action: {
-      Error:              ActionEconomyError,
+      Error: ActionEconomyError,
       ActionEconomy,
       ActionDefinition,
       ActionsData,
       canDeclare,
       declareAction,
-      reset:              resetActionEconomy,
+      reset: resetActionEconomy,
       addKnownAction,
       // Catalog API
-      catalog:            ActionsCatalog.ACTIONS_BY_ECONOMY,
-      get:                ActionsCatalog.getAction,
-      getAttacks:         ActionsCatalog.getAttackActions,
-      resolve:            ActionsCatalog.resolveAction,
-      resolved:           ActionsCatalog.resolvedCatalog
+      catalog: ActionsCatalog.ACTIONS_BY_ECONOMY,
+      get: ActionsCatalog.getAction,
+      getAttacks: ActionsCatalog.getAttackActions,
+      resolve: ActionsCatalog.resolveAction,
+      resolved: ActionsCatalog.resolvedCatalog
     },
     attack: {
-      Error:   Attack.AttackError,
+      Error: Attack.AttackError,
       request: Attack.request
+    },
+    condition: {
+      Error: Conditions.ConditionError,
+      ConditionEntry: Conditions.ConditionEntry,
+      ConditionsData: Conditions.ConditionsData,
+      isLegalTarget: Conditions.isLegalTarget,
+      apply: Conditions.applyCondition,
+      remove: Conditions.removeCondition,
+      increment: Conditions.incrementCondition,
+      decrement: Conditions.decrementCondition,
+      setStacks: Conditions.setStacks,
+      toggle: Conditions.toggleCondition,
+      get: Conditions.getCondition,
+      has: Conditions.hasCondition,
+      list: Conditions.listConditions,
+      listActive: Conditions.listActiveConditions,
+      tick: Conditions.tickConditions
     }
   });
 });

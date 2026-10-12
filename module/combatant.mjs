@@ -1,4 +1,3 @@
-// module/combatant.mjs
 import { INITIATIVE_FORMULA } from "./constants.mjs";
 
 /**

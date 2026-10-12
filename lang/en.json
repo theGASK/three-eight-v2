@@ -258,6 +258,26 @@
         "description": "Fire your readied ranged weapon at a target that enters your field of fire while you are in overwatch."
       }
     },
+    "Condition": {
+      "Name": "Condition",
+      "Stacks": "Stacks",
+      "Active": "Active",
+      "Add": "Apply Condition",
+      "Remove": "Remove Condition",
+      "Toggle": "Toggle",
+      "Increment": "Add Stack",
+      "Decrement": "Remove Stack",
+      "None": "No conditions",
+      "Err": {
+        "NoActor": "No actor provided.",
+        "NoCondition": "No condition provided.",
+        "NoBlock": "This actor has no conditions block.",
+        "UnknownKey": "Unknown condition key: \"{key}\".",
+        "NotFound": "Condition \"{key}\" is not on this actor.",
+        "NotLegalTarget": "This condition cannot be applied to a {type}.",
+        "ZeroStacks": "Condition \"{key}\" has no stacks remaining."
+      }
+    },
     "SkillGroup": {
       "awareness": "Awareness",
       "behaviour": "Behaviour",

@@ -1,4 +1,3 @@
-// module/sheets/item-sheet.mjs
 export class ThreeEightItemSheet extends ItemSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
