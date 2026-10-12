@@ -3,7 +3,8 @@ import {
   lookupCharacteristic,
   characteristicDM,
   averageUp,
-  INITIATIVE_CHARACTERISTICS
+  INITIATIVE_CHARACTERISTICS,
+  VEHICLE_ARMOR_TARGETS
 } from "./constants.mjs";
 
 const {
@@ -138,17 +139,44 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
         this.combatBonus = sumContributions(contributions, "combat.bonus");
     }
 
+    /**
+     * Derives the actor's armor values from the single equipped
+     * armor item of each type.
+     *
+     *   IndividualArmor → rangedArmor / meleeArmor
+     *   VehicleArmor    → protection / soak  (vehicle actor types only)
+     *
+     * At most one armor item of a given type may carry
+     * `equipped: true`; the enforcement lives in
+     * `module/equipment.mjs`. When no armor of a type is equipped,
+     * the corresponding derived values are 0 — or absent entirely
+     * for VehicleArmor on non-vehicle actors.
+     */
     #deriveArmor() {
         const items = this.parent?.items?.contents ?? [];
-        const equipped = items.find(
+
+        // ── Individual Armor ──────────────────────────
+        const individual = items.find(
             i => i.type === "individualArmor" && i.system?.equipped === true
         );
-
-        this.rangedArmor = equipped
-            ? Number(equipped.system.rangedProtection?.value) || 0
+        this.rangedArmor = individual
+            ? Number(individual.system.rangedProtection?.value) || 0
             : 0;
-        this.meleeArmor = equipped
-            ? Number(equipped.system.meleeProtection?.value) || 0
+        this.meleeArmor = individual
+            ? Number(individual.system.meleeProtection?.value) || 0
+            : 0;
+
+        // ── Vehicle Armor (legal targets only) ────────
+        if (!VEHICLE_ARMOR_TARGETS.includes(this.parent?.type)) return;
+
+        const vehicle = items.find(
+            i => i.type === "vehicleArmor" && i.system?.equipped === true
+        );
+        this.protection = vehicle
+            ? Number(vehicle.system.protection?.value) || 0
+            : 0;
+        this.soak = vehicle
+            ? Number(vehicle.system.soak?.value) || 0
             : 0;
     }
 

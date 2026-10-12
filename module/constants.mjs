@@ -228,3 +228,14 @@ export const INITIATIVE_CHARACTERISTICS = Object.freeze({
   faction:          ["morale"],
   baseOfOperations: ["speed"]
 });
+
+/* ── Vehicle Armor Targets ──────────────────────────────
+   Actor types that can carry Vehicle Armor. The derived
+   Protection and Soak values only appear on these types. */
+export const VEHICLE_ARMOR_TARGETS = Object.freeze([
+  "smallVehicle",
+  "largeVehicle",
+  "drone",
+  "server",
+  "baseOfOperations"
+]);

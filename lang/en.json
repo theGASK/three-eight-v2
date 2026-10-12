@@ -368,7 +368,9 @@
       },
       "Armor": {
         "Ranged": "Ranged Armor",
-        "Melee": "Melee Armor"
+        "Melee": "Melee Armor",
+        "Protection": "Protection",
+        "Soak": "Soak"
       }
     },
     "Item": {
@@ -385,7 +387,8 @@
       },
       "VehicleArmor": {
         "Protection": "Protection",
-        "Soak": "Soak"
+        "Soak": "Soak",
+        "Equipped": "Equipped"
       }
     },
     "GeneralObject": {

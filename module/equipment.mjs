@@ -16,26 +16,28 @@
  * and `meleeArmor` reflect the new state on the next render.
  */
 
-const ARMOR_TYPE = "individualArmor";
+const ARMOR_TYPES = ["individualArmor", "vehicleArmor"];
 
 /**
- * @param {Item} item  The item that was just updated.
+ * @param {Item}    item     The item that was just updated.
+ * @param {object}  changes  The change set.
  * @returns {boolean}  True if the update equipped this item.
  */
 function wasEquipped(item, changes) {
-    if (item.type !== ARMOR_TYPE) return false;
+    if (!ARMOR_TYPES.includes(item.type)) return false;
     return foundry.utils.getProperty(changes, "system.equipped") === true;
 }
 
 /**
- * Force every other armor item on the actor to be unequipped.
+ * Force every other armor item **of the same type** on the actor
+ * to be unequipped.
  * @param {Item}  item     The item that was just equipped.
  * @param {Actor} actor    The owning actor.
  */
 async function unequipSiblings(item, actor) {
     const others = actor.items.filter(other =>
         other.id !== item.id
-        && other.type === ARMOR_TYPE
+        && other.type === item.type
         && other.system?.equipped === true
     );
     if (others.length === 0) return;
@@ -50,16 +52,9 @@ async function unequipSiblings(item, actor) {
     });
 }
 
-/* ── Hook registration ──────────────────────────────── */
-
 export function registerEquipmentHooks() {
     Hooks.on("updateItem", async (item, changes, options, userId) => {
-        // Guard against the unequip updates we ourselves emit;
-        // those set equipped to false, so `wasEquipped` is already
-        // false for them, but the marker makes the intent explicit
-        // and prevents accidental recursion if the rule grows.
         if (options?.threeEightEquipment) return;
-
         if (!wasEquipped(item, changes)) return;
 
         const actor = item.actor;
