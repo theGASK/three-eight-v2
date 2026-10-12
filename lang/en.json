@@ -365,6 +365,10 @@
         "Stress": "Stress",
         "StressMax": "Stress (Max)",
         "StressDM": "Stress DM"
+      },
+      "Armor": {
+        "Ranged": "Ranged Armor",
+        "Melee": "Melee Armor"
       }
     },
     "Item": {
@@ -376,7 +380,8 @@
       "Max": "Max",
       "IndividualArmor": {
         "RangedProtection": "Ranged Protection",
-        "MeleeProtection": "Melee Protection"
+        "MeleeProtection": "Melee Protection",
+        "Equipped": "Equipped"
       },
       "VehicleArmor": {
         "Protection": "Protection",

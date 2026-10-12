@@ -12,10 +12,10 @@ import { ThreeEightActor, ThreeEightItem } from "./module/documents.mjs";
 import { ThreeEightCombatant } from "./module/combatant.mjs";
 import { promptSkillRoll, parseModifierFormula } from "./module/dice.mjs";
 import * as Modifier from "./module/modifier.mjs";
-import * as ActionsCatalog from "./module/actions-catalog.mjs";
+import * as ActionsCatalog from "./module/action-catalog.mjs";
 import * as Attack from "./module/attack.mjs";
 import * as Conditions from "./module/conditions.mjs";
-import * as Attack from "./module/attack.mjs";
+import { registerEquipmentHooks } from "./module/equipment.mjs";
 
 Hooks.once("init", () => {
   // ── Document classes ────────────────────────────────
@@ -50,6 +50,9 @@ Hooks.once("init", () => {
   CONFIG.Item.dataModels.individualArmor = IndividualArmorData;
   CONFIG.Item.dataModels.vehicleArmor = VehicleArmorData;
 
+  // ── Equipment rules ─────────────────────────────────
+  registerEquipmentHooks();
+
   /* ── Action Economy reset ───────────────────────────────
    Reset every combatant's slow/fast slots at the start of a
    new round. `combatStart` fires when combat begins;
@@ -57,6 +60,7 @@ Hooks.once("init", () => {
    call the same idempotent reset. */
   Hooks.on("combatStart", (combat) => onCombatRound(combat));
   Hooks.on("combatRound", (combat) => onCombatRound(combat));
+  
 
   // ── Public API ──────────────────────────────────────
   game.threeEightV2 = Object.freeze({

@@ -51,6 +51,7 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
         this.#deriveEffort(primary, contributions);
         this.#deriveInitiative(primary, contributions);
         this.#deriveCombatBonus(contributions);
+        this.#deriveArmor();
         if (secondary) this.#deriveSecondary(primary, secondary, contributions);
     }
 
@@ -122,7 +123,7 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
             if (Number.isFinite(value)) dm = Math.max(dm, value);
         }
 
-        this.initiativeDM    = dm;
+        this.initiativeDM    = Number.isFinite(dm) ? dm : 0;
         this.initiativeBonus = sumContributions(contributions, "initiative");
     }
         /**
@@ -135,6 +136,20 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
      */
     #deriveCombatBonus(contributions) {
         this.combatBonus = sumContributions(contributions, "combat.bonus");
+    }
+
+    #deriveArmor() {
+        const items = this.parent?.items?.contents ?? [];
+        const equipped = items.find(
+            i => i.type === "individualArmor" && i.system?.equipped === true
+        );
+
+        this.rangedArmor = equipped
+            ? Number(equipped.system.rangedProtection?.value) || 0
+            : 0;
+        this.meleeArmor = equipped
+            ? Number(equipped.system.meleeProtection?.value) || 0
+            : 0;
     }
 
     #deriveSecondary(primary, secondary, contributions) {

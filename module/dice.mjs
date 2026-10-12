@@ -181,7 +181,7 @@ export async function promptSkillRoll(item) {
 
   if (!formData) return null;
 
-   const customTn = Number(formData.customTn);
+  const customTn = Number(formData.customTn);
   const useCustom = Number.isFinite(customTn) && customTn > 0;
   const tn = useCustom ? customTn : Number(formData.presetTn);
 
