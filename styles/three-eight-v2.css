@@ -74,3 +74,44 @@
   font-style: italic;
   color: var(--color-text-dark-secondary);
 }
+
+.three-eight-v2.chat-card.attack-result .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid var(--color-border-light-tertiary);
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+}
+.three-eight-v2.chat-card.attack-result .attack-type {
+  font-size: 0.85em;
+  font-weight: bold;
+  color: var(--color-text-dark-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.three-eight-v2.chat-card.attack-result .attack-summary {
+  margin-bottom: 4px;
+}
+.three-eight-v2.chat-card.attack-result .attack-summary .label {
+  font-weight: bold;
+  margin-right: 0.25em;
+}
+.three-eight-v2.chat-card.attack-result .dice-result {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1em;
+  padding: 4px 0;
+  border-top: 1px dashed var(--color-border-light-tertiary);
+  border-bottom: 1px dashed var(--color-border-light-tertiary);
+}
+.three-eight-v2.chat-card.attack-result .attack-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 0.95em;
+}
+.three-eight-v2.chat-card.attack-result .attack-stats .label {
+  font-weight: bold;
+  margin-right: 0.25em;
+}

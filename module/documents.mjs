@@ -112,4 +112,35 @@ export class ThreeEightItem extends Item {
       chainDM: effectData.chainDM
     };
   }
+    /** The ammunition item currently loaded, if any. */
+  get loadedAmmoItem() {
+    if (this.type !== "weapon") return null;
+    const id = this.system.loadedAmmoId;
+    if (!id) return null;
+    return this.actor?.items.get(id) ?? null;
+  }
+
+  /** True if this weapon has ammo available for a ranged attack. */
+  get isLoaded() {
+    if (this.type !== "weapon") return false;
+    return (Number(this.system.magazine?.value) || 0) > 0;
+  }
+
+  /** Weapon damage + loaded ammunition's damage bonus. */
+  get effectiveDamage() {
+    if (this.type !== "weapon") return 0;
+    const base = Number(this.system.damage) || 0;
+    const ammo = this.loadedAmmoItem;
+    const bonus = ammo ? Number(ammo.system.damageBonus) || 0 : 0;
+    return base + bonus;
+  }
+
+  /** Weapon penetration + loaded ammunition's penetration. */
+  get effectivePenetration() {
+    if (this.type !== "weapon") return 0;
+    const base = Number(this.system.penetration) || 0;
+    const ammo = this.loadedAmmoItem;
+    const pen = ammo ? Number(ammo.system.penetration) || 0 : 0;
+    return base + pen;
+  }
 }

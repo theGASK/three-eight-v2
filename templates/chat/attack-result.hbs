@@ -1,0 +1,28 @@
+<div class="three-eight-v2 chat-card attack-result">
+  <header class="card-header">
+    <h3>{{weaponName}}</h3>
+    <span class="attack-type">{{attackLabel}}</span>
+  </header>
+  <div class="card-content">
+    <div class="attack-summary">
+      <span class="label">{{localize "THREEEIGHT.Attack.Summary"}}:</span>
+      <span class="value">{{actorName}}</span>
+      {{#if economyLabel}}<span class="economy"> — {{economyLabel}}</span>{{/if}}
+      {{#if targetName}}<span class="target"> → {{targetName}}</span>{{/if}}
+    </div>
+    <div class="dice-result">
+      <span class="dice-formula">{{formula}}</span>
+      <span class="dice-total">{{total}}</span>
+    </div>
+    <div class="attack-stats">
+      <span class="damage">
+        <span class="label">{{localize "THREEEIGHT.Attack.Damage"}}:</span>
+        <span class="value">{{damage}}</span>
+      </span>
+      <span class="penetration">
+        <span class="label">{{localize "THREEEIGHT.Attack.Penetration"}}:</span>
+        <span class="value">{{penetration}}</span>
+      </span>
+    </div>
+  </div>
+</div>

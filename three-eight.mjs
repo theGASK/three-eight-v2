@@ -15,6 +15,7 @@ import * as Modifier from "./module/modifier.mjs";
 import * as ActionsCatalog from "./module/actions-catalog.mjs";
 import * as Attack from "./module/attack.mjs";
 import * as Conditions from "./module/conditions.mjs";
+import * as Attack from "./module/attack.mjs";
 
 Hooks.once("init", () => {
   // ── Document classes ────────────────────────────────
@@ -90,8 +91,13 @@ Hooks.once("init", () => {
       resolved: ActionsCatalog.resolvedCatalog
     },
     attack: {
-      Error: Attack.AttackError,
-      request: Attack.request
+      Error:              Attack.AttackError,
+      request:            Attack.request,
+      listWeapons:        Attack.listWeapons,
+      listEligible:       Attack.listEligibleWeapons,
+      promptRanged:       Attack.promptRangedAttack,
+      promptMelee:        Attack.promptMeleeAttack,
+      promptFromWeapon:   Attack.promptFromWeapon
     },
     condition: {
       Error: Conditions.ConditionError,

@@ -30,10 +30,34 @@
   "THREEEIGHT": {
     "Attack": {
       "Summary": "Attack",
-      "Pending": "Attack resolution is not yet implemented.",
+      "Weapon": "Weapon",
+      "Select": "Select",
+      "Confirm": "Confirm Attack",
+      "Damage": "Damage",
+      "Penetration": "Penetration",
+      "SelectWeapon": {
+        "ranged": "Select a Ranged Weapon",
+        "melee": "Select a Melee Weapon"
+      },
+      "ChooseType": "Attack with {weapon}",
+      "ChooseTypePrompt": "How do you want to use this weapon?",
+      "ModifierTitle": "Attack Modifiers",
+      "ModifierPlaceholder": "No modifiers available yet. Confirm to roll the attack.",
+      "Type": {
+        "ranged": "Ranged Attack",
+        "melee": "Melee Attack"
+      },
       "Err": {
         "NoActor": "No actor provided for the attack request.",
-        "NotAnAttack": "This action is not an attack."
+        "NotAnAttack": "This action is not an attack.",
+        "NoWeapon": "No weapon provided for the attack.",
+        "NoWeapons.ranged": "This actor has no ranged weapons (Range > 0).",
+        "NoWeapons.melee": "This actor has no weapons.",
+        "NotAWeapon": "The selected item is not a weapon.",
+        "IneligibleWeapon.ranged": "The selected weapon cannot make a ranged attack (Range must be greater than 0).",
+        "IneligibleWeapon.melee": "The selected weapon cannot make a melee attack.",
+        "UnknownType": "Unknown attack type: \"{type}\".",
+        "OutOfAmmo": "The Weapon is out of Ammo! Use the reload Action."
       }
     },
     "Actions": {

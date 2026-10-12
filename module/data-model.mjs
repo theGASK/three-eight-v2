@@ -373,13 +373,12 @@ export class WeaponData extends ThreeEightItemData {
             critical:    new StringField({ required: false, blank: true, initial: "" }),
             blast:       new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
             range:       new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
-
+            penetration: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+            loadedAmmoId: new StringField({ required: false, blank: true, initial: "" }),
             magazine: new SchemaField({
                 value: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
                 max:   new NumberField({ required: true, integer: true, min: 0, initial: 0 })
             }),
-
-            penetration: new NumberField({ required: true, integer: true, min: 0, initial: 0 })
         };
     }
 }
@@ -516,7 +515,9 @@ export class AmmunitionData extends ModifierItemData {
     static defineSchema() {
         return {
             ...super.defineSchema(),
-            quantity: new NumberField({ required: true, integer: true, initial: 0 })
+            quantity:    new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+            penetration: new NumberField({ required: true, integer: true, initial: 0 }),
+            damageBonus: new NumberField({ required: true, integer: true, initial: 0 })
         };
     }
 }
