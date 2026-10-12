@@ -16,7 +16,7 @@
  * and `meleeArmor` reflect the new state on the next render.
  */
 
-const ARMOR_TYPES = ["individualArmor", "vehicleArmor"];
+const ARMOR_TYPES = ["individualArmor", "shield", "vehicleArmor"];
 
 /**
  * @param {Item}    item     The item that was just updated.

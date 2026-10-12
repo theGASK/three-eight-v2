@@ -24,7 +24,8 @@
       "ammunition": "Ammunition",
       "disease": "Disease",
       "individualArmor": "Individual Armor",
-      "vehicleArmor": "Vehicle Armor"
+      "vehicleArmor": "Vehicle Armor",
+      "shield": "Shield"
     }
   },
   "THREEEIGHT": {
@@ -388,6 +389,11 @@
       "VehicleArmor": {
         "Protection": "Protection",
         "Soak": "Soak",
+        "Equipped": "Equipped"
+      },
+      "Shield": {
+        "RangedProtection": "Ranged Protection",
+        "MeleeProtection": "Melee Protection",
         "Equipped": "Equipped"
       }
     },

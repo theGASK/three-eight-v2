@@ -37,7 +37,8 @@
       "ammunition": { "htmlFields": ["description"] },
       "disease": { "htmlFields": ["description"] },
       "individualArmor": { "htmlFields": ["description"] },
-      "vehicleArmor": { "htmlFields": ["description"] }
+      "vehicleArmor": { "htmlFields": ["description"] },
+      "shield": { "htmlFields": ["description"] }
     }
   },
   "initiative": "2d8",

@@ -5,7 +5,8 @@ import {
   GeneralObjectData, WeaponData, ContainerData,
   SkillData, SpellData, ModData, SpecialtyData,
   PowerData, QualityData, FlawData, AmmunitionData,
-  DiseaseData, IndividualArmorData, VehicleArmorData
+  DiseaseData, IndividualArmorData, VehicleArmorData,
+  ShieldData
 } from "./module/data-model.mjs";
 
 import { ThreeEightActor, ThreeEightItem } from "./module/documents.mjs";
@@ -49,6 +50,7 @@ Hooks.once("init", () => {
   CONFIG.Item.dataModels.disease = DiseaseData;
   CONFIG.Item.dataModels.individualArmor = IndividualArmorData;
   CONFIG.Item.dataModels.vehicleArmor = VehicleArmorData;
+  CONFIG.Item.dataModels.shield = ShieldData;
 
   // ── Equipment rules ─────────────────────────────────
   registerEquipmentHooks();

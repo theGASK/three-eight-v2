@@ -4,7 +4,8 @@ import {
   characteristicDM,
   averageUp,
   INITIATIVE_CHARACTERISTICS,
-  VEHICLE_ARMOR_TARGETS
+  VEHICLE_ARMOR_TARGETS,
+  SHIELD_TARGETS
 } from "./constants.mjs";
 
 const {
@@ -152,23 +153,55 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
      * the corresponding derived values are 0 — or absent entirely
      * for VehicleArmor on non-vehicle actors.
      */
+        /**
+     * Derives the actor's armor values from the equipped armor items.
+     *
+     *   IndividualArmor → rangedArmor / meleeArmor  (all actor types)
+     *   Shield          → added to the above        (PC, NPC, Animal only)
+     *   VehicleArmor    → protection / soak         (vehicle actor types only)
+     *
+     * Individual Armor and Shield occupy independent equipment slots,
+     * so both may be equipped at once and their values sum. At most
+     * one item per armor type may carry `equipped: true`; the
+     * enforcement lives in `module/equipment.mjs`. When no armor of
+     * a type is equipped, the corresponding derived values are 0 —
+     * or absent entirely for VehicleArmor on non-vehicle actors.
+     */
     #deriveArmor() {
         const items = this.parent?.items?.contents ?? [];
+        const actorType = this.parent?.type;
 
-        // ── Individual Armor ──────────────────────────
+        // ── Individual Armor (all actor types) ────────
         const individual = items.find(
             i => i.type === "individualArmor" && i.system?.equipped === true
         );
-        this.rangedArmor = individual
+        const individualRanged = individual
             ? Number(individual.system.rangedProtection?.value) || 0
             : 0;
-        this.meleeArmor = individual
+        const individualMelee = individual
             ? Number(individual.system.meleeProtection?.value) || 0
             : 0;
 
-        // ── Vehicle Armor (legal targets only) ────────
-        if (!VEHICLE_ARMOR_TARGETS.includes(this.parent?.type)) return;
+        // ── Shield (PC, NPC, Animal only) ─────────────
+        let shieldRanged = 0;
+        let shieldMelee = 0;
+        if (SHIELD_TARGETS.includes(actorType)) {
+            const shield = items.find(
+                i => i.type === "shield" && i.system?.equipped === true
+            );
+            shieldRanged = shield
+                ? Number(shield.system.rangedProtection?.value) || 0
+                : 0;
+            shieldMelee = shield
+                ? Number(shield.system.meleeProtection?.value) || 0
+                : 0;
+        }
 
+        this.rangedArmor = individualRanged + shieldRanged;
+        this.meleeArmor  = individualMelee + shieldMelee;
+
+        // ── Vehicle Armor (vehicle targets only) ──────
+        if (!VEHICLE_ARMOR_TARGETS.includes(actorType)) return;
         const vehicle = items.find(
             i => i.type === "vehicleArmor" && i.system?.equipped === true
         );
@@ -460,6 +493,31 @@ export class ContainerData extends ThreeEightItemData {
  * modelled here; the sheet stores and displays the numbers.
  */
 export class IndividualArmorData extends ThreeEightItemData {
+    static defineSchema() {
+        return {
+            ...super.defineSchema(),
+
+            rangedProtection: new SchemaField({
+                value: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+                max:   new NumberField({ required: true, integer: true, min: 0, initial: 0 })
+            }),
+
+            meleeProtection: new SchemaField({
+                value: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+                max:   new NumberField({ required: true, integer: true, min: 0, initial: 0 })
+            })
+        };
+    }
+}
+
+/**
+ * Shield — a handheld protective item. Uses the same two
+ * protection tracks as Individual Armor. A Shield and an
+ * Individual Armor can be equipped simultaneously; the actor's
+ * derived Ranged Armor and Melee Armor are the sum of both.
+ * Legal targets: PC, NPC, Animal.
+ */
+export class ShieldData extends ThreeEightItemData {
     static defineSchema() {
         return {
             ...super.defineSchema(),

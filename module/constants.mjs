@@ -239,3 +239,13 @@ export const VEHICLE_ARMOR_TARGETS = Object.freeze([
   "server",
   "baseOfOperations"
 ]);
+
+/* ── Shield Targets ─────────────────────────────────────
+   Actor types that can equip a Shield. Ranged Protection and
+   Melee Protection from an equipped Shield are summed with the
+   values from an equipped Individual Armor on the same actor. */
+export const SHIELD_TARGETS = Object.freeze([
+  "pc",
+  "npc",
+  "animal"
+]);
