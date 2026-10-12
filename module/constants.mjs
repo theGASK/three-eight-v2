@@ -158,6 +158,10 @@ export const SYNTHETIC_TARGETS = Object.freeze({
   "initiative": {
     label: "THREEEIGHT.Modifier.Target.initiative",
     scope: "actor"
+  },
+  "combat.bonus": {
+    label: "THREEEIGHT.Modifier.Target.combatBonus",
+    scope: "any"
   }
 });
 

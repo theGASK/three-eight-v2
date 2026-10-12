@@ -5,7 +5,7 @@ import {
   effectRow
 } from "./constants.mjs";
 
-import { validateItemForDrop } from "./modifier.mjs";
+import { validateItemForDrop, computeItemContributions, sumContributions } from "./modifier.mjs";
 import { parseModifierFormula } from "./dice.mjs";
 
 export class ThreeEightActor extends Actor { }
@@ -142,5 +142,20 @@ export class ThreeEightItem extends Item {
     const ammo = this.loadedAmmoItem;
     const pen = ammo ? Number(ammo.system.penetration) || 0 : 0;
     return base + pen;
+  }
+    /**
+   * Combat Bonus contributed by Modifier-Type items on the owning
+   * actor that target items of this item's type via the synthetic
+   * "combat.bonus" path.
+   *
+   * For a weapon, this is the sum of every rule with
+   * `container: "item"` and `appliesTo` covering `"weapon"`.
+   * Returns 0 when the item is not embedded in an actor.
+   */
+  get combatBonus() {
+    const actor = this.actor;
+    if (!actor) return 0;
+    const contributions = computeItemContributions(actor, this.type);
+    return sumContributions(contributions, "combat.bonus");
   }
 }

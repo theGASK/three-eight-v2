@@ -32,7 +32,7 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
     static defineSchema() {
         return {
             description: new HTMLField({ required: false, blank: true, initial: "" }),
-            wounds: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+            wounds: new NumberField({ required: true, integer: true, initial: 0 }),
             effort: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
             actions: new EmbeddedDataField(ActionsData),
             conditions: new EmbeddedDataField(ConditionsData)
@@ -50,6 +50,7 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
         this.#deriveWounds(primary, contributions);
         this.#deriveEffort(primary, contributions);
         this.#deriveInitiative(primary, contributions);
+        this.#deriveCombatBonus(contributions);
         if (secondary) this.#deriveSecondary(primary, secondary, contributions);
     }
 
@@ -124,6 +125,17 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
         this.initiativeDM    = dm;
         this.initiativeBonus = sumContributions(contributions, "initiative");
     }
+        /**
+     * Sum of Modifier-Type contributions targeting the synthetic
+     * "combat.bonus" path on the actor container.
+     *
+     * Exposed as `actor.system.combatBonus`. Consumed by the attack
+     * modules when computing the attack roll — currently stored and
+     * available, not yet folded into the formula.
+     */
+    #deriveCombatBonus(contributions) {
+        this.combatBonus = sumContributions(contributions, "combat.bonus");
+    }
 
     #deriveSecondary(primary, secondary, contributions) {
         // Stress derives from Morale (effective).
@@ -170,7 +182,8 @@ class ThreeEightItemData extends foundry.abstract.TypeDataModel {
 
             // Universal item fields — present on every item type.
             cost:  new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
-            legal: new BooleanField({ required: true, initial: true })
+            legal: new BooleanField({ required: true, initial: true }),
+            equipped: new BooleanField({ required: true, initial: false })
         };
     }
 }

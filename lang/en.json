@@ -371,6 +371,7 @@
       "Description": "Description",
       "Cost": "Cost",
       "Legal": "Legal",
+      "Equipped": "Equipped",
       "Value": "Current",
       "Max": "Max",
       "IndividualArmor": {
@@ -454,7 +455,8 @@
       },
       "Target": {
         "skillRoll": "Skill Roll",
-        "initiative": "Initiative"
+        "initiative": "Initiative",
+        "combatBonus": "Combat Bonus"
       },
       "Field": {
         "Container": "Container",
