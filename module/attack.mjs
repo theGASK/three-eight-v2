@@ -17,7 +17,7 @@
  * The modifier prompt is intentionally empty for now, per design.
  */
 
-import { getAction, resolveAction } from "./actions-catalog.mjs";
+import { getAction, resolveAction } from "./action-catalog.mjs";
 import * as Ranged from "./attacks/ranged.mjs";
 import * as Melee from "./attacks/melee.mjs";
 

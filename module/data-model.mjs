@@ -618,41 +618,6 @@ export class SpellData extends ThreeEightItemData {
     }
 }
 
-/* ── Modifier Rule ──────────────────────────────────── */
-
-/**
- * A single modifier instruction. Carried by Modifier-Type items
- * (mod / power / quality / flaw / ammunition) inside their
- * `system.modifiers` array.
- *
- * Targets are resolved against the container document's `system`
- * object, e.g. "attributes.primary.fitness", "attributes.secondary.reputation",
- * "damage" (for a Weapon item). See `modifier.mjs` for validation
- * and application.
- */
-class ModifierRule extends foundry.abstract.DataModel {
-    static defineSchema() {
-        return {
-            container: new StringField({
-                required: true,
-                choices: ["actor", "item"],
-                initial: "actor"
-            }),
-            // Actor types or item types this rule applies to.
-            // Empty array means "any type allowed by the container".
-            appliesTo: new ArrayField(new StringField(), { initial: [] }),
-            // Path within the container's `system` object.
-            target: new StringField({ required: true, blank: false, initial: "" }),
-            operator: new StringField({
-                required: true,
-                choices: ["+", "-"],
-                initial: "+"
-            }),
-            value: new NumberField({ required: true, integer: true, initial: 0 })
-        };
-    }
-}
-
 /* ── Modifier-Type Items ───────────────────────────── */
 
 class ModifierItemData extends ThreeEightItemData {
@@ -720,30 +685,14 @@ export class SkillData extends ThreeEightItemData {
         return base;
     }
 
-        get skillValue() {
-        const specs = this.specialties;
-        let base = 0;
-        if (specs.length > 0) {
-            const sum = specs.reduce((acc, s) => acc + (Number(s.system.score) || 0), 0);
-            base = Math.ceil(sum / specs.length);
-        }
-
-        const actor = this.parent?.actor;
-        if (actor) {
-            const contributions = computeActorContributions(actor);
-            base += sumContributions(contributions, "skills.roll");
-        }
-
-        return base;
-    }
 
     /**
-     * Dice modifier derived from the skill's current value via the
-     * characteristic table. Consumed by the attack modules when the
-     * user selects a skill for an attack roll.
+     * Dice modifier for this skill. The skill value is itself the DM.
+     * The −3 penalty for "no skill selected" is applied by the caller
+     * (getSkillDM in attacks/ranged.mjs) when no skill is chosen.
      */
     get skillDM() {
-        return characteristicDM(this.skillValue);
+        return this.skillValue;
     }
 }
 

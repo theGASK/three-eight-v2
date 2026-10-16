@@ -1,5 +1,3 @@
-// module/actions-catalog.mjs
-
 /**
  * Catalog of all callable Actions in Three-Eight v2.
  *
