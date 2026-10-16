@@ -61,6 +61,7 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
 
     /** @override */
     prepareDerivedData() {
+        super.prepareDerivedData();
         const contributions = computeActorContributions(this.parent);
 
         const primary   = this.attributes?.primary;

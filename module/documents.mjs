@@ -8,7 +8,20 @@ import {
 import { validateItemForDrop, computeItemContributions, sumContributions } from "./modifier.mjs";
 import { parseModifierFormula } from "./dice.mjs";
 
-export class ThreeEightActor extends Actor { }
+// module/documents.mjs
+export class ThreeEightActor extends Actor {
+  /** @override */
+  getRollData() {
+    // Always return a COPY to avoid mutating the original system data
+    const data = foundry.utils.deepClone(super.getRollData());
+    // Expose derived initiative values at the top level
+    if (this.system) {
+      data.initiativeDM = this.system.initiativeDM;
+      data.initiativeBonus = this.system.initiativeBonus;
+    }
+    return data;
+  }
+}
 
 export class ThreeEightItem extends Item {
   static get embedded() {
