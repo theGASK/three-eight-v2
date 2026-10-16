@@ -1,0 +1,67 @@
+<section class="t8-partA">
+  <div class="t8-identity">
+    <img class="t8-portrait"
+         src="{{actor.img}}"
+         data-edit="img"
+         data-action="editImage"
+         alt="{{actor.name}}" />
+    <div class="t8-identity-text">
+      <input class="t8-name" type="text" name="name" value="{{actor.name}}"
+             {{#unless isEditable}}disabled{{/unless}} />
+      <span class="t8-type-badge">{{typeLabel}}</span>
+    </div>
+  </div>
+
+  <div class="t8-vitals">
+    <div class="t8-vital">
+      <span class="t8-vital-label">{{localize "THREEEIGHT.Actor.Wounds"}}</span>
+      <div class="t8-vital-value">
+        <input type="number" name="system.wounds" value="{{wounds}}"
+               {{#unless isEditable}}disabled{{/unless}} />
+        <span class="t8-vital-sep">/</span>
+        <span class="t8-vital-max">{{woundsMax}}</span>
+      </div>
+      <div class="t8-vital-actions">
+        <button type="button" data-action="modifyWounds" title="{{localize 'THREEEIGHT.Wounds.DialogTitle'}}">
+          <i class="fas fa-sliders"></i>
+        </button>
+        <button type="button" data-action="restoreWounds" title="{{localize 'THREEEIGHT.Wounds.Restored'}}">
+          <i class="fas fa-heart"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="t8-vital">
+      <span class="t8-vital-label">{{localize "THREEEIGHT.Actor.Effort"}}</span>
+      <div class="t8-vital-value">
+        <input type="number" name="system.effectiveEffort" value="{{effectiveEffort}}"
+               {{#unless isEditable}}disabled{{/unless}} />
+        <span class="t8-vital-sep">/</span>
+        <span class="t8-vital-max">{{maxEffort}}</span>
+      </div>
+      <div class="t8-vital-actions">
+        <button type="button" data-action="modifyEffort" title="{{localize 'THREEEIGHT.Effort.DialogTitle'}}">
+          <i class="fas fa-sliders"></i>
+        </button>
+        <button type="button" data-action="restoreEffort" title="{{localize 'THREEEIGHT.Effort.Restored'}}">
+          <i class="fas fa-bolt"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="t8-vital t8-vital-compact">
+      <span class="t8-vital-label">{{localize "THREEEIGHT.Actor.MeleeDefense"}}</span>
+      <span class="t8-vital-static">{{meleeDefense}}</span>
+    </div>
+
+    <div class="t8-vital t8-vital-compact">
+      <span class="t8-vital-label">{{localize "THREEEIGHT.Actor.RangedArmor"}}</span>
+      <span class="t8-vital-static">{{rangedArmor}}</span>
+    </div>
+
+    <div class="t8-vital t8-vital-compact">
+      <span class="t8-vital-label">{{localize "THREEEIGHT.Actor.MeleeArmor"}}</span>
+      <span class="t8-vital-static">{{meleeArmor}}</span>
+    </div>
+  </div>
+</section>

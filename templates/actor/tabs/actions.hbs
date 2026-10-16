@@ -1,0 +1,48 @@
+<div class="t8-tab-content">
+  {{#if economy}}
+  <div class="t8-economy">
+    <div class="t8-slot {{#if (gt economy.slowAvailable 0)}}available{{/if}}">
+      <span class="t8-slot-label">{{localize "THREEEIGHT.Action.Slow"}}</span>
+      <span class="t8-slot-count">{{economy.slowAvailable}}</span>
+    </div>
+    <div class="t8-slot {{#if (gt economy.fastAvailable 0)}}available{{/if}}">
+      <span class="t8-slot-label">{{localize "THREEEIGHT.Action.Fast"}}</span>
+      <span class="t8-slot-count">{{economy.fastAvailable}}</span>
+    </div>
+    {{#if economy.doubleFastMode}}
+    <div class="t8-slot t8-slot-double">
+      <span class="t8-slot-label">{{localize "THREEEIGHT.Action.DoubleFast"}}</span>
+    </div>
+    {{/if}}
+  </div>
+  {{/if}}
+
+  <div class="t8-action-buttons">
+    <button type="button" data-action="rollSkillCheck">
+      <i class="fas fa-dice-d20"></i>
+      {{localize "THREEEIGHT.Action.RollSkillCheck"}}
+    </button>
+  </div>
+
+  {{#if knownActions.length}}
+  <h3 class="t8-section-title">{{localize "THREEEIGHT.Sheet.KnownActions"}}</h3>
+  <ul class="t8-action-list">
+    {{#each knownActions as |action|}}
+    <li class="t8-action-row" data-action-key="{{action.name}}">
+      <span class="t8-action-name">{{action.name}}</span>
+      {{#if action.isAttack}}
+      <button type="button" data-action="rollAttack" data-attack-type="{{action.attackType}}"
+              data-item-id="{{action.itemId}}">
+        <i class="fas fa-crosshairs"></i>
+      </button>
+      {{/if}}
+      {{#if action.isSkill}}
+      <button type="button" data-action="rollSkill">
+        <i class="fas fa-dice-d20"></i>
+      </button>
+      {{/if}}
+    </li>
+    {{/each}}
+  </ul>
+  {{/if}}
+</div>

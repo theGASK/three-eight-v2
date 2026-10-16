@@ -1,0 +1,31 @@
+<section class="t8-partB">
+  {{#with tabs.primary}}
+  {{#each this}}
+  {{#if active}}
+  <div class="t8-tab-panel active" data-tab="{{id}}" data-group="primary">
+
+    {{#if (eq id "description")}}
+      {{> "systems/three-eight-v2/templates/actor/tabs/description.hbs"}}
+    {{/if}}
+
+    {{#if (eq id "characteristics")}}
+      {{> "systems/three-eight-v2/templates/actor/tabs/characteristics.hbs"}}
+    {{/if}}
+
+    {{#if (eq id "actions")}}
+      {{> "systems/three-eight-v2/templates/actor/tabs/actions.hbs"}}
+    {{/if}}
+
+    {{#if (eq id "conditions")}}
+      {{> "systems/three-eight-v2/templates/actor/tabs/conditions.hbs"}}
+    {{/if}}
+
+    {{#if (eq id "items")}}
+      {{> "systems/three-eight-v2/templates/actor/tabs/items.hbs"}}
+    {{/if}}
+
+  </div>
+  {{/if}}
+  {{/each}}
+  {{/with}}
+</section>

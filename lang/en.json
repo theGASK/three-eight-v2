@@ -29,6 +29,48 @@
     }
   },
   "THREEEIGHT": {
+    "Tab": {
+      "Description": "Description",
+      "Characteristics": "Characteristics",
+      "Actions": "Actions",
+      "Conditions": "Conditions",
+      "Items": "Items",
+      "Details": "Details",
+      "Modifiers": "Modifiers"
+    },
+    "Sheet": {
+      "ActorLabel": "Three-Eight Actor Sheet",
+      "ItemLabel": "Three-Eight Item Sheet",
+      "Primary": "Primary Characteristics",
+      "Secondary": "Secondary Characteristics",
+      "KnownActions": "Known Actions",
+      "NoDescription": "No description yet.",
+      "NoItems": "No items.",
+      "NoDetails": "No additional details.",
+      "None": "None",
+      "DeleteItem": "Delete Item",
+      "ConfirmDelete": "Delete {name}?",
+      "NewItem": "New {type}"
+    },
+    "Settings": {
+      "Theme": {
+        "Name": "UI Theme",
+        "Hint": "Choose the visual theme for Three-Eight v2 sheets and chat cards.",
+        "Default": "Default (System)",
+        "Dark": "Dark",
+        "Light": "Light"
+      }
+    },
+    "Actor": {
+      "MeleeDefense": "Melee Defense",
+      "RangedArmor": "Ranged Armor",
+      "MeleeArmor": "Melee Armor",
+      "Wounds": "Wounds",
+      "Effort": "Effort"
+    },
+    "Action": {
+      "DoubleFast": "Double-Fast"
+    },
     "Wounds": {
       "DialogTitle": "Modify Wounds",
       "Current": "Current Wounds",

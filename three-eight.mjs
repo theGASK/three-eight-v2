@@ -34,8 +34,11 @@ import * as Melee from "./module/attacks/melee.mjs";
 import * as Wounds from "./module/wounds.mjs";
 import * as Effort from "./module/effort.mjs";
 import * as SkillDialog from "./module/skill-dialog.mjs";
+import { ThreeEightActorSheet } from "./module/sheets/actor-sheet.mjs";
+import { ThreeEightItemSheet } from "./module/sheets/item-sheet.mjs";
 
 Hooks.once("init", () => {
+
   // ── Document classes ────────────────────────────────
   CONFIG.Actor.documentClass = ThreeEightActor;
   CONFIG.Item.documentClass = ThreeEightItem;
@@ -68,6 +71,44 @@ Hooks.once("init", () => {
   CONFIG.Item.dataModels.individualArmor = IndividualArmorData;
   CONFIG.Item.dataModels.vehicleArmor = VehicleArmorData;
   CONFIG.Item.dataModels.shield = ShieldData;
+
+    // ── Sheets ──────────────────────────────────────────
+  foundry.documents.collections.Actors.registerSheet(
+    "three-eight-v2",
+    ThreeEightActorSheet,
+    { types: [], makeDefault: true, label: "THREEEIGHT.Sheet.ActorLabel" }
+  );
+  foundry.documents.collections.Items.registerSheet(
+    "three-eight-v2",
+    ThreeEightItemSheet,
+    { types: [], makeDefault: true, label: "THREEEIGHT.Sheet.ItemLabel" }
+  );
+
+  // ── Theme setting ───────────────────────────────────
+  game.settings.register("three-eight-v2", "theme", {
+    name: "THREEEIGHT.Settings.Theme.Name",
+    hint: "THREEEIGHT.Settings.Theme.Hint",
+    scope: "client",
+    config: true,
+    type: String,
+    choices: {
+      "default": "THREEEIGHT.Settings.Theme.Default",
+      "dark":    "THREEEIGHT.Settings.Theme.Dark",
+      "light":   "THREEEIGHT.Settings.Theme.Light"
+    },
+    default: "default",
+    onChange: (value) => {
+      document.body.dataset.t8Theme = value;
+    },
+  });
+  
+  Handlebars.registerHelper("capitalize", (s) =>
+    String(s).charAt(0).toUpperCase() + String(s).slice(1)
+  );
+  Handlebars.registerHelper("concat", (...args) =>
+    args.slice(0, -1).join("")
+  );
+
 
   // ── Equipment rules ─────────────────────────────────
   registerEquipmentHooks();
@@ -298,4 +339,9 @@ Hooks.once("init", () => {
       tick: Conditions.tickConditions
     }
   });
+});
+
+Hooks.once("ready", () => {
+  const theme = game.settings.get("three-eight-v2", "theme");
+  document.body.dataset.t8Theme = theme;
 });

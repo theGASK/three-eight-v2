@@ -1,0 +1,64 @@
+<section class="t8-partB">
+  {{#with tabs.primary}}
+  {{#each this}}
+  {{#if active}}
+  <div class="t8-tab-panel active" data-tab="{{id}}" data-group="primary">
+
+    {{#if (eq id "description")}}
+    <div class="t8-tab-content">
+      <div class="t8-prose">{{{enrichedDescription}}}</div>
+      {{#if isEditable}}
+      <prose-mirror name="system.description" value="{{system.description}}"></prose-mirror>
+      {{/if}}
+    </div>
+    {{/if}}
+
+    {{#if (eq id "details")}}
+    <div class="t8-tab-content">
+      {{#if detailFields.length}}
+      <div class="t8-detail-grid">
+        {{#each detailFields as |field|}}
+        <div class="t8-detail-row">
+          <label class="t8-detail-label">{{field.key}}</label>
+          {{#if (eq field.type "boolean")}}
+            <input type="checkbox" name="system.{{field.key}}" {{#if field.value}}checked{{/if}}
+                   {{#unless ../isEditable}}disabled{{/unless}} />
+          {{else if (eq field.type "number")}}
+            <input type="number" name="system.{{field.key}}" value="{{field.value}}"
+                   {{#unless ../isEditable}}disabled{{/unless}} />
+          {{else}}
+            <input type="text" name="system.{{field.key}}" value="{{field.value}}"
+                   {{#unless ../isEditable}}disabled{{/unless}} />
+          {{/if}}
+        </div>
+        {{/each}}
+      </div>
+      {{else}}
+      <p class="t8-empty">{{localize "THREEEIGHT.Sheet.NoDetails"}}</p>
+      {{/if}}
+    </div>
+    {{/if}}
+
+    {{#if (eq id "modifiers")}}
+    <div class="t8-tab-content">
+      {{#if modifiers.length}}
+      <ul class="t8-modifier-list">
+        {{#each modifiers as |mod|}}
+        <li class="t8-modifier-row">
+          <span class="t8-mod-target">{{mod.target}}</span>
+          <span class="t8-mod-op">{{mod.operator}}</span>
+          <span class="t8-mod-value">{{mod.value}}</span>
+        </li>
+        {{/each}}
+      </ul>
+      {{else}}
+      <p class="t8-empty">{{localize "THREEEIGHT.ModifierItem.Modifiers"}} — {{localize "THREEEIGHT.Sheet.None"}}</p>
+      {{/if}}
+    </div>
+    {{/if}}
+
+  </div>
+  {{/if}}
+  {{/each}}
+  {{/with}}
+</section>

@@ -1,0 +1,27 @@
+<section class="t8-partA">
+  <div class="t8-identity">
+    <img class="t8-portrait"
+         src="{{item.img}}"
+         data-edit="img"
+         data-action="editImage"
+         alt="{{item.name}}" />
+    <div class="t8-identity-text">
+      <input class="t8-name" type="text" name="name" value="{{item.name}}"
+             {{#unless isEditable}}disabled{{/unless}} />
+      <span class="t8-type-badge">{{typeLabel}}</span>
+    </div>
+  </div>
+
+  <div class="t8-vitals">
+    <div class="t8-vital t8-vital-compact">
+      <span class="t8-vital-label">{{localize "THREEEIGHT.Item.Cost"}}</span>
+      <input type="number" name="system.cost" value="{{system.cost}}"
+             {{#unless isEditable}}disabled{{/unless}} />
+    </div>
+    <div class="t8-vital t8-vital-compact">
+      <span class="t8-vital-label">{{localize "THREEEIGHT.Item.Legal"}}</span>
+      <input type="checkbox" name="system.legal" {{#if system.legal}}checked{{/if}}
+             {{#unless isEditable}}disabled{{/unless}} />
+    </div>
+  </div>
+</section>
