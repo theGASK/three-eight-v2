@@ -44,6 +44,7 @@
       "Primary": "Primary Characteristics",
       "Secondary": "Secondary Characteristics",
       "KnownActions": "Known Actions",
+      "Name": "Name",
       "NoDescription": "No description yet.",
       "NoItems": "No items.",
       "NoDetails": "No additional details.",
@@ -62,6 +63,9 @@
       }
     },
     "Actor": {
+      "CommonName": "Common Name",
+      "Description": "Description",
+      "Age": "Age",
       "MeleeDefense": "Melee Defense",
       "RangedArmor": "Ranged Armor",
       "MeleeArmor": "Melee Armor",
@@ -69,777 +73,783 @@
       "Effort": "Effort"
     },
     "Action": {
-      "DoubleFast": "Double-Fast"
-    },
-    "Wounds": {
-      "DialogTitle": "Modify Wounds",
-      "Current": "Current Wounds",
-      "Delta": "Adjustment",
-      "Hint": "Enter a positive number to heal or a negative number to take damage.",
-      "Apply": "Apply",
-      "Restored": "Wounds restored to maximum.",
-      "Err": {
-        "OverMax": "Cannot exceed maximum wounds ({value} > {max}). No change applied."
-      }
-    },
-    "Effort": {
-      "DialogTitle": "Modify Effort",
-      "Current": "Current Effort",
-      "Delta": "Adjustment",
-      "Hint": "Enter a positive number to recover effort or a negative number to spend it.",
-      "Apply": "Apply",
-      "Restored": "Effort restored to maximum.",
-      "Err": {
-        "OverMax": "Cannot exceed maximum effort ({value} > {max}). No change applied."
-      }
-    },
-    "Attack": {
-      "Summary": "Attack",
-      "Weapon": "Weapon",
-      "Select": "Select",
-      "Confirm": "Confirm Attack",
-      "Damage": "Damage",
-      "Penetration": "Penetration",
-      "SelectWeapon": {
-        "ranged": "Select a Ranged Weapon",
-        "melee": "Select a Melee Weapon"
-      },
-      "ChooseType": "Attack with {weapon}",
-      "ChooseTypePrompt": "How do you want to use this weapon?",
-      "ModifierTitle": "Attack Modifiers",
-      "ModifierPlaceholder": "No modifiers available yet. Confirm to roll the attack.",
-      "Type": {
-        "ranged": "Ranged Attack",
-        "melee": "Melee Attack"
-      },
-      "Err": {
-        "NoActor": "No actor provided for the attack request.",
-        "NotAnAttack": "This action is not an attack.",
-        "NoWeapon": "No weapon provided for the attack.",
-        "NoWeapons.ranged": "This actor has no ranged weapons (Range > 0).",
-        "NoWeapons.melee": "This actor has no weapons.",
-        "NotAWeapon": "The selected item is not a weapon.",
-        "IneligibleWeapon.ranged": "The selected weapon cannot make a ranged attack (Range must be greater than 0).",
-        "IneligibleWeapon.melee": "The selected weapon cannot make a melee attack.",
-        "UnknownType": "Unknown attack type: \"{type}\".",
-        "OutOfAmmo": "The Weapon is out of Ammo! Use the reload Action."
-      }
-    },
-    "Skill": {
-      "DialogTitle": "Skill Check",
-      "Name": "Skill",
-      "Characteristic": "Characteristic",
-      "RollFormula": "Roll Formula",
-      "SelectedAlterations": "Selected Alterations",
-      "OtherAlterations": "Other Alterations",
-      "ExtraModifier": "Extra Modifier",
-      "TaskChainDM": "Task Chain DM",
-      "TN": "TN",
-      "Difference": "Difference",
-      "Total": "Total",
-      "Roll": "Roll",
-      "Cancel": "Cancel",
-      "SpendEffort": "Spend 1 Effort (+1d8)",
-      "EffortFlavor": "Spent 1 Effort on a skill check.",
-      "EffortSpent": "Effort Spent",
-      "CriticalEffort": "Critical Effort!",
-      "Err": {
-        "NoActor": "No actor available for this skill check."
-      },
-      "AlterationGroup": {
-        "familiarity": "Familiarity",
-        "equipmentQuality": "Equipment Quality",
-        "time": "Time",
-        "visibility": "Visibility"
-      },
-      "Alteration": {
-        "completelyAlien": "Completely Alien",
-        "unfamiliar": "Unfamiliar",
-        "familiar": "Familiar",
-        "wellPracticed": "Well Practiced",
-        "intimate": "Intimate Familiarity",
-        "makeshiftBroken": "Makeshift / Broken",
-        "poor": "Poor",
-        "standard": "Standard",
-        "good": "Good",
-        "masterwork": "Masterwork",
-        "desperateRush": "Desperate Rush",
-        "quick": "Quick",
-        "normalTime": "Normal Time",
-        "careful": "Careful",
-        "deliberate": "Deliberate",
-        "pitchDark": "Pitch Dark",
-        "dim": "Dim",
-        "idealLight": "Ideal Light",
-        "aided": "Aided"
-      }
-    },
-    "Melee": {
-      "DialogTitle": "Melee Attack — {weapon}",
-      "Mode": "Melee Mode",
-      "Defender": "Defender",
-      "DefenderValue": "Defender Melee Defense",
-      "RollFormula": "Roll Formula",
-      "TotalDamage": "Total Damage",
-      "EffortCost": "Effort Cost",
-      "SelectedAlterations": "Selected Alterations",
-      "OtherAlterations": "Other Alterations",
-      "Difference": "Difference",
-      "Roll": "Roll Attack",
-      "Cancel": "Cancel",
-      "ApplyEffort": "Apply Effort Cost",
-      "EffortApplied": "Effort cost applied.",
-      "Mode": {
-        "normalStrike": "Normal Strike",
-        "charge": "Charge",
-        "allOutStrike": "All Out Strike",
-        "defensiveStrike": "Defensive Strike",
-        "gunStrike": "Gun Strike",
-        "droneNormal": "Drone - Normal",
-        "droneDefensive": "Drone - Defensive",
-        "droneGunStrike": "Drone - Gun Strike",
-        "droneRam": "Drone - Ram"
-      },
-      "AlterationGroup": {
-        "special": "Special",
-        "reach": "Reach",
-        "defender": "Defender",
-        "outnumbered": "Outnumbered",
-        "attackerStance": "Attacker Stance",
-        "grip": "Grip",
-        "leverage": "Leverage",
-        "grappleMove": "Grapple Move",
-        "targetTerrain": "Target Terrain",
-        "lightConditions": "Light Conditions"
-      },
-      "Alteration": {
-        "none": "None",
-        "calledShot": "Called Shot",
-        "improvisedWeapon": "Improvised Weapon",
-        "sameReach": "Same Reach",
-        "longerReach": "Longer Reach",
-        "shorterReach": "Shorter Reach",
-        "defenderReady": "Defender Ready",
-        "defenderProne": "Defender Prone/Seated",
-        "defenderHelpless": "Defender Helpless",
-        "smallTarget": "Small Target",
-        "largeTarget": "Large Target",
-        "duel": "Duel",
-        "flanked": "Flanked",
-        "outnumbered2": "Outnumbered 2-to-1",
-        "outnumbered3": "Outnumbered 3-to-1",
-        "swarmed": "Swarmed 4+",
-        "standing": "Standing",
-        "proneKneeling": "Prone/Kneeling",
-        "retreating": "Retreating",
-        "standardGrip": "Standard Grip",
-        "fullGrip": "Full Grip",
-        "halfGrip": "Half Grip",
-        "equalSize": "Equal Size",
-        "strongerOpponent": "Stronger Opponent",
-        "weakerOpponent": "Weaker Opponent",
-        "proneOpponent": "Prone Opponent",
-        "attackerProne": "Attacker Prone",
-        "grappleNone": "None",
-        "grapplePin": "Pin",
-        "grappleChoke": "Choke",
-        "grappleTakedown": "Takedown",
-        "grappleThrow": "Throw",
-        "grappleDisarm": "Disarm",
-        "grappleHit": "Hit",
-        "grappleBreakFree": "Break Free",
-        "openTerrain": "Open Terrain, Swamp, Shallows, or Pavement",
-        "shrubland": "Shrubland, Debris, Forest or Sparse Urban, or Indoors",
-        "thickFoliage": "Thick Foliage or Dense Urban",
-        "lightNormal": "Normal",
-        "limited": "Limited",
-        "darkness": "Darkness",
-        "denseSmoke": "Dense Smoke",
-        "elevatedPosition": "Attacking from Elevated Position",
-        "attackerArmored": "Attacker Armored",
-        "defenderArmored": "Defender Armored",
-        "defenderShield": "Defender has Shield",
-        "surpriseStrike": "Surprise Strike",
-        "counterStrike": "Counter Strike"
-      }
-    },
-    "Ranged": {
-      "DialogTitle": "Ranged Attack — {weapon}",
-      "FireMode": "Fire Mode",
-      "Skill": "Skill",
-      "SkillNone": "— None —",
-      "TargetType": "Target Type",
-      "TargetTypeLabel": "Target Type",
-      "RollFormula": "Roll Formula",
-      "TotalDamage": "Total Damage",
-      "SelectedAlterations": "Selected Alterations",
-      "OtherAlterations": "Other Alterations",
-      "TN": "TN",
-      "Difference": "Difference",
-      "Penetration": "Penetration",
-      "TargetProtection": "Target Protection",
-      "Penetrated": "Penetrated!",
-      "WoundCalc": "Wound Damage",
-      "CriticalWound": "Critical Wound!",
-      "AmmoSpent": "Ammo Spent",
-      "Roll": "Roll Attack",
-      "Cancel": "Cancel",
-      "ApplyArmor": "Apply Armor Damage",
-      "ApplyWounds": "Apply Wound Damage",
-      "ArmorApplied": "Armor damage applied.",
-      "WoundsApplied": "Wound damage applied.",
-      "FireMode": {
-        "normal": "Normal",
-        "single": "Single",
-        "fullAuto": "Full Auto",
-        "droneSingle": "Drone - Single",
-        "droneNormal": "Drone - Normal",
-        "droneFullAuto": "Drone - Full Auto"
-      },
-      "TargetType": {
-        "drone": "Drone",
-        "humanoid": "Humanoid",
-        "vehicle": "Vehicle",
-        "building": "Building"
-      },
-      "AlterationGroup": {
-        "special": "Special",
-        "aim": "Aim",
-        "range": "Range",
-        "targetShape": "Target Shape",
-        "targetTerrain": "Target Terrain",
-        "lightConditions": "Light Conditions",
-        "attackerStance": "Attacker Stance"
-      },
-      "Alteration": {
-        "none": "None",
-        "calledShot": "Called Shot",
-        "oneHandedShort": "One-Handed - Short",
-        "oneHandedLong": "One-Handed - Long",
-        "fastAim": "Fast Aim",
-        "slowAim": "Slow Aim",
-        "quickshotShort": "Quickshot - Short",
-        "quickshotLong": "Quickshot - Long",
-        "bracedSlowAim": "Braced Slow Aim",
-        "shortRange": "Short Range",
-        "mediumRange": "Medium Range",
-        "longRange": "Long Range",
-        "extremeRange": "Extreme Range",
-        "closeCombatShort": "Close Combat - Short",
-        "closeCombatLong": "Close Combat - Long",
-        "standingPartial": "Target Standing or in Partial Cover",
-        "proneMoving": "Target Prone or Moving",
-        "fullCover": "Target in Full Cover",
-        "defenseless": "Defenseless",
-        "smallTarget": "Small Target",
-        "largeTarget": "Large Target",
-        "openTerrain": "Open Terrain, Swamp, Shallows, or Pavement",
-        "shrubland": "Shrubland, Debris, Forest or Sparse Urban, or Indoors",
-        "thickFoliage": "Thick Foliage or Dense Urban",
-        "lightNormal": "Normal",
-        "limited": "Limited",
-        "darkness": "Darkness",
-        "denseSmoke": "Dense Smoke",
-        "proneFiring": "Prone while Firing",
-        "runningFiring": "Running while Firing",
-        "travellingFiring": "Travelling while Firing",
-        "climbingFiring": "Climbing while Firing",
-        "standingHeavy": "Standing while Firing a Heavy Weapon",
-        "fullAutoFire": "Full Auto Fire",
-        "elevatedPosition": "Firing from Elevated Position",
-        "spendEffort": "Spend Effort"
-      }
-    },
-    "Actions": {
-      "persuade": {
-        "name": "Persuade",
-        "description": "Verbally convince a listener who can hear you to adopt a certain belief or course of action."
-      },
-      "coordinate": {
-        "name": "Coordinate",
-        "description": "Direct allies who can hear you to act in a synchronized or tactical manner."
-      },
-      "unarmedAttack": {
-        "name": "Unarmed Attack",
-        "description": "Strike an enemy in the same hex or adjacent square using only your body while unarmed."
-      },
-      "meleeAttack": {
-        "name": "Melee Attack",
-        "description": "Strike an enemy in the same hex or adjacent square with a handheld melee weapon."
-      },
-      "rangedAttack": {
-        "name": "Ranged Attack",
-        "description": "Fire a ranged weapon at a target."
-      },
-      "sniperAim": {
-        "name": "Sniper Aim",
-        "description": "Carefully aim a weapon equipped with an optical sight to make a precise, long-range shot."
-      },
-      "grapple": {
-        "name": "Grapple",
-        "description": "Attempt to seize and physically restrain an enemy in the same hex or adjacent square while unarmed."
-      },
-      "breakFree": {
-        "name": "Break Free",
-        "description": "Attempt to escape from a grapple while you are grappled."
-      },
-      "standGuard": {
-        "name": "Stand Guard",
-        "description": "Hold a position and watch for enemy activity when an enemy is in the same hex or adjacent square."
-      },
-      "clearJam": {
-        "name": "Clear Jam",
-        "description": "Spend time fixing a malfunctioning or stuck weapon."
-      },
-      "shootBow": {
-        "name": "Shoot Bow",
-        "description": "Fire an arrow or bolt from a bow or crossbow."
-      },
-      "throwWeapon": {
-        "name": "Throw Weapon",
-        "description": "Hurl a thrown weapon or hand grenade at a target."
-      },
-      "aimHeavyWeapon": {
-        "name": "Aim Heavy Weapon",
-        "description": "Steady and aim a heavy weapon before firing."
-      },
-      "fireHeavyWeapon": {
-        "name": "Fire Heavy Weapon",
-        "description": "Discharge a heavy weapon at a target."
-      },
-      "directIndirectFire": {
-        "name": "Direct Indirect Fire",
-        "description": "Guide indirect fire onto a target you can see."
-      },
-      "firstAid": {
-        "name": "First Aid",
-        "description": "Provide emergency medical treatment to a victim incapacitated by wounds."
-      },
-      "rally": {
-        "name": "Rally",
-        "description": "Attempt to restore composure to a victim incapacitated by stress."
-      },
-      "enterOrExitVehicle": {
-        "name": "Enter or Exit Vehicle",
-        "description": "Get into or out of a vehicle."
-      },
-      "getItemFromBackpack": {
-        "name": "Get Item from Backpack",
-        "description": "Retrieve a stowed item from your backpack."
-      },
-      "climb": {
-        "name": "Climb",
-        "description": "Scale a climbable surface."
-      },
-      "hide": {
-        "name": "Hide",
-        "description": "Conceal yourself using cover, concealment, or darkness."
-      },
-      "swim": {
-        "name": "Swim",
-        "description": "Move through water."
-      },
-      "seekCover": {
-        "name": "Seek Cover",
-        "description": "Move to terrain providing cover to gain protection from enemy fire."
-      },
-      "fullToPartialCover": {
-        "name": "Full to Partial Cover",
-        "description": "Leave full protection to take a position of partial protection."
-      },
-      "run": {
-        "name": "Run",
-        "description": "Sprint a short distance to reposition when no enemy is in the same hex or adjacent square."
-      },
-      "crossLowBarrier": {
-        "name": "Cross Low Barrier",
-        "description": "Quickly move over a low obstacle."
-      },
-      "moveThroughDoor": {
-        "name": "Move Through Door",
-        "description": "Open and pass through a closed door."
-      },
-      "crawl": {
-        "name": "Crawl",
-        "description": "Move a short distance while prone."
-      },
-      "getUp": {
-        "name": "Get Up",
-        "description": "Rise from a prone position to standing."
-      },
-      "drawFromCombatGear": {
-        "name": "Draw from Combat Gear",
-        "description": "Quickly retrieve a readily accessible item from your combat gear."
-      },
-      "shove": {
-        "name": "Shove",
-        "description": "Push an enemy in the same hex or adjacent square to knock them off balance or move them."
-      },
-      "disarm": {
-        "name": "Disarm",
-        "description": "Attempt to knock an item from the grasp of a target who holds one."
-      },
-      "grappleAttack": {
-        "name": "Grapple Attack",
-        "description": "Make a quick attack against an opponent you are already grappling."
-      },
-      "retreat": {
-        "name": "Retreat",
-        "description": "Carefully back away from an enemy in the same hex or adjacent square."
-      },
-      "aim": {
-        "name": "Aim",
-        "description": "Quickly align a ranged weapon on a target."
-      },
-      "prepareBow": {
-        "name": "Prepare Bow",
-        "description": "Nock an arrow or load a bolt into a bow."
-      },
-      "assumeOverwatch": {
-        "name": "Assume Overwatch Position",
-        "description": "Ready a ranged weapon to fire at a target entering your field of fire."
-      },
-      "reload": {
-        "name": "Reload",
-        "description": "Swap out a magazine or otherwise reload a ranged weapon, which becomes a slow action if failed."
-      },
-      "activateExplosive": {
-        "name": "Activate Explosive",
-        "description": "Prime and trigger a grenade or explosive device."
-      },
-      "getOnRide": {
-        "name": "Get on a Bike / Ride",
-        "description": "Mount a motorcycle, bicycle, or similar ride."
-      },
-      "grabTheWheel": {
-        "name": "Grab the Wheel",
-        "description": "Seize control of a vehicle's steering."
-      },
-      "startEngine": {
-        "name": "Start Engine",
-        "description": "Ignite a vehicle's engine."
-      },
-      "drive": {
-        "name": "Drive",
-        "description": "Operate a vehicle to move it."
-      },
-      "useItem": {
-        "name": "Use Item",
-        "description": "Activate or employ a miscellaneous item, with effects varying by item."
-      },
-      "throwItem": {
-        "name": "Throw Item",
-        "description": "Hurl a miscellaneous item at a target or location, with effects varying by item."
-      },
-      "dropBackpack": {
-        "name": "Drop Backpack",
-        "description": "Shed a backpack or other bulky item to reduce encumbrance."
-      },
-      "readyShield": {
-        "name": "Ready Shield",
-        "description": "Bring a shield to a defensive position when an enemy is in the same hex or adjacent square."
-      },
-      "dropToGround": {
-        "name": "Drop to the Ground",
-        "description": "Immediately fall prone while standing up."
-      },
-      "dropHeldItem": {
-        "name": "Drop Held Item",
-        "description": "Release an item from your hand."
-      },
-      "partialToFullCover": {
-        "name": "Partial to Full Cover",
-        "description": "Slip fully behind cover from a partially protected position."
-      },
-      "shoutWords": {
-        "name": "Shout a Few Words",
-        "description": "Quickly communicate a short phrase to those who can hear you."
-      },
-      "handSignals": {
-        "name": "Hand Signals",
-        "description": "Wordlessly communicate a simple message with gestures."
-      },
-      "checkAmmo": {
-        "name": "Check Ammo or Gear",
-        "description": "Glance at your equipment to verify its status."
-      },
-      "blocking": {
-        "name": "Blocking",
-        "description": "Interpose an object or limb to deflect an incoming attack when you have something available to block with."
-      },
-      "overwatchFire": {
-        "name": "Overwatch Fire",
-        "description": "Fire your readied ranged weapon at a target that enters your field of fire while you are in overwatch."
-      }
-    },
-    "Condition": {
-      "Name": "Condition",
-      "Stacks": "Stacks",
-      "Active": "Active",
-      "Add": "Apply Condition",
-      "Remove": "Remove Condition",
-      "Toggle": "Toggle",
-      "Increment": "Add Stack",
-      "Decrement": "Remove Stack",
-      "None": "No conditions",
-      "Err": {
-        "NoActor": "No actor provided.",
-        "NoCondition": "No condition provided.",
-        "NoBlock": "This actor has no conditions block.",
-        "UnknownKey": "Unknown condition key: \"{key}\".",
-        "NotFound": "Condition \"{key}\" is not on this actor.",
-        "NotLegalTarget": "This condition cannot be applied to a {type}.",
-        "ZeroStacks": "Condition \"{key}\" has no stacks remaining."
-      }
-    },
-    "SkillGroup": {
-      "awareness": "Awareness",
-      "behaviour": "Behaviour",
-      "combat": "Combat",
-      "control": "Control",
-      "knowledge": "Knowledge",
-      "performance": "Performance",
-      "physical": "Physical",
-      "technology": "Technology"
-    },
-    "Difficulty": {
-      "trivial": "Trivial",
-      "routine": "Routine",
-      "average": "Average",
-      "difficult": "Difficult",
-      "heroic": "Heroic",
-      "formidable": "Formidable",
-      "impossible": "Impossible"
-    },
-    "Visibility": {
-      "normal": "Normal",
-      "heavyRain": "Heavy Rain",
-      "denseFog": "Dense Fog",
-      "dusk": "Dusk",
-      "moonlight": "Moonlight",
-      "starlight": "Starlight",
-      "cloudyNight": "Cloudy Night",
-      "indoor": "Indoor"
-    },
-    "Actor": {
-      "Description": "Description",
-      "Wounds": {
-        "Wounds": "Wounds",
-        "WoundsMax": "Wounds (Max)",
-        "WoundsDM": "Wounds DM",
-        "MeleeWoundsDM": "Wounds (Melee Def.)"
-      },
-      "Effort": "Effort",
-      "EffortDM": "Effort DM",
-      "MaxEffort": "Effort (Max)",
-      "EffectiveEffort": "Effort (Current)",
-      "Primary": {
-        "Fitness": "Fitness",
-        "FitnessDM": "Fitness DM",
-        "Agility": "Agility",
-        "AgilityDM": "Agility DM",
-        "Intelligence": "Intelligence",
-        "IntelligenceDM": "Intelligence DM",
-        "Morale": "Morale",
-        "MoraleDM": "Morale DM",
-        "Class": "Class",
-        "ClassDM": "Class DM",
-        "Integrity": "Integrity",
-        "IntegrityDM": "Integrity DM",
-        "Speed": "Speed",
-        "SpeedDM": "Speed DM",
-        "Capacity": "Capacity",
-        "CapacityDM": "Capacity DM"
-      },
-      "Secondary": {
-        "Experience": "Experience",
-        "Reputation": "Reputation",
-        "ReputationDM": "Reputation DM",
-        "Wealth": "Wealth",
-        "WealthDM": "Wealth DM",
-        "Stress": "Stress",
-        "StressMax": "Stress (Max)",
-        "StressDM": "Stress DM"
-      },
-      "Armor": {
-        "Ranged": "Ranged Armor",
-        "Melee": "Melee Armor",
-        "Protection": "Protection",
-        "Soak": "Soak"
-      }
-    },
-    "Item": {
-      "Description": "Description",
-      "Cost": "Cost",
-      "Legal": "Legal",
-      "Equipped": "Equipped",
-      "Value": "Current",
-      "Max": "Max",
-      "IndividualArmor": {
-        "RangedProtection": "Ranged Protection",
-        "MeleeProtection": "Melee Protection",
-        "Equipped": "Equipped"
-      },
-      "VehicleArmor": {
-        "Protection": "Protection",
-        "Soak": "Soak",
-        "Equipped": "Equipped"
-      },
-      "Shield": {
-        "RangedProtection": "Ranged Protection",
-        "MeleeProtection": "Melee Protection",
-        "Equipped": "Equipped"
-      }
-    },
-    "GeneralObject": {
-      "Encumbrance": "Encumbrance"
-    },
-    "Weapon": {
-      "Type": "Type",
-      "Caliber": "Caliber",
-      "ROF": "Rate of Fire",
-      "Reliability": "Reliability",
-      "Damage": "Damage",
-      "Critical": "Critical",
-      "Blast": "Blast",
-      "Range": "Range",
-      "Magazine": "Magazine",
-      "MagazineValue": "Magazine (Current)",
-      "MagazineMax": "Magazine (Max)",
-      "Penetration": "Penetration"
-    },
-    "Container": {
-      "Capacity": "Capacity",
-      "CapacityValue": "Capacity (Current)",
-      "CapacityMax": "Capacity (Max)"
-    },
-    "Spell": {
-      "Level": "Level",
-      "CastingCost": "Casting Cost",
-      "School": "School"
-    },
-    "Skill": {
-      "Group": "Group",
-      "GroupNone": "— Unassigned —",
-      "Value": "Skill Value",
-      "Specialties": "Specialties",
-      "Score": "Score"
-    },
-    "Specialty": {
-      "Score": "Score"
-    },
-    "Ammunition": {
-      "Quantity": "Quantity"
-    },
-    "ModifierItem": {
-      "Modifiers": "Modifiers",
-      "AddModifier": "Add Modifier",
-      "RemoveModifier": "Remove Modifier"
-    },
-    "Dialog": {
-      "Difficulty": "Difficulty",
-      "CustomTN": "Custom Target Number",
-      "CustomTNHint": "optional",
-      "OverrideHint": "Leave blank to use the difficulty preset above.",
-      "Modifier": "Modifier",
-      "ModifierHint": "e.g. 1d6[Lucky] or -2[Darkness]",
-      "ModifierHintLong": "Add signed numbers or dice formulas. Optional labels in [brackets] are shown in the chat card.",
-      "Mode": "Visibility",
-      "RollTitle": "Roll {name}",
-      "Roll": "Roll",
-      "Custom": "Custom"
-    },
-    "ModifierPreset": {
-      "normal": "Normal"
-    },
-    "Modifier": {
-      "Container": {
-        "actor": "Actor",
-        "item": "Core-Item"
-      },
-      "Operator": {
-        "add": "+",
-        "subtract": "−"
-      },
-      "Target": {
-        "skillRoll": "Skill Roll",
-        "initiative": "Initiative",
-        "combatBonus": "Combat Bonus"
-      },
-      "Field": {
-        "Container": "Container",
-        "AppliesTo": "Applies To",
-        "Target": "Target",
-        "Operator": "Operator",
-        "Value": "Value"
-      },
-      "Err": {
-        "NoDocument": "No target document provided for modifier validation.",
-        "NoRule": "No rule provided for validation.",
-        "ContainerMismatch": "Modifier targets a {container}, but was applied to a {type} ({expected}).",
-        "TypeNotAllowed": "Modifier does not apply to type \"{type}\". Allowed: {allowed}.",
-        "TargetMissing": "Target \"{target}\" does not exist on {type}. Cannot apply modifier.",
-        "InvalidTerm": "Invalid modifier term: \"{term}\".",
-        "InvalidFormula": "Invalid modifier formula: \"{formula}\".",
-        "UnclosedBracket": "Unclosed bracket in modifier: \"{input}\"."
-      }
-    },
-    "Chat": {
-      "SkillValue": "Skill",
-      "TN": "TN",
-      "Success": "Success",
-      "Failure": "Failure",
-      "Effect": "Effect",
-      "Modifier": "Modifier"
-    },
-    "Warn": {
-      "NotASkill": "Only Skill items can be rolled as a skill.",
-      "InvalidTN": "A valid Target Number is required."
-    },
-    "Reputation": {
-      "enemyOfState": "Enemy of the State",
-      "undesirable": "Undesirable",
-      "secondClass": "Second-class Citizen",
-      "normalCitizen": "Normal Citizen",
-      "locallyRenown": "Locally Renown",
-      "globallyRenown": "Globally Renown",
-      "historicalFigure": "Historical Figure"
-    },
-    "Wealth": {
-      "destitute": "Completely destitute",
-      "personalOnly": "Only personal possessions",
-      "modest": "Modest lifestyle",
-      "comfortable": "Comfortable lifestyle",
-      "affluent": "Affluent lifestyle",
-      "extravagant": "Extravagant lifestyle",
-      "oligarchy": "Member of the oligarchy"
-    },
-    "Effect": {
-      "exceptionalFailure": "Exceptional Failure",
-      "averageFailure": "Average Failure",
-      "marginalFailure": "Marginal Failure",
-      "marginalSuccess": "Marginal Success",
-      "averageSuccess": "Average Success",
-      "exceptionalSuccess": "Exceptional Success"
-    },
-    "Action": {
       "Slow": "Slow",
       "Fast": "Fast",
-      "Type": {
-        "slow": "Slow Action",
-        "fast": "Fast Action"
-      },
-      "Requisite": "Requisite",
-      "Description": "Description",
-      "IsAttack": "Attack",
-      "RollAttack": "Roll Attack",
-      "RollAttackTyped": "Roll {type} Attack",
-      "RollSkill": "Roll Skill Check",
-      "Err": {
-        "NoEconomy": "This actor has no Action Economy.",
-        "NoSlot": "No {type} slot available this round.",
-        "NoActorForCard": "No actor available for this action card."
-      }
+      "Free": "Free",
+      "Reactive": "Reactive",
+      "DoubleFast": "Double-Fast",
+      "InfoOnly": "{name} — free/reactive actions do not consume a slot."
+    }
+  },
+  "Wounds": {
+    "DialogTitle": "Modify Wounds",
+    "Current": "Current Wounds",
+    "Delta": "Adjustment",
+    "Hint": "Enter a positive number to heal or a negative number to take damage.",
+    "Apply": "Apply",
+    "Restored": "Wounds restored to maximum.",
+    "Err": {
+      "OverMax": "Cannot exceed maximum wounds ({value} > {max}). No change applied."
+    }
+  },
+  "Effort": {
+    "DialogTitle": "Modify Effort",
+    "Current": "Current Effort",
+    "Delta": "Adjustment",
+    "Hint": "Enter a positive number to recover effort or a negative number to spend it.",
+    "Apply": "Apply",
+    "Restored": "Effort restored to maximum.",
+    "Err": {
+      "OverMax": "Cannot exceed maximum effort ({value} > {max}). No change applied."
+    }
+  },
+  "Attack": {
+    "Summary": "Attack",
+    "Weapon": "Weapon",
+    "Select": "Select",
+    "Confirm": "Confirm Attack",
+    "Damage": "Damage",
+    "Penetration": "Penetration",
+    "SelectWeapon": {
+      "ranged": "Select a Ranged Weapon",
+      "melee": "Select a Melee Weapon"
+    },
+    "ChooseType": "Attack with {weapon}",
+    "ChooseTypePrompt": "How do you want to use this weapon?",
+    "ModifierTitle": "Attack Modifiers",
+    "ModifierPlaceholder": "No modifiers available yet. Confirm to roll the attack.",
+    "Type": {
+      "ranged": "Ranged Attack",
+      "melee": "Melee Attack"
+    },
+    "Err": {
+      "NoActor": "No actor provided for the attack request.",
+      "NotAnAttack": "This action is not an attack.",
+      "NoWeapon": "No weapon provided for the attack.",
+      "NoWeapons.ranged": "This actor has no ranged weapons (Range > 0).",
+      "NoWeapons.melee": "This actor has no weapons.",
+      "NotAWeapon": "The selected item is not a weapon.",
+      "IneligibleWeapon.ranged": "The selected weapon cannot make a ranged attack (Range must be greater than 0).",
+      "IneligibleWeapon.melee": "The selected weapon cannot make a melee attack.",
+      "UnknownType": "Unknown attack type: \"{type}\".",
+      "OutOfAmmo": "The Weapon is out of Ammo! Use the reload Action."
+    }
+  },
+  "Skill": {
+    "DialogTitle": "Skill Check",
+    "Name": "Skill",
+    "Characteristic": "Characteristic",
+    "RollFormula": "Roll Formula",
+    "SelectedAlterations": "Selected Alterations",
+    "OtherAlterations": "Other Alterations",
+    "ExtraModifier": "Extra Modifier",
+    "TaskChainDM": "Task Chain DM",
+    "TN": "TN",
+    "Difference": "Difference",
+    "Total": "Total",
+    "Roll": "Roll",
+    "Cancel": "Cancel",
+    "SpendEffort": "Spend 1 Effort (+1d8)",
+    "EffortFlavor": "Spent 1 Effort on a skill check.",
+    "EffortSpent": "Effort Spent",
+    "CriticalEffort": "Critical Effort!",
+    "Err": {
+      "NoActor": "No actor available for this skill check."
+    },
+    "AlterationGroup": {
+      "familiarity": "Familiarity",
+      "equipmentQuality": "Equipment Quality",
+      "time": "Time",
+      "visibility": "Visibility"
+    },
+    "Alteration": {
+      "completelyAlien": "Completely Alien",
+      "unfamiliar": "Unfamiliar",
+      "familiar": "Familiar",
+      "wellPracticed": "Well Practiced",
+      "intimate": "Intimate Familiarity",
+      "makeshiftBroken": "Makeshift / Broken",
+      "poor": "Poor",
+      "standard": "Standard",
+      "good": "Good",
+      "masterwork": "Masterwork",
+      "desperateRush": "Desperate Rush",
+      "quick": "Quick",
+      "normalTime": "Normal Time",
+      "careful": "Careful",
+      "deliberate": "Deliberate",
+      "pitchDark": "Pitch Dark",
+      "dim": "Dim",
+      "idealLight": "Ideal Light",
+      "aided": "Aided"
+    }
+  },
+  "Melee": {
+    "DialogTitle": "Melee Attack — {weapon}",
+    "Mode": "Melee Mode",
+    "Defender": "Defender",
+    "DefenderValue": "Defender Melee Defense",
+    "RollFormula": "Roll Formula",
+    "TotalDamage": "Total Damage",
+    "EffortCost": "Effort Cost",
+    "SelectedAlterations": "Selected Alterations",
+    "OtherAlterations": "Other Alterations",
+    "Difference": "Difference",
+    "Roll": "Roll Attack",
+    "Cancel": "Cancel",
+    "ApplyEffort": "Apply Effort Cost",
+    "EffortApplied": "Effort cost applied.",
+    "Mode": {
+      "normalStrike": "Normal Strike",
+      "charge": "Charge",
+      "allOutStrike": "All Out Strike",
+      "defensiveStrike": "Defensive Strike",
+      "gunStrike": "Gun Strike",
+      "droneNormal": "Drone - Normal",
+      "droneDefensive": "Drone - Defensive",
+      "droneGunStrike": "Drone - Gun Strike",
+      "droneRam": "Drone - Ram"
+    },
+    "AlterationGroup": {
+      "special": "Special",
+      "reach": "Reach",
+      "defender": "Defender",
+      "outnumbered": "Outnumbered",
+      "attackerStance": "Attacker Stance",
+      "grip": "Grip",
+      "leverage": "Leverage",
+      "grappleMove": "Grapple Move",
+      "targetTerrain": "Target Terrain",
+      "lightConditions": "Light Conditions"
+    },
+    "Alteration": {
+      "none": "None",
+      "calledShot": "Called Shot",
+      "improvisedWeapon": "Improvised Weapon",
+      "sameReach": "Same Reach",
+      "longerReach": "Longer Reach",
+      "shorterReach": "Shorter Reach",
+      "defenderReady": "Defender Ready",
+      "defenderProne": "Defender Prone/Seated",
+      "defenderHelpless": "Defender Helpless",
+      "smallTarget": "Small Target",
+      "largeTarget": "Large Target",
+      "duel": "Duel",
+      "flanked": "Flanked",
+      "outnumbered2": "Outnumbered 2-to-1",
+      "outnumbered3": "Outnumbered 3-to-1",
+      "swarmed": "Swarmed 4+",
+      "standing": "Standing",
+      "proneKneeling": "Prone/Kneeling",
+      "retreating": "Retreating",
+      "standardGrip": "Standard Grip",
+      "fullGrip": "Full Grip",
+      "halfGrip": "Half Grip",
+      "equalSize": "Equal Size",
+      "strongerOpponent": "Stronger Opponent",
+      "weakerOpponent": "Weaker Opponent",
+      "proneOpponent": "Prone Opponent",
+      "attackerProne": "Attacker Prone",
+      "grappleNone": "None",
+      "grapplePin": "Pin",
+      "grappleChoke": "Choke",
+      "grappleTakedown": "Takedown",
+      "grappleThrow": "Throw",
+      "grappleDisarm": "Disarm",
+      "grappleHit": "Hit",
+      "grappleBreakFree": "Break Free",
+      "openTerrain": "Open Terrain, Swamp, Shallows, or Pavement",
+      "shrubland": "Shrubland, Debris, Forest or Sparse Urban, or Indoors",
+      "thickFoliage": "Thick Foliage or Dense Urban",
+      "lightNormal": "Normal",
+      "limited": "Limited",
+      "darkness": "Darkness",
+      "denseSmoke": "Dense Smoke",
+      "elevatedPosition": "Attacking from Elevated Position",
+      "attackerArmored": "Attacker Armored",
+      "defenderArmored": "Defender Armored",
+      "defenderShield": "Defender has Shield",
+      "surpriseStrike": "Surprise Strike",
+      "counterStrike": "Counter Strike"
+    }
+  },
+  "Ranged": {
+    "DialogTitle": "Ranged Attack — {weapon}",
+    "FireMode": "Fire Mode",
+    "Skill": "Skill",
+    "SkillNone": "— None —",
+    "TargetType": "Target Type",
+    "TargetTypeLabel": "Target Type",
+    "RollFormula": "Roll Formula",
+    "TotalDamage": "Total Damage",
+    "SelectedAlterations": "Selected Alterations",
+    "OtherAlterations": "Other Alterations",
+    "TN": "TN",
+    "Difference": "Difference",
+    "Penetration": "Penetration",
+    "TargetProtection": "Target Protection",
+    "Penetrated": "Penetrated!",
+    "WoundCalc": "Wound Damage",
+    "CriticalWound": "Critical Wound!",
+    "AmmoSpent": "Ammo Spent",
+    "Roll": "Roll Attack",
+    "Cancel": "Cancel",
+    "ApplyArmor": "Apply Armor Damage",
+    "ApplyWounds": "Apply Wound Damage",
+    "ArmorApplied": "Armor damage applied.",
+    "WoundsApplied": "Wound damage applied.",
+    "FireMode": {
+      "normal": "Normal",
+      "single": "Single",
+      "fullAuto": "Full Auto",
+      "droneSingle": "Drone - Single",
+      "droneNormal": "Drone - Normal",
+      "droneFullAuto": "Drone - Full Auto"
+    },
+    "TargetType": {
+      "drone": "Drone",
+      "humanoid": "Humanoid",
+      "vehicle": "Vehicle",
+      "building": "Building"
+    },
+    "AlterationGroup": {
+      "special": "Special",
+      "aim": "Aim",
+      "range": "Range",
+      "targetShape": "Target Shape",
+      "targetTerrain": "Target Terrain",
+      "lightConditions": "Light Conditions",
+      "attackerStance": "Attacker Stance"
+    },
+    "Alteration": {
+      "none": "None",
+      "calledShot": "Called Shot",
+      "oneHandedShort": "One-Handed - Short",
+      "oneHandedLong": "One-Handed - Long",
+      "fastAim": "Fast Aim",
+      "slowAim": "Slow Aim",
+      "quickshotShort": "Quickshot - Short",
+      "quickshotLong": "Quickshot - Long",
+      "bracedSlowAim": "Braced Slow Aim",
+      "shortRange": "Short Range",
+      "mediumRange": "Medium Range",
+      "longRange": "Long Range",
+      "extremeRange": "Extreme Range",
+      "closeCombatShort": "Close Combat - Short",
+      "closeCombatLong": "Close Combat - Long",
+      "standingPartial": "Target Standing or in Partial Cover",
+      "proneMoving": "Target Prone or Moving",
+      "fullCover": "Target in Full Cover",
+      "defenseless": "Defenseless",
+      "smallTarget": "Small Target",
+      "largeTarget": "Large Target",
+      "openTerrain": "Open Terrain, Swamp, Shallows, or Pavement",
+      "shrubland": "Shrubland, Debris, Forest or Sparse Urban, or Indoors",
+      "thickFoliage": "Thick Foliage or Dense Urban",
+      "lightNormal": "Normal",
+      "limited": "Limited",
+      "darkness": "Darkness",
+      "denseSmoke": "Dense Smoke",
+      "proneFiring": "Prone while Firing",
+      "runningFiring": "Running while Firing",
+      "travellingFiring": "Travelling while Firing",
+      "climbingFiring": "Climbing while Firing",
+      "standingHeavy": "Standing while Firing a Heavy Weapon",
+      "fullAutoFire": "Full Auto Fire",
+      "elevatedPosition": "Firing from Elevated Position",
+      "spendEffort": "Spend Effort"
+    }
+  },
+  "Actions": {
+    "persuade": {
+      "name": "Persuade",
+      "description": "Verbally convince a listener who can hear you to adopt a certain belief or course of action."
+    },
+    "coordinate": {
+      "name": "Coordinate",
+      "description": "Direct allies who can hear you to act in a synchronized or tactical manner."
+    },
+    "unarmedAttack": {
+      "name": "Unarmed Attack",
+      "description": "Strike an enemy in the same hex or adjacent square using only your body while unarmed."
+    },
+    "meleeAttack": {
+      "name": "Melee Attack",
+      "description": "Strike an enemy in the same hex or adjacent square with a handheld melee weapon."
+    },
+    "rangedAttack": {
+      "name": "Ranged Attack",
+      "description": "Fire a ranged weapon at a target."
+    },
+    "sniperAim": {
+      "name": "Sniper Aim",
+      "description": "Carefully aim a weapon equipped with an optical sight to make a precise, long-range shot."
+    },
+    "grapple": {
+      "name": "Grapple",
+      "description": "Attempt to seize and physically restrain an enemy in the same hex or adjacent square while unarmed."
+    },
+    "breakFree": {
+      "name": "Break Free",
+      "description": "Attempt to escape from a grapple while you are grappled."
+    },
+    "standGuard": {
+      "name": "Stand Guard",
+      "description": "Hold a position and watch for enemy activity when an enemy is in the same hex or adjacent square."
+    },
+    "clearJam": {
+      "name": "Clear Jam",
+      "description": "Spend time fixing a malfunctioning or stuck weapon."
+    },
+    "shootBow": {
+      "name": "Shoot Bow",
+      "description": "Fire an arrow or bolt from a bow or crossbow."
+    },
+    "throwWeapon": {
+      "name": "Throw Weapon",
+      "description": "Hurl a thrown weapon or hand grenade at a target."
+    },
+    "aimHeavyWeapon": {
+      "name": "Aim Heavy Weapon",
+      "description": "Steady and aim a heavy weapon before firing."
+    },
+    "fireHeavyWeapon": {
+      "name": "Fire Heavy Weapon",
+      "description": "Discharge a heavy weapon at a target."
+    },
+    "directIndirectFire": {
+      "name": "Direct Indirect Fire",
+      "description": "Guide indirect fire onto a target you can see."
+    },
+    "firstAid": {
+      "name": "First Aid",
+      "description": "Provide emergency medical treatment to a victim incapacitated by wounds."
+    },
+    "rally": {
+      "name": "Rally",
+      "description": "Attempt to restore composure to a victim incapacitated by stress."
+    },
+    "enterOrExitVehicle": {
+      "name": "Enter or Exit Vehicle",
+      "description": "Get into or out of a vehicle."
+    },
+    "getItemFromBackpack": {
+      "name": "Get Item from Backpack",
+      "description": "Retrieve a stowed item from your backpack."
+    },
+    "climb": {
+      "name": "Climb",
+      "description": "Scale a climbable surface."
+    },
+    "hide": {
+      "name": "Hide",
+      "description": "Conceal yourself using cover, concealment, or darkness."
+    },
+    "swim": {
+      "name": "Swim",
+      "description": "Move through water."
+    },
+    "seekCover": {
+      "name": "Seek Cover",
+      "description": "Move to terrain providing cover to gain protection from enemy fire."
+    },
+    "fullToPartialCover": {
+      "name": "Full to Partial Cover",
+      "description": "Leave full protection to take a position of partial protection."
+    },
+    "run": {
+      "name": "Run",
+      "description": "Sprint a short distance to reposition when no enemy is in the same hex or adjacent square."
+    },
+    "crossLowBarrier": {
+      "name": "Cross Low Barrier",
+      "description": "Quickly move over a low obstacle."
+    },
+    "moveThroughDoor": {
+      "name": "Move Through Door",
+      "description": "Open and pass through a closed door."
+    },
+    "crawl": {
+      "name": "Crawl",
+      "description": "Move a short distance while prone."
+    },
+    "getUp": {
+      "name": "Get Up",
+      "description": "Rise from a prone position to standing."
+    },
+    "drawFromCombatGear": {
+      "name": "Draw from Combat Gear",
+      "description": "Quickly retrieve a readily accessible item from your combat gear."
+    },
+    "shove": {
+      "name": "Shove",
+      "description": "Push an enemy in the same hex or adjacent square to knock them off balance or move them."
+    },
+    "disarm": {
+      "name": "Disarm",
+      "description": "Attempt to knock an item from the grasp of a target who holds one."
+    },
+    "grappleAttack": {
+      "name": "Grapple Attack",
+      "description": "Make a quick attack against an opponent you are already grappling."
+    },
+    "retreat": {
+      "name": "Retreat",
+      "description": "Carefully back away from an enemy in the same hex or adjacent square."
+    },
+    "aim": {
+      "name": "Aim",
+      "description": "Quickly align a ranged weapon on a target."
+    },
+    "prepareBow": {
+      "name": "Prepare Bow",
+      "description": "Nock an arrow or load a bolt into a bow."
+    },
+    "assumeOverwatch": {
+      "name": "Assume Overwatch Position",
+      "description": "Ready a ranged weapon to fire at a target entering your field of fire."
+    },
+    "reload": {
+      "name": "Reload",
+      "description": "Swap out a magazine or otherwise reload a ranged weapon, which becomes a slow action if failed."
+    },
+    "activateExplosive": {
+      "name": "Activate Explosive",
+      "description": "Prime and trigger a grenade or explosive device."
+    },
+    "getOnRide": {
+      "name": "Get on a Bike / Ride",
+      "description": "Mount a motorcycle, bicycle, or similar ride."
+    },
+    "grabTheWheel": {
+      "name": "Grab the Wheel",
+      "description": "Seize control of a vehicle's steering."
+    },
+    "startEngine": {
+      "name": "Start Engine",
+      "description": "Ignite a vehicle's engine."
+    },
+    "drive": {
+      "name": "Drive",
+      "description": "Operate a vehicle to move it."
+    },
+    "useItem": {
+      "name": "Use Item",
+      "description": "Activate or employ a miscellaneous item, with effects varying by item."
+    },
+    "throwItem": {
+      "name": "Throw Item",
+      "description": "Hurl a miscellaneous item at a target or location, with effects varying by item."
+    },
+    "dropBackpack": {
+      "name": "Drop Backpack",
+      "description": "Shed a backpack or other bulky item to reduce encumbrance."
+    },
+    "readyShield": {
+      "name": "Ready Shield",
+      "description": "Bring a shield to a defensive position when an enemy is in the same hex or adjacent square."
+    },
+    "dropToGround": {
+      "name": "Drop to the Ground",
+      "description": "Immediately fall prone while standing up."
+    },
+    "dropHeldItem": {
+      "name": "Drop Held Item",
+      "description": "Release an item from your hand."
+    },
+    "partialToFullCover": {
+      "name": "Partial to Full Cover",
+      "description": "Slip fully behind cover from a partially protected position."
+    },
+    "shoutWords": {
+      "name": "Shout a Few Words",
+      "description": "Quickly communicate a short phrase to those who can hear you."
+    },
+    "handSignals": {
+      "name": "Hand Signals",
+      "description": "Wordlessly communicate a simple message with gestures."
+    },
+    "checkAmmo": {
+      "name": "Check Ammo or Gear",
+      "description": "Glance at your equipment to verify its status."
+    },
+    "blocking": {
+      "name": "Blocking",
+      "description": "Interpose an object or limb to deflect an incoming attack when you have something available to block with."
+    },
+    "overwatchFire": {
+      "name": "Overwatch Fire",
+      "description": "Fire your readied ranged weapon at a target that enters your field of fire while you are in overwatch."
+    }
+  },
+  "Condition": {
+    "Name": "Condition",
+    "Stacks": "Stacks",
+    "Active": "Active",
+    "Add": "Apply Condition",
+    "Remove": "Remove Condition",
+    "Toggle": "Toggle",
+    "Increment": "Add Stack",
+    "Decrement": "Remove Stack",
+    "None": "No conditions",
+    "Err": {
+      "NoActor": "No actor provided.",
+      "NoCondition": "No condition provided.",
+      "NoBlock": "This actor has no conditions block.",
+      "UnknownKey": "Unknown condition key: \"{key}\".",
+      "NotFound": "Condition \"{key}\" is not on this actor.",
+      "NotLegalTarget": "This condition cannot be applied to a {type}.",
+      "ZeroStacks": "Condition \"{key}\" has no stacks remaining."
+    },
+    "Fatigue": "Fatigue"
+  },
+  "SkillGroup": {
+    "awareness": "Awareness",
+    "behaviour": "Behaviour",
+    "combat": "Combat",
+    "control": "Control",
+    "knowledge": "Knowledge",
+    "performance": "Performance",
+    "physical": "Physical",
+    "technology": "Technology"
+  },
+  "Difficulty": {
+    "trivial": "Trivial",
+    "routine": "Routine",
+    "average": "Average",
+    "difficult": "Difficult",
+    "heroic": "Heroic",
+    "formidable": "Formidable",
+    "impossible": "Impossible"
+  },
+  "Visibility": {
+    "normal": "Normal",
+    "heavyRain": "Heavy Rain",
+    "denseFog": "Dense Fog",
+    "dusk": "Dusk",
+    "moonlight": "Moonlight",
+    "starlight": "Starlight",
+    "cloudyNight": "Cloudy Night",
+    "indoor": "Indoor"
+  },
+  "Actor": {
+    "Description": "Description",
+    "Wounds": {
+      "Wounds": "Wounds",
+      "WoundsMax": "Wounds (Max)",
+      "WoundsDM": "Wounds DM",
+      "MeleeWoundsDM": "Wounds (Melee Def.)"
+    },
+    "Effort": "Effort",
+    "EffortDM": "Effort DM",
+    "MaxEffort": "Effort (Max)",
+    "EffectiveEffort": "Effort (Current)",
+    "Primary": {
+      "Fitness": "Fitness",
+      "FitnessDM": "Fitness DM",
+      "Agility": "Agility",
+      "AgilityDM": "Agility DM",
+      "Intelligence": "Intelligence",
+      "IntelligenceDM": "Intelligence DM",
+      "Morale": "Morale",
+      "MoraleDM": "Morale DM",
+      "Class": "Class",
+      "ClassDM": "Class DM",
+      "Integrity": "Integrity",
+      "IntegrityDM": "Integrity DM",
+      "Speed": "Speed",
+      "SpeedDM": "Speed DM",
+      "Capacity": "Capacity",
+      "CapacityDM": "Capacity DM"
+    },
+    "Secondary": {
+      "Experience": "Experience",
+      "Reputation": "Reputation",
+      "ReputationDM": "Reputation DM",
+      "Wealth": "Wealth",
+      "WealthDM": "Wealth DM",
+      "Stress": "Stress",
+      "StressMax": "Stress (Max)",
+      "StressDM": "Stress DM"
+    },
+    "Armor": {
+      "Ranged": "Ranged Armor",
+      "Melee": "Melee Armor",
+      "Protection": "Protection",
+      "Soak": "Soak"
+    }
+  },
+  "Item": {
+    "Description": "Description",
+    "Cost": "Cost",
+    "Legal": "Legal",
+    "Equipped": "Equipped",
+    "Value": "Current",
+    "Max": "Max",
+    "IndividualArmor": {
+      "RangedProtection": "Ranged Protection",
+      "MeleeProtection": "Melee Protection",
+      "Equipped": "Equipped"
+    },
+    "VehicleArmor": {
+      "Protection": "Protection",
+      "Soak": "Soak",
+      "Equipped": "Equipped"
+    },
+    "Shield": {
+      "RangedProtection": "Ranged Protection",
+      "MeleeProtection": "Melee Protection",
+      "Equipped": "Equipped"
+    }
+  },
+  "GeneralObject": {
+    "Encumbrance": "Encumbrance"
+  },
+  "Weapon": {
+    "Type": "Type",
+    "Caliber": "Caliber",
+    "ROF": "Rate of Fire",
+    "Reliability": "Reliability",
+    "Damage": "Damage",
+    "Critical": "Critical",
+    "Blast": "Blast",
+    "Range": "Range",
+    "Magazine": "Magazine",
+    "MagazineValue": "Magazine (Current)",
+    "MagazineMax": "Magazine (Max)",
+    "Penetration": "Penetration"
+  },
+  "Container": {
+    "Capacity": "Capacity",
+    "CapacityValue": "Capacity (Current)",
+    "CapacityMax": "Capacity (Max)"
+  },
+  "Spell": {
+    "Level": "Level",
+    "CastingCost": "Casting Cost",
+    "School": "School"
+  },
+  "Skill": {
+    "Group": "Group",
+    "GroupNone": "— Unassigned —",
+    "Value": "Skill Value",
+    "Specialties": "Specialties",
+    "Score": "Score"
+  },
+  "Specialty": {
+    "Score": "Score"
+  },
+  "Ammunition": {
+    "Quantity": "Quantity"
+  },
+  "ModifierItem": {
+    "Modifiers": "Modifiers",
+    "AddModifier": "Add Modifier",
+    "RemoveModifier": "Remove Modifier"
+  },
+  "Dialog": {
+    "Difficulty": "Difficulty",
+    "CustomTN": "Custom Target Number",
+    "CustomTNHint": "optional",
+    "OverrideHint": "Leave blank to use the difficulty preset above.",
+    "Modifier": "Modifier",
+    "ModifierHint": "e.g. 1d6[Lucky] or -2[Darkness]",
+    "ModifierHintLong": "Add signed numbers or dice formulas. Optional labels in [brackets] are shown in the chat card.",
+    "Mode": "Visibility",
+    "RollTitle": "Roll {name}",
+    "Roll": "Roll",
+    "Custom": "Custom"
+  },
+  "ModifierPreset": {
+    "normal": "Normal"
+  },
+  "Modifier": {
+    "Container": {
+      "actor": "Actor",
+      "item": "Core-Item"
+    },
+    "Operator": {
+      "add": "+",
+      "subtract": "−"
+    },
+    "Target": {
+      "skillRoll": "Skill Roll",
+      "initiative": "Initiative",
+      "combatBonus": "Combat Bonus"
+    },
+    "Field": {
+      "Container": "Container",
+      "AppliesTo": "Applies To",
+      "Target": "Target",
+      "Operator": "Operator",
+      "Value": "Value"
+    },
+    "Err": {
+      "NoDocument": "No target document provided for modifier validation.",
+      "NoRule": "No rule provided for validation.",
+      "ContainerMismatch": "Modifier targets a {container}, but was applied to a {type} ({expected}).",
+      "TypeNotAllowed": "Modifier does not apply to type \"{type}\". Allowed: {allowed}.",
+      "TargetMissing": "Target \"{target}\" does not exist on {type}. Cannot apply modifier.",
+      "InvalidTerm": "Invalid modifier term: \"{term}\".",
+      "InvalidFormula": "Invalid modifier formula: \"{formula}\".",
+      "UnclosedBracket": "Unclosed bracket in modifier: \"{input}\"."
+    }
+  },
+  "Chat": {
+    "SkillValue": "Skill",
+    "TN": "TN",
+    "Success": "Success",
+    "Failure": "Failure",
+    "Effect": "Effect",
+    "Modifier": "Modifier"
+  },
+  "Warn": {
+    "NotASkill": "Only Skill items can be rolled as a skill.",
+    "InvalidTN": "A valid Target Number is required."
+  },
+  "Reputation": {
+    "enemyOfState": "Enemy of the State",
+    "undesirable": "Undesirable",
+    "secondClass": "Second-class Citizen",
+    "normalCitizen": "Normal Citizen",
+    "locallyRenown": "Locally Renown",
+    "globallyRenown": "Globally Renown",
+    "historicalFigure": "Historical Figure"
+  },
+  "Wealth": {
+    "destitute": "Completely destitute",
+    "personalOnly": "Only personal possessions",
+    "modest": "Modest lifestyle",
+    "comfortable": "Comfortable lifestyle",
+    "affluent": "Affluent lifestyle",
+    "extravagant": "Extravagant lifestyle",
+    "oligarchy": "Member of the oligarchy"
+  },
+  "Effect": {
+    "exceptionalFailure": "Exceptional Failure",
+    "averageFailure": "Average Failure",
+    "marginalFailure": "Marginal Failure",
+    "marginalSuccess": "Marginal Success",
+    "averageSuccess": "Average Success",
+    "exceptionalSuccess": "Exceptional Success"
+  },
+  "Action": {
+    "Slow": "Slow",
+    "Fast": "Fast",
+    "Type": {
+      "slow": "Slow Action",
+      "fast": "Fast Action"
+    },
+    "Requisite": "Requisite",
+    "Description": "Description",
+    "IsAttack": "Attack",
+    "RollAttack": "Roll Attack",
+    "RollAttackTyped": "Roll {type} Attack",
+    "RollSkill": "Roll Skill Check",
+    "Err": {
+      "NoEconomy": "This actor has no Action Economy.",
+      "NoSlot": "No {type} slot available this round.",
+      "NoActorForCard": "No actor available for this action card."
     }
   }
 }

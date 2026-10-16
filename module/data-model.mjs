@@ -35,26 +35,17 @@ import { ConditionsData } from "./conditions.mjs";
 class ThreeEightActorData extends foundry.abstract.TypeDataModel {
     static defineSchema() {
         return {
+            commonName:  new StringField({ required: false, blank: true, initial: "" }),
             description: new HTMLField({ required: false, blank: true, initial: "" }),
+            age:         new StringField({ required: false, blank: true, initial: "" }),
 
-            // Current wounds — persistent and mutable. Reduced by combat
-            // damage (may go negative), restored by the wounds API.
-            // Never overwritten by derivation.
             wounds: new NumberField({ required: true, integer: true, initial: 0 }),
-
-            // Maximum wounds. Derived from Fitness for PC / NPC / Animal;
-            // stored and manually editable for every other actor type.
             woundsMax: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
 
-            // Current effort — persistent and mutable. Reduced by
-            // actions that spend Effort, restored by the Effort API
-            // or by rest.
             effectiveEffort: new NumberField({ required: true, integer: true, initial: 0 }),
-            // Maximum effort — derived from Fitness + Morale when
-            // both exist; otherwise kept as whatever was stored.
-            maxEffort: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+            maxEffort:       new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
 
-            actions: new EmbeddedDataField(ActionsData),
+            actions:    new EmbeddedDataField(ActionsData),
             conditions: new EmbeddedDataField(ConditionsData)
         };
     }

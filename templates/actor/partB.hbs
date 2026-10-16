@@ -1,31 +1,207 @@
-<section class="t8-partB">
-  {{#with tabs.primary}}
-  {{#each this}}
-  {{#if active}}
-  <div class="t8-tab-panel active" data-tab="{{id}}" data-group="primary">
+<section class="t8-partB" data-application-part="partB">
 
-    {{#if (eq id "description")}}
-      {{> "systems/three-eight-v2/templates/actor/tabs/description.hbs"}}
+  {{! ── Description ──────────────────────────────── }}
+  <div class="t8-tab-panel {{#if (eq activeTab 'description')}}active{{/if}}" data-tab="description">
+    <div class="t8-field-row">
+      <label class="t8-field-label">{{localize "THREEEIGHT.Actor.CommonName"}}</label>
+      <input class="t8-field-input" type="text" name="system.commonName" value="{{commonName}}"
+             {{#unless isEditable}}disabled{{/unless}} />
+    </div>
+
+    <div class="t8-field-row t8-field-row-block">
+      <label class="t8-field-label">{{localize "THREEEIGHT.Actor.Description"}}</label>
+      {{#if isEditable}}
+        <prose-mirror name="system.description" value="{{system.description}}"></prose-mirror>
+      {{else}}
+        <div class="t8-prose">{{{enrichedDescription}}}</div>
+      {{/if}}
+    </div>
+
+    <div class="t8-field-row">
+      <label class="t8-field-label">{{localize "THREEEIGHT.Actor.Age"}}</label>
+      <input class="t8-field-input" type="text" name="system.age" value="{{age}}"
+             {{#unless isEditable}}disabled{{/unless}} />
+    </div>
+  </div>
+
+  {{! ── Characteristics ──────────────────────────── }}
+  <div class="t8-tab-panel {{#if (eq activeTab 'characteristics')}}active{{/if}}" data-tab="characteristics">
+
+    <div class="t8-vitals-row">
+      <div class="t8-vital-block">
+        <div class="t8-vital-block-header">
+          <span class="t8-vital-block-label">{{localize "THREEEIGHT.Actor.Wounds"}}</span>
+          <button type="button" data-action="modifyWounds" class="t8-icon-btn" title="{{localize 'THREEEIGHT.Wounds.DialogTitle'}}">
+            <i class="fas fa-sliders"></i>
+          </button>
+        </div>
+        <div class="t8-vital-block-value">
+          <input type="number" name="system.wounds" value="{{wounds}}" {{#unless isEditable}}disabled{{/unless}} />
+          <span class="t8-vital-block-sep">/</span>
+          <span class="t8-vital-block-max">{{woundsMax}}</span>
+        </div>
+      </div>
+
+      <div class="t8-vital-block">
+        <div class="t8-vital-block-header">
+          <span class="t8-vital-block-label">{{localize "THREEEIGHT.Actor.Effort"}}</span>
+          <button type="button" data-action="modifyEffort" class="t8-icon-btn" title="{{localize 'THREEEIGHT.Effort.DialogTitle'}}">
+            <i class="fas fa-sliders"></i>
+          </button>
+        </div>
+        <div class="t8-vital-block-value">
+          <input type="number" name="system.effectiveEffort" value="{{effectiveEffort}}" {{#unless isEditable}}disabled{{/unless}} />
+          <span class="t8-vital-block-sep">/</span>
+          <span class="t8-vital-block-max">{{maxEffort}}</span>
+        </div>
+      </div>
+    </div>
+
+    {{#if primaryCharacteristics.length}}
+    <h3 class="t8-section-title">{{localize "THREEEIGHT.Sheet.Primary"}}</h3>
+    <div class="t8-stat-grid">
+      {{#each primaryCharacteristics as |stat|}}
+      <div class="t8-stat">
+        <div class="t8-stat-label">{{stat.label}}</div>
+        <div class="t8-stat-values">
+          <input class="t8-stat-base" type="number"
+                 name="system.attributes.primary.{{stat.key}}"
+                 value="{{stat.base}}"
+                 {{#unless ../isEditable}}disabled{{/unless}} />
+          <span class="t8-stat-arrow">→</span>
+          <span class="t8-stat-effective">{{stat.effective}}</span>
+          <span class="t8-stat-dm">{{#if (gte stat.dm 0)}}+{{/if}}{{stat.dm}}</span>
+        </div>
+      </div>
+      {{/each}}
+    </div>
     {{/if}}
 
-    {{#if (eq id "characteristics")}}
-      {{> "systems/three-eight-v2/templates/actor/tabs/characteristics.hbs"}}
-    {{/if}}
-
-    {{#if (eq id "actions")}}
-      {{> "systems/three-eight-v2/templates/actor/tabs/actions.hbs"}}
-    {{/if}}
-
-    {{#if (eq id "conditions")}}
-      {{> "systems/three-eight-v2/templates/actor/tabs/conditions.hbs"}}
-    {{/if}}
-
-    {{#if (eq id "items")}}
-      {{> "systems/three-eight-v2/templates/actor/tabs/items.hbs"}}
+    {{#if secondaryCharacteristics.length}}
+    <h3 class="t8-section-title">{{localize "THREEEIGHT.Sheet.Secondary"}}</h3>
+    <div class="t8-stat-grid">
+      {{#each secondaryCharacteristics as |stat|}}
+      <div class="t8-stat">
+        <div class="t8-stat-label">{{stat.label}}</div>
+        <div class="t8-stat-values">
+          <input class="t8-stat-base" type="number"
+                 name="system.attributes.secondary.{{stat.key}}"
+                 value="{{stat.base}}"
+                 {{#unless ../isEditable}}disabled{{/unless}} />
+          <span class="t8-stat-arrow">→</span>
+          {{#if stat.isTextDM}}
+            <span class="t8-stat-text">{{stat.textLabel}}</span>
+          {{else}}
+            <span class="t8-stat-effective">{{stat.effective}}</span>
+            <span class="t8-stat-dm">{{#if (gte stat.dm 0)}}+{{/if}}{{stat.dm}}</span>
+          {{/if}}
+        </div>
+      </div>
+      {{/each}}
+    </div>
     {{/if}}
 
   </div>
-  {{/if}}
-  {{/each}}
-  {{/with}}
+
+  {{! ── Actions ──────────────────────────────────── }}
+  <div class="t8-tab-panel {{#if (eq activeTab 'actions')}}active{{/if}}" data-tab="actions">
+    {{#each actionGroups as |group|}}
+    <h3 class="t8-section-title">{{group.label}}</h3>
+    <div class="t8-action-grid">
+      {{#each group.actions as |action|}}
+      <button type="button"
+              class="t8-action-tile {{#if action.isAttack}}is-attack{{/if}} {{#if action.isSkill}}is-skill{{/if}}"
+              data-action="declareAction"
+              data-action-key="{{action.key}}"
+              data-economy="{{action.economy}}">
+        <span class="t8-action-tile-name">{{action.name}}</span>
+        {{#if action.requisite}}<span class="t8-action-tile-req">{{action.requisite}}</span>{{/if}}
+        <span class="t8-action-tile-badges">
+          {{#if action.isAttack}}<i class="fas fa-crosshairs" title="{{localize 'THREEEIGHT.Action.IsAttack'}}"></i>{{/if}}
+          {{#if action.isSkill}}<i class="fas fa-dice-d20" title="Skill"></i>{{/if}}
+        </span>
+      </button>
+      {{/each}}
+    </div>
+    {{/each}}
+  </div>
+
+  {{! ── Conditions ───────────────────────────────── }}
+  <div class="t8-tab-panel {{#if (eq activeTab 'conditions')}}active{{/if}}" data-tab="conditions">
+    {{#if conditionCatalog.length}}
+    <ul class="t8-condition-list">
+      {{#each conditionCatalog as |cond|}}
+      <li class="t8-condition-row {{#if cond.isActive}}active{{/if}}">
+        <span class="t8-condition-name">{{cond.label}}</span>
+        <span class="t8-condition-stacks-blocks">
+          {{#each (numberArray 6) as |n|}}
+          <button type="button"
+                  class="t8-stack-block {{#if (lte n ../cond.stacks)}}filled{{/if}}"
+                  data-action="setConditionStacks"
+                  data-condition-key="{{../cond.key}}"
+                  data-stacks="{{n}}">
+            {{n}}
+          </button>
+          {{/each}}
+        </span>
+        <button type="button"
+                class="t8-condition-toggle"
+                data-action="toggleCondition"
+                data-condition-key="{{cond.key}}"
+                title="{{localize 'THREEEIGHT.Condition.Toggle'}}">
+          <i class="fas {{#if cond.isActive}}fa-toggle-on{{else}}fa-toggle-off{{/if}}"></i>
+        </button>
+      </li>
+      {{/each}}
+    </ul>
+    {{else}}
+    <p class="t8-empty">{{localize "THREEEIGHT.Condition.None"}}</p>
+    {{/if}}
+  </div>
+
+  {{! ── Items ────────────────────────────────────── }}
+  <div class="t8-tab-panel {{#if (eq activeTab 'items')}}active{{/if}}" data-tab="items">
+    {{#if itemGroups.length}}
+      {{#each itemGroups as |group|}}
+      <div class="t8-item-group">
+        <h3 class="t8-section-title t8-item-group-header">
+          {{group.typeLabel}}
+          <span class="t8-count">{{group.items.length}}</span>
+        </h3>
+        <table class="t8-item-table">
+          <thead>
+            <tr>
+              <th class="t8-col-name">{{localize "THREEEIGHT.Sheet.Name"}}</th>
+              {{#each group.columns as |col|}}
+              <th style="width: {{col.width}}">{{localize col.label}}</th>
+              {{/each}}
+              <th class="t8-col-actions"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each group.items as |item|}}
+            <tr class="t8-item-row" data-item-id="{{item.id}}" draggable="true">
+              <td class="t8-col-name">
+                <img class="t8-item-icon" src="{{item.img}}" alt="{{item.name}}" />
+                <span class="t8-item-name" data-action="editItem" data-item-id="{{item.id}}">{{item.name}}</span>
+              </td>
+              {{#each item.cells as |cell|}}
+              <td>{{cell.value}}</td>
+              {{/each}}
+              <td class="t8-col-actions">
+                <button type="button" data-action="deleteItem" data-item-id="{{item.id}}">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+      {{/each}}
+    {{else}}
+    <p class="t8-empty">{{localize "THREEEIGHT.Sheet.NoItems"}}</p>
+    {{/if}}
+  </div>
+
 </section>

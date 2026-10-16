@@ -1,10 +1,9 @@
-<nav class="t8-ribbon" data-group="primary">
-  {{#each tabs.primary}}
+<nav class="t8-ribbon" data-application-part="ribbon">
+  {{#each tabs}}
   <button type="button"
           class="t8-tab-btn {{cssClass}}"
-          data-action="changeTab"
-          data-tab="{{id}}"
-          data-group="primary">
+          data-action="setTab"
+          data-tab="{{id}}">
     <i class="{{icon}}"></i>
     <span>{{localize label}}</span>
   </button>

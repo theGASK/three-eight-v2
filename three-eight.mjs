@@ -76,8 +76,20 @@ Hooks.once("init", () => {
   foundry.documents.collections.Actors.registerSheet(
     "three-eight-v2",
     ThreeEightActorSheet,
-    { types: [], makeDefault: true, label: "THREEEIGHT.Sheet.ActorLabel" }
+    { makeDefault: true, label: "THREEEIGHT.Sheet.ActorLabel" }
   );
+
+  // ── Handlebars helpers ──────────────────────────────
+  Handlebars.registerHelper("gte", (a, b) => Number(a) >= Number(b));
+  Handlebars.registerHelper("lte", (a, b) => Number(a) <= Number(b));
+  if (!Handlebars.helpers.eq) {
+    Handlebars.registerHelper("eq", (a, b) => a === b);
+  }
+  Handlebars.registerHelper("numberArray", (n) => {
+    const len = Number(n) || 0;
+    return Array.from({ length: len }, (_, i) => i + 1);
+  });
+
   foundry.documents.collections.Items.registerSheet(
     "three-eight-v2",
     ThreeEightItemSheet,
