@@ -432,9 +432,12 @@
     },
     "Actor": {
       "Description": "Description",
-      "Wounds": "Wounds",
-      "WoundsMax": "Wounds (Max)",
-      "WoundsDM": "Wounds DM",
+      "Wounds": {
+        "Wounds": "Wounds",
+        "WoundsMax": "Wounds (Max)",
+        "WoundsDM": "Wounds DM",
+        "MeleeWoundsDM": "Wounds (Melee Def.)"
+      },
       "Effort": "Effort",
       "EffortDM": "Effort DM",
       "Primary": {

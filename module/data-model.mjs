@@ -230,12 +230,14 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
     /**
      * Derives the actor's Melee Defense.
      *
-     *   [base] + [characteristic DM] + [combatBonus] − [current Wounds]
+     *   [base] + [characteristic DM] + [combatBonus] + [meleeWoundsDM]
      *
-     * The base value and the characteristic(s) considered are
-     * per-actor-type, defined in `constants.mjs`. For PC / NPC /
-     * Animal the highest DM among Fitness, Agility and Intelligence
-     * is used; every other type names a single characteristic.
+     * meleeWoundsDM is a modifier derived from current wounds relative
+     * to the maximum:
+     *
+     *   wounds > 0   →  wounds − woundsMax    (0 at full health,
+     *                                          grows negative as wounds drop)
+     *   wounds ≤ 0   →  0 − woundsMax         (penalty capped at −woundsMax)
      *
      * The result may be negative.
      */
@@ -252,8 +254,17 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
 
         const combatBonus = Number(this.combatBonus) || 0;
         const wounds      = Number(this.wounds) || 0;
+        const woundsMax   = Number(this.woundsMax) || 0;
 
-        this.meleeDefense = base + charDM + combatBonus - wounds;
+        // Wounds-derived melee defense modifier.
+        // At full health this is 0; as wounds fall it grows negative,
+        // bottoming out at -woundsMax once wounds reach 0 or below.
+        const meleeWoundsDM = wounds > 0
+            ? wounds - woundsMax
+            : 0 - woundsMax;
+
+        this.meleeWoundsDM = meleeWoundsDM;
+        this.meleeDefense  = base + charDM + combatBonus + meleeWoundsDM;
     }
 
     #deriveSecondary(primary, secondary, contributions) {
