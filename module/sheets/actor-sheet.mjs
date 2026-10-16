@@ -1,5 +1,3 @@
-// module/sheets/actor-sheet.mjs
-
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
 
@@ -16,21 +14,17 @@ const ITEM_COLUMNS = {
     { key: "system.group",      label: "THREEEIGHT.Skill.Group", label: "110px" },
     { key: "system.skillValue", label: "THREEEIGHT.Skill.Value", label: "70px"  }
   ],
-  specialty: [
-    { key: "system.score", label: "THREEEIGHT.Specialty.Score", width: "60px" }
-  ],
-  spell: [
+  specialty:     [{ key: "system.score",       label: "THREEEIGHT.Specialty.Score",       width: "60px" }],
+  spell:         [
     { key: "system.level",       label: "THREEEIGHT.Spell.Level",       width: "60px" },
     { key: "system.castingcost", label: "THREEEIGHT.Spell.CastingCost", width: "70px" }
   ],
-  generalObject: [
-    { key: "system.encumbrance", label: "THREEEIGHT.GeneralObject.Encumbrance", width: "80px" }
-  ],
-  container: [
+  generalObject: [{ key: "system.encumbrance", label: "THREEEIGHT.GeneralObject.Encumbrance", width: "80px" }],
+  container:     [
     { key: "system.capacity.value", label: "THREEEIGHT.Container.CapacityValue", width: "70px" },
     { key: "system.capacity.max",   label: "THREEEIGHT.Container.CapacityMax",   width: "70px" }
   ],
-  ammunition: [
+  ammunition:    [
     { key: "system.quantity",    label: "THREEEIGHT.Ammunition.Quantity", width: "60px" },
     { key: "system.damageBonus", label: "THREEEIGHT.Weapon.Damage",       width: "60px" },
     { key: "system.penetration", label: "THREEEIGHT.Weapon.Penetration",  width: "60px" }
@@ -47,38 +41,42 @@ const ITEM_COLUMNS = {
     { key: "system.protection.value", label: "THREEEIGHT.Item.VehicleArmor.Protection", width: "80px" },
     { key: "system.soak.value",       label: "THREEEIGHT.Item.VehicleArmor.Soak",       width: "80px" }
   ],
-  mod:       [{ key: "system.modifier", label: "THREEEIGHT.Modifier.Field.Value", width: "70px" }],
-  quality:   [{ key: "system.modifier", label: "THREEEIGHT.Modifier.Field.Value", width: "70px" }],
-  flaw:      [{ key: "system.modifier", label: "THREEEIGHT.Modifier.Field.Value", width: "70px" }],
-  power:     [{ key: "system.modifier", label: "THREEEIGHT.Modifier.Field.Value", width: "70px" }],
-  disease:   [],
-  default:   []
+  mod:     [{ key: "system.modifier", label: "THREEEIGHT.Modifier.Field.Value", width: "70px" }],
+  quality: [{ key: "system.modifier", label: "THREEEIGHT.Modifier.Field.Value", width: "70px" }],
+  flaw:    [{ key: "system.modifier", label: "THREEEIGHT.Modifier.Field.Value", width: "70px" }],
+  power:   [{ key: "system.modifier", label: "THREEEIGHT.Modifier.Field.Value", width: "70px" }],
+  disease: [],
+  default: []
 };
+
+const TAB_DEFINITIONS = [
+  { id: "description",     icon: "fas fa-book",      label: "THREEEIGHT.Tab.Description"     },
+  { id: "characteristics", icon: "fas fa-dice-d20",  label: "THREEEIGHT.Tab.Characteristics" },
+  { id: "actions",         icon: "fas fa-bolt",      label: "THREEEIGHT.Tab.Actions"         },
+  { id: "conditions",      icon: "fas fa-heart-pulse", label: "THREEEIGHT.Tab.Conditions"    },
+  { id: "items",           icon: "fas fa-briefcase", label: "THREEEIGHT.Tab.Items"           }
+];
 
 /**
  * Three-Eight v2 Actor Sheet.
  *
- * Parts (rendered in this order into `.window-content`):
- *   partA       — identity, portrait, vitals
- *   ribbon      — tab navigation
- *   description — tab panel
- *   characteristics
- *   actions
- *   conditions
- *   items
+ * Three parts only:
+ *   partA — identity + vitals              (flex: 1)
+ *   ribbon — tab navigation                (auto)
+ *   partB — all tab panels, one visible    (flex: 2)
  *
- * CSS assigns partA to grid row 1, ribbon to row 2, and every
- * tab part to row 3 (stacked, only the active one visible).
+ * Active tab is stored on the instance (`_activeTab`) and rendered
+ * into `partB` — no dependency on the framework's tab machinery.
  */
 export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static DEFAULT_OPTIONS = {
     classes: ["three-eight-v2", "sheet", "actor"],
-    tag: "form",
     position: { width: 780, height: 820 },
     window: { resizable: true, controls: [] },
     form: { submitOnChange: true, closeOnSubmit: false },
     actions: {
       editImage:          ThreeEightActorSheet.#onEditImage,
+      changeTab:          ThreeEightActorSheet.#onChangeTab,
       modifyWounds:       ThreeEightActorSheet.#onModifyWounds,
       modifyEffort:       ThreeEightActorSheet.#onModifyEffort,
       restoreWounds:      ThreeEightActorSheet.#onRestoreWounds,
@@ -87,35 +85,21 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
       setConditionStacks: ThreeEightActorSheet.#onSetConditionStacks,
       deleteItem:         ThreeEightActorSheet.#onDeleteItem,
       editItem:           ThreeEightActorSheet.#onEditItem,
-      declareAction:      ThreeEightActorSheet.#onDeclareAction,
-      changeTab:          ThreeEightActorSheet.#onChangeTab
+      declareAction:      ThreeEightActorSheet.#onDeclareAction
     }
   };
 
   static PARTS = {
-    partA:  { template: "systems/three-eight-v2/templates/actor/partA.hbs" },
+    partA:  { template: "systems/three-eight-v2/templates/actor/partA.hbs"  },
     ribbon: { template: "systems/three-eight-v2/templates/actor/ribbon.hbs" },
-
-    description:     { template: "systems/three-eight-v2/templates/actor/tab-description.hbs",     scrollable: [".t8-tab-scroll"] },
-    characteristics: { template: "systems/three-eight-v2/templates/actor/tab-characteristics.hbs", scrollable: [".t8-tab-scroll"] },
-    actions:         { template: "systems/three-eight-v2/templates/actor/tab-actions.hbs",         scrollable: [".t8-tab-scroll"] },
-    conditions:      { template: "systems/three-eight-v2/templates/actor/tab-conditions.hbs",      scrollable: [".t8-tab-scroll"] },
-    items:           { template: "systems/three-eight-v2/templates/actor/tab-items.hbs",           scrollable: [".t8-tab-scroll"] }
+    partB:  { template: "systems/three-eight-v2/templates/actor/partB.hbs",
+              scrollable: [".t8-tab-scroll"] }
   };
 
-  static TABS = {
-    primary: {
-      tabs: [
-        { id: "description",     icon: "fas fa-book",                   label: "THREEEIGHT.Tab.Description"     },
-        { id: "characteristics", icon: "fas fa-dice-d20",               label: "THREEEIGHT.Tab.Characteristics" },
-        { id: "actions",         icon: "fas fa-bolt",                   label: "THREEEIGHT.Tab.Actions"         },
-        { id: "conditions",      icon: "fas fa-heart-pulse",            label: "THREEEIGHT.Tab.Conditions"      },
-        { id: "items",           icon: "fas fa-briefcase",              label: "THREEEIGHT.Tab.Items"           }
-      ],
-      initial: "description",
-      labelPrefix: "THREEEIGHT.Tab"
-    }
-  };
+  constructor(options = {}) {
+    super(options);
+    this._activeTab = options.activeTab ?? "description";
+  }
 
   /* ── Context ─────────────────────────────────────── */
 
@@ -128,9 +112,6 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
     context.actor      = actor;
     context.system     = system;
     context.isEditable = this.isEditable;
-
-    // Framework tab data — used by the ribbon and each tab part.
-    context.tabs = this._prepareTabs("primary");
 
     context.commonName = system.commonName ?? "";
     context.age        = system.age        ?? "";
@@ -150,27 +131,20 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
     context.rangedArmor     = system.rangedArmor     ?? 0;
     context.meleeArmor      = system.meleeArmor      ?? 0;
 
+    // Tab navigation state — a simple array.
+    context.tabs = TAB_DEFINITIONS.map(t => ({
+      ...t,
+      active:   t.id === this._activeTab,
+      cssClass: t.id === this._activeTab ? "active" : ""
+    }));
+    context.activeTab = this._activeTab;
+
     context.primaryCharacteristics   = this.#buildPrimaryList();
     context.secondaryCharacteristics = this.#buildSecondaryList();
     context.actionGroups             = this.#buildActionGroups();
     context.conditionCatalog         = this.#buildConditionList();
     context.itemGroups               = this.#buildItemGroups(actor);
 
-    return context;
-  }
-
-  /**
-   * Assign `context.tab` for each tab part. This is what drives
-   * `{{tab.cssClass}}` on the part's root element and tells the
-   * framework which panel is active.
-   *
-   * @override
-   */
-  async _preparePartContext(partId, context) {
-    context = await super._preparePartContext(partId, context);
-    if (partId in context.tabs) {
-      context.tab = context.tabs[partId];
-    }
     return context;
   }
 
@@ -186,14 +160,16 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
       .map(key => {
         const cap = key.charAt(0).toUpperCase() + key.slice(1);
         const dm  = Number(primary[`${key}DM`]);
+        const dmFmt = Number.isFinite(dm)
+          ? (dm >= 0 ? `+${dm}` : `${dm}`)
+          : "+0";
         return {
           key,
           label:     game.i18n.localize(`THREEEIGHT.Actor.Primary.${cap}`),
           base:      Number(primary[key]) || 0,
           effective: Number(primary[`${key}Effective`] ?? primary[key]) || 0,
           modifier:  Number(primary[`${key}Modifier`]) || 0,
-          dm:        Number.isFinite(dm) ? dm : 0,
-          dmSigned:  Number.isFinite(dm) && dm >= 0 ? `+${dm}` : `${dm || 0}`,
+          dmFmt,
           isTextDM:  false
         };
       });
@@ -209,14 +185,15 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
         const cap    = key.charAt(0).toUpperCase() + key.slice(1);
         const isText = key === "reputation" || key === "wealth";
         const dm     = Number(secondary[`${key}DM`]);
+        const dmFmt  = isText ? "" :
+          (Number.isFinite(dm) ? (dm >= 0 ? `+${dm}` : `${dm}`) : "+0");
         return {
           key,
           label:     game.i18n.localize(`THREEEIGHT.Actor.Secondary.${cap}`),
           base:      Number(secondary[key]) || 0,
           effective: Number(secondary[`${key}Effective`] ?? secondary[key]) || 0,
           modifier:  Number(secondary[`${key}Modifier`]) || 0,
-          dm:        isText ? 0 : (Number.isFinite(dm) ? dm : 0),
-          dmSigned:  isText ? "" : (Number.isFinite(dm) && dm >= 0 ? `+${dm}` : `${dm || 0}`),
+          dmFmt,
           textLabel: isText ? (secondary[`${key}Label`] ?? "") : "",
           isTextDM:  isText
         };
@@ -313,14 +290,14 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
     return String(value);
   }
 
-  /* ── Action handlers ────────────────────────────── */
+  /* ── Handlers ───────────────────────────────────── */
 
   static #onChangeTab(event, target) {
     event.preventDefault();
-    const tab   = target.dataset.tab;
-    const group = target.dataset.group ?? "primary";
-    if (!tab) return;
-    return this.changeTab(tab, group);
+    const tab = target.dataset.tab;
+    if (!tab || tab === this._activeTab) return;
+    this._activeTab = tab;
+    return this.render();
   }
 
   static async #onEditImage(event, target) {
@@ -343,7 +320,6 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
     await game.threeEightV2?.wounds?.restore(this.document);
     ui.notifications.info(game.i18n.localize("THREEEIGHT.Wounds.Restored"));
   }
-
   static async #onRestoreEffort() {
     await game.threeEightV2?.effort?.restore(this.document);
     ui.notifications.info(game.i18n.localize("THREEEIGHT.Effort.Restored"));
@@ -353,6 +329,7 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
     const key = target.dataset.conditionKey;
     if (!key) return;
     const mod = game.threeEightV2?.condition;
+    if (!mod) return;
     try {
       if (mod.has(this.document, key)) {
         await mod.toggle(this.document, key);
@@ -370,6 +347,7 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
     const stacks = Number(target.dataset.stacks);
     if (!key || !Number.isFinite(stacks)) return;
     const mod = game.threeEightV2?.condition;
+    if (!mod) return;
     try {
       if (!mod.has(this.document, key)) {
         await mod.apply(this.document, {
