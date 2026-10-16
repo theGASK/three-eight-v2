@@ -608,3 +608,21 @@ export function resolvedCatalog() {
   }
   return out;
 }
+
+// Standalone — user selects the skill from the dropdown
+await game.threeEightV2.skill.prompt(actor);
+
+// From a sheet click — skill is preselected
+const skill = actor.items.get(skillId);
+await game.threeEightV2.skill.prompt(actor, { skill });
+
+// Direct resolution without the dialog (macro use)
+await game.threeEightV2.skill.resolve(actor, {
+  skillId: skill.id,
+  characteristicKey: "agility",
+  presetTN: "average",
+  customTN: "",
+  alterationKeys: ["familiar", "standard", "normalTime", "idealLight"],
+  extraModifier: 0,
+  taskChainDM: 0
+});

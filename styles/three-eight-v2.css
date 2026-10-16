@@ -207,3 +207,193 @@
   font-family: var(--font-mono, monospace);
   font-weight: bold;
 }
+
+/* ── Melee attack dialog ──────────────────────────────── */
+.three-eight-v2.melee-attack-dialog .melee-attack-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+.three-eight-v2.melee-attack-dialog select[multiple] {
+  min-height: 5em;
+}
+.three-eight-v2.melee-attack-dialog .ungrouped-alterations label.checkbox {
+  display: block;
+  margin: 0.15em 0;
+}
+.three-eight-v2.melee-attack-dialog .melee-preview {
+  border-top: 1px dashed var(--color-border-light-tertiary);
+  margin-top: 0.5em;
+  padding-top: 0.5em;
+}
+.three-eight-v2.melee-attack-dialog .formula-display,
+.three-eight-v2.melee-attack-dialog .damage-display,
+.three-eight-v2.melee-attack-dialog .effort-display {
+  font-family: var(--font-mono, monospace);
+  font-weight: bold;
+}
+
+/* ── Melee attack chat card ───────────────────────────── */
+.three-eight-v2.chat-card.melee-attack .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid var(--color-border-light-tertiary);
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+}
+.three-eight-v2.chat-card.melee-attack .melee-mode {
+  font-size: 0.85em;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-dark-secondary);
+}
+.three-eight-v2.chat-card.melee-attack .tn-line,
+.three-eight-v2.chat-card.melee-attack .penetration-line,
+.three-eight-v2.chat-card.melee-attack .protection-line,
+.three-eight-v2.chat-card.melee-attack .damage-line,
+.three-eight-v2.chat-card.melee-attack .wound-line,
+.three-eight-v2.chat-card.melee-attack .ammo-line,
+.three-eight-v2.chat-card.melee-attack .effort-line,
+.three-eight-v2.chat-card.melee-attack .skill-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95em;
+  margin-top: 2px;
+}
+.three-eight-v2.chat-card.melee-attack .damage-detail {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85em;
+  margin-left: 0.4em;
+  opacity: 0.75;
+}
+.three-eight-v2.chat-card.melee-attack .critical-wound {
+  margin-top: 6px;
+  font-weight: bold;
+  color: var(--color-level-error);
+}
+.three-eight-v2.chat-card.melee-attack .penetrated {
+  color: var(--color-level-error);
+  font-weight: bold;
+}
+.three-eight-v2.chat-card.melee-attack .gm-actions {
+  display: flex;
+  gap: 0.5em;
+  margin-top: 0.75em;
+  padding-top: 0.5em;
+  border-top: 1px dashed var(--color-border-light-tertiary);
+}
+.three-eight-v2.chat-card.melee-attack .gm-actions button {
+  flex: 1;
+}
+.three-eight-v2.effort-dialog .effort-current,
+.three-eight-v2 .effort-dialog .effort-current {
+  font-family: var(--font-mono, monospace);
+  font-weight: bold;
+}
+/* ── Skill dialog ─────────────────────────────────────── */
+.three-eight-v2.skill-dialog .skill-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+.three-eight-v2.skill-dialog .ungrouped-alterations label.checkbox {
+  display: block;
+  margin: 0.15em 0;
+}
+.three-eight-v2.skill-dialog .skill-preview {
+  border-top: 1px dashed var(--color-border-light-tertiary);
+  margin-top: 0.5em;
+  padding-top: 0.5em;
+}
+.three-eight-v2.skill-dialog .formula-display {
+  font-family: var(--font-mono, monospace);
+  font-weight: bold;
+}
+.three-eight-v2.skill-dialog .alt-list {
+  font-style: italic;
+}
+
+/* ── Skill check chat card ────────────────────────────── */
+.three-eight-v2.chat-card.skill-check .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid var(--color-border-light-tertiary);
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+}
+.three-eight-v2.chat-card.skill-check .characteristic {
+  font-size: 0.85em;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-dark-secondary);
+}
+.three-eight-v2.chat-card.skill-check .effort-line,
+.three-eight-v2.chat-card.skill-check .total-line,
+.three-eight-v2.chat-card.skill-check .tn-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95em;
+  margin-top: 2px;
+}
+.three-eight-v2.chat-card.skill-check .effort-line .bonus {
+  font-family: var(--font-mono, monospace);
+  color: var(--color-level-success);
+}
+.three-eight-v2.chat-card.skill-check .outcome {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+  font-weight: bold;
+}
+.three-eight-v2.chat-card.skill-check.success .result-label { color: var(--color-level-success); }
+.three-eight-v2.chat-card.skill-check.failure .result-label { color: var(--color-level-error); }
+.three-eight-v2.chat-card.skill-check .effect {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5em;
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px dashed var(--color-border-light-tertiary);
+  font-size: 0.95em;
+}
+.three-eight-v2.chat-card.skill-check .effect-value {
+  font-weight: bold;
+  margin-left: auto;
+  margin-right: 0.5em;
+}
+.three-eight-v2.chat-card.skill-check.effect-exceptionalFailure .effect-tier,
+.three-eight-v2.chat-card.skill-check.effect-averageFailure     .effect-tier { color: var(--color-level-error); }
+.three-eight-v2.chat-card.skill-check.effect-marginalFailure    .effect-tier { color: var(--color-level-warning); }
+.three-eight-v2.chat-card.skill-check.effect-marginalSuccess    .effect-tier { color: var(--color-level-warning); }
+.three-eight-v2.chat-card.skill-check.effect-averageSuccess     .effect-tier,
+.three-eight-v2.chat-card.skill-check.effect-exceptionalSuccess .effect-tier { color: var(--color-level-success); }
+.three-eight-v2.chat-card.skill-check .critical-effort {
+  margin-top: 6px;
+  font-weight: bold;
+  color: var(--color-level-error);
+}
+.three-eight-v2.chat-card.skill-check .gm-actions {
+  display: flex;
+  gap: 0.5em;
+  margin-top: 0.75em;
+  padding-top: 0.5em;
+  border-top: 1px dashed var(--color-border-light-tertiary);
+}
+.three-eight-v2.chat-card.skill-check .gm-actions button {
+  flex: 1;
+}
+.three-eight-v2.chat-card.action-declared .action-buttons {
+  display: flex;
+  gap: 0.5em;
+  margin-top: 0.75em;
+  padding-top: 0.5em;
+  border-top: 1px dashed var(--color-border-light-tertiary);
+}
+.three-eight-v2.chat-card.action-declared .action-buttons button {
+  flex: 1;
+}

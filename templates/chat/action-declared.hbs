@@ -13,8 +13,25 @@
       <span class="value">{{actionRequisite}}</span>
     </div>
     {{/if}}
+
     {{#if actionIsAttack}}
-    <div class="action-attack">{{localize "THREEEIGHT.Action.IsAttack"}}</div>
+    <div class="action-attack">{{localize "THREEEIGHT.Action.IsAttack"}}{{#if actionAttackType}} — {{actionAttackType}}{{/if}}</div>
+    {{/if}}
+
+    {{#if actionIsAttack}}
+    <div class="action-buttons">
+      <button type="button" data-action="roll-attack" data-attack-type="{{actionAttackType}}">
+        {{#if actionAttackType}}{{localize "THREEEIGHT.Action.RollAttackTyped" type=actionAttackType}}{{else}}{{localize "THREEEIGHT.Action.RollAttack"}}{{/if}}
+      </button>
+    </div>
+    {{/if}}
+
+    {{#if actionIsSkill}}
+    <div class="action-buttons">
+      <button type="button" data-action="roll-skill">
+        {{localize "THREEEIGHT.Action.RollSkill"}}
+      </button>
+    </div>
     {{/if}}
   </div>
 </div>

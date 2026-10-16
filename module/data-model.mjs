@@ -46,7 +46,14 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
             // stored and manually editable for every other actor type.
             woundsMax: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
 
-            effort: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+            // Current effort — persistent and mutable. Reduced by
+            // actions that spend Effort, restored by the Effort API
+            // or by rest.
+            effectiveEffort: new NumberField({ required: true, integer: true, initial: 0 }),
+            // Maximum effort — derived from Fitness + Morale when
+            // both exist; otherwise kept as whatever was stored.
+            maxEffort: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+
             actions: new EmbeddedDataField(ActionsData),
             conditions: new EmbeddedDataField(ConditionsData)
         };
@@ -103,18 +110,24 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
     }
 
     #deriveEffort(primary, contributions) {
+        // maxEffort: derived from Fitness + Morale when both exist,
+        // otherwise kept as whatever was stored (manual value).
         if (primary?.fitnessEffective !== undefined &&
             primary?.moraleEffective  !== undefined) {
-            this.effort = averageUp(primary.fitnessEffective, primary.moraleEffective);
+            this.maxEffort = averageUp(primary.fitnessEffective, primary.moraleEffective);
         }
 
+        // effectiveEffort: the current value — never overwritten here.
+        // It is modified by game events and by the Effort API.
+
         const modifier  = sumContributions(contributions, "effort");
-        const effective = (Number(this.effort) || 0) + modifier;
+        const effective = (Number(this.effectiveEffort) || 0) + modifier;
 
         this.effortEffective = effective;
         this.effortModifier  = modifier;
         this.effortDM        = characteristicDM(effective);
     }
+    
     /**
      * Derives the initiative DM and the initiative bonus.
      *
@@ -154,20 +167,8 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
         this.combatBonus = sumContributions(contributions, "combat.bonus");
     }
 
-    /**
-     * Derives the actor's armor values from the single equipped
-     * armor item of each type.
-     *
-     *   IndividualArmor → rangedArmor / meleeArmor
-     *   VehicleArmor    → protection / soak  (vehicle actor types only)
-     *
-     * At most one armor item of a given type may carry
-     * `equipped: true`; the enforcement lives in
-     * `module/equipment.mjs`. When no armor of a type is equipped,
-     * the corresponding derived values are 0 — or absent entirely
-     * for VehicleArmor on non-vehicle actors.
-     */
-        /**
+
+     /**
      * Derives the actor's armor values from the equipped armor items.
      *
      *   IndividualArmor → rangedArmor / meleeArmor  (all actor types)

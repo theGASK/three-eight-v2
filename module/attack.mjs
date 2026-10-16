@@ -255,7 +255,6 @@ async function promptAndRequest(actor, attackType, { target = null } = {}) {
 async function runAttack(actor, attackType, { weapon, target = null } = {}) {
   if (!weapon) return null;
 
-  // Ranged attacks use their own dialog and resolution pipeline.
   if (attackType === "ranged") {
     if (!Ranged.hasAmmo(weapon)) {
       ui.notifications.warn(
@@ -266,15 +265,11 @@ async function runAttack(actor, attackType, { weapon, target = null } = {}) {
     return Ranged.promptRangedAttack(actor, weapon, { target });
   }
 
-  // Melee keeps the original placeholder-modifier flow.
-  const modifierResult = await promptModifiers();
-  if (!modifierResult) return null;
-  return request(actor, null, {
-    attackType,
-    weapon,
-    target,
-    modifier: modifierResult.modifier ?? 0
-  });
+  if (attackType === "melee") {
+    return Melee.promptMeleeAttack(actor, weapon, { target });
+  }
+
+  return null;
 }
 
 /* ── Low-level request ──────────────────────────────── */

@@ -31,31 +31,31 @@ import { request as requestAttack } from "./attack.mjs";
 
 /* ── Action Definition ──────────────────────────────── */
 
-/**
- * A declarable Action.
- *
- *   name         — display name
- *   description  — rich-text body
- *   requisite    — the resource, item or condition the action needs
- *   isAttack     — if true, declaring the action triggers an attack
- */
 export class ActionDefinition extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
       name:        new StringField({ required: true, blank: false, initial: "" }),
       description: new HTMLField({ required: false, blank: true, initial: "" }),
       requisite:   new StringField({ required: false, blank: true, initial: "" }),
-      isAttack:    new BooleanField({ required: true, initial: false })
+      isAttack:    new BooleanField({ required: true, initial: false }),
+      attackType:  new StringField({
+        required: false,
+        blank: true,
+        initial: "",
+        choices: ["", "melee", "ranged"]
+      }),
+      isSkill:     new BooleanField({ required: true, initial: false })
     };
   }
 
-  /** Convenience: read an action's data as a plain object. */
   toPlain() {
     return {
       name:        this.name,
       description: this.description,
       requisite:   this.requisite,
-      isAttack:    this.isAttack
+      isAttack:    this.isAttack,
+      attackType:  this.attackType,
+      isSkill:     this.isSkill
     };
   }
 }
@@ -313,7 +313,9 @@ async function postActionToChat(actor, type, action) {
       actionName:         action.name,
       actionDescription:  action.description,
       actionRequisite:    action.requisite,
-      actionIsAttack:     action.isAttack
+      actionIsAttack:     !!action.isAttack,
+      actionAttackType:   action.attackType ?? "",
+      actionIsSkill:      !!action.isSkill
     }
   );
   await ChatMessage.create({

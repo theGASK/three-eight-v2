@@ -40,6 +40,17 @@
         "OverMax": "Cannot exceed maximum wounds ({value} > {max}). No change applied."
       }
     },
+    "Effort": {
+      "DialogTitle": "Modify Effort",
+      "Current": "Current Effort",
+      "Delta": "Adjustment",
+      "Hint": "Enter a positive number to recover effort or a negative number to spend it.",
+      "Apply": "Apply",
+      "Restored": "Effort restored to maximum.",
+      "Err": {
+        "OverMax": "Cannot exceed maximum effort ({value} > {max}). No change applied."
+      }
+    },
     "Attack": {
       "Summary": "Attack",
       "Weapon": "Weapon",
@@ -70,6 +81,144 @@
         "IneligibleWeapon.melee": "The selected weapon cannot make a melee attack.",
         "UnknownType": "Unknown attack type: \"{type}\".",
         "OutOfAmmo": "The Weapon is out of Ammo! Use the reload Action."
+      }
+    },
+    "Skill": {
+      "DialogTitle": "Skill Check",
+      "Name": "Skill",
+      "Characteristic": "Characteristic",
+      "RollFormula": "Roll Formula",
+      "SelectedAlterations": "Selected Alterations",
+      "OtherAlterations": "Other Alterations",
+      "ExtraModifier": "Extra Modifier",
+      "TaskChainDM": "Task Chain DM",
+      "TN": "TN",
+      "Difference": "Difference",
+      "Total": "Total",
+      "Roll": "Roll",
+      "Cancel": "Cancel",
+      "SpendEffort": "Spend 1 Effort (+1d8)",
+      "EffortFlavor": "Spent 1 Effort on a skill check.",
+      "EffortSpent": "Effort Spent",
+      "CriticalEffort": "Critical Effort!",
+      "Err": {
+        "NoActor": "No actor available for this skill check."
+      },
+      "AlterationGroup": {
+        "familiarity": "Familiarity",
+        "equipmentQuality": "Equipment Quality",
+        "time": "Time",
+        "visibility": "Visibility"
+      },
+      "Alteration": {
+        "completelyAlien": "Completely Alien",
+        "unfamiliar": "Unfamiliar",
+        "familiar": "Familiar",
+        "wellPracticed": "Well Practiced",
+        "intimate": "Intimate Familiarity",
+        "makeshiftBroken": "Makeshift / Broken",
+        "poor": "Poor",
+        "standard": "Standard",
+        "good": "Good",
+        "masterwork": "Masterwork",
+        "desperateRush": "Desperate Rush",
+        "quick": "Quick",
+        "normalTime": "Normal Time",
+        "careful": "Careful",
+        "deliberate": "Deliberate",
+        "pitchDark": "Pitch Dark",
+        "dim": "Dim",
+        "idealLight": "Ideal Light",
+        "aided": "Aided"
+      }
+    },
+    "Melee": {
+      "DialogTitle": "Melee Attack — {weapon}",
+      "Mode": "Melee Mode",
+      "Defender": "Defender",
+      "DefenderValue": "Defender Melee Defense",
+      "RollFormula": "Roll Formula",
+      "TotalDamage": "Total Damage",
+      "EffortCost": "Effort Cost",
+      "SelectedAlterations": "Selected Alterations",
+      "OtherAlterations": "Other Alterations",
+      "Difference": "Difference",
+      "Roll": "Roll Attack",
+      "Cancel": "Cancel",
+      "ApplyEffort": "Apply Effort Cost",
+      "EffortApplied": "Effort cost applied.",
+      "Mode": {
+        "normalStrike": "Normal Strike",
+        "charge": "Charge",
+        "allOutStrike": "All Out Strike",
+        "defensiveStrike": "Defensive Strike",
+        "gunStrike": "Gun Strike",
+        "droneNormal": "Drone - Normal",
+        "droneDefensive": "Drone - Defensive",
+        "droneGunStrike": "Drone - Gun Strike",
+        "droneRam": "Drone - Ram"
+      },
+      "AlterationGroup": {
+        "special": "Special",
+        "reach": "Reach",
+        "defender": "Defender",
+        "outnumbered": "Outnumbered",
+        "attackerStance": "Attacker Stance",
+        "grip": "Grip",
+        "leverage": "Leverage",
+        "grappleMove": "Grapple Move",
+        "targetTerrain": "Target Terrain",
+        "lightConditions": "Light Conditions"
+      },
+      "Alteration": {
+        "none": "None",
+        "calledShot": "Called Shot",
+        "improvisedWeapon": "Improvised Weapon",
+        "sameReach": "Same Reach",
+        "longerReach": "Longer Reach",
+        "shorterReach": "Shorter Reach",
+        "defenderReady": "Defender Ready",
+        "defenderProne": "Defender Prone/Seated",
+        "defenderHelpless": "Defender Helpless",
+        "smallTarget": "Small Target",
+        "largeTarget": "Large Target",
+        "duel": "Duel",
+        "flanked": "Flanked",
+        "outnumbered2": "Outnumbered 2-to-1",
+        "outnumbered3": "Outnumbered 3-to-1",
+        "swarmed": "Swarmed 4+",
+        "standing": "Standing",
+        "proneKneeling": "Prone/Kneeling",
+        "retreating": "Retreating",
+        "standardGrip": "Standard Grip",
+        "fullGrip": "Full Grip",
+        "halfGrip": "Half Grip",
+        "equalSize": "Equal Size",
+        "strongerOpponent": "Stronger Opponent",
+        "weakerOpponent": "Weaker Opponent",
+        "proneOpponent": "Prone Opponent",
+        "attackerProne": "Attacker Prone",
+        "grappleNone": "None",
+        "grapplePin": "Pin",
+        "grappleChoke": "Choke",
+        "grappleTakedown": "Takedown",
+        "grappleThrow": "Throw",
+        "grappleDisarm": "Disarm",
+        "grappleHit": "Hit",
+        "grappleBreakFree": "Break Free",
+        "openTerrain": "Open Terrain, Swamp, Shallows, or Pavement",
+        "shrubland": "Shrubland, Debris, Forest or Sparse Urban, or Indoors",
+        "thickFoliage": "Thick Foliage or Dense Urban",
+        "lightNormal": "Normal",
+        "limited": "Limited",
+        "darkness": "Darkness",
+        "denseSmoke": "Dense Smoke",
+        "elevatedPosition": "Attacking from Elevated Position",
+        "attackerArmored": "Attacker Armored",
+        "defenderArmored": "Defender Armored",
+        "defenderShield": "Defender has Shield",
+        "surpriseStrike": "Surprise Strike",
+        "counterStrike": "Counter Strike"
       }
     },
     "Ranged": {
@@ -440,6 +589,8 @@
       },
       "Effort": "Effort",
       "EffortDM": "Effort DM",
+      "MaxEffort": "Effort (Max)",
+      "EffectiveEffort": "Effort (Current)",
       "Primary": {
         "Fitness": "Fitness",
         "FitnessDM": "Fitness DM",
@@ -639,9 +790,13 @@
       "Requisite": "Requisite",
       "Description": "Description",
       "IsAttack": "Attack",
+      "RollAttack": "Roll Attack",
+      "RollAttackTyped": "Roll {type} Attack",
+      "RollSkill": "Roll Skill Check",
       "Err": {
         "NoEconomy": "This actor has no Action Economy.",
-        "NoSlot": "No {type} slot available this round."
+        "NoSlot": "No {type} slot available this round.",
+        "NoActorForCard": "No actor available for this action card."
       }
     }
   }

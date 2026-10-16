@@ -421,7 +421,7 @@ async function postRangedCard(resolution) {
       woundDamage: woundDamage ?? 0,
       critical: !!critical,
       hasArmorUpdates: (armorPlan?.updates?.length ?? 0) > 0,
-      skillName: selectedSkillName ?? "",
+      skillName: skillName ?? "",
       skillDM: resolution.skillDM ?? 0,
     }
   );

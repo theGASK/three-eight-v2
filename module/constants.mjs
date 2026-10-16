@@ -418,3 +418,220 @@ export const MELEE_DEFENSE_CHARACTERISTICS = Object.freeze({
   baseOfOperations: ["integrity"],
   faction:          ["morale"]
 });
+
+/* ══════════════════════════════════════════════════════════
+   MELEE COMBAT
+   Tables driving the Melee Attack dialog and resolution.
+   ══════════════════════════════════════════════════════════ */
+
+/**
+ * Melee Mode table.
+ *
+ * `effort` is one of:
+ *   - a number  → that many Effort points
+ *   - "1d8"     → a rolled 1d8 (roll occurs at resolve time)
+ *   - 0         → no Effort required
+ *
+ * `usesAmmo` marks Gun Strike modes. `ammoDie` is the dice
+ * formula for rounds spent, capped at the weapon's ROF.
+ *
+ * `multiplier` is applied to the weapon's raw damage value to
+ * derive the effective damage; each source contributes its own
+ * `weapon.damage × multiplier`, and those products are summed.
+ */
+export const MELEE_MODES = Object.freeze([
+  { key: "normalStrike",     label: "THREEEIGHT.Melee.Mode.normalStrike",
+    dice: "2d8", dm:  0, effort: 0,     initial: true,  multiplier: 1,   onlyDrone: false, usesAmmo: false, ammoDie: null },
+  { key: "charge",           label: "THREEEIGHT.Melee.Mode.charge",
+    dice: "2d8", dm:  1, effort: 1,     initial: false, multiplier: 1.5, onlyDrone: false, usesAmmo: false, ammoDie: null },
+  { key: "allOutStrike",     label: "THREEEIGHT.Melee.Mode.allOutStrike",
+    dice: "3d8", dm:  2, effort: "1d8", initial: false, multiplier: 2,   onlyDrone: false, usesAmmo: false, ammoDie: null },
+  { key: "defensiveStrike",  label: "THREEEIGHT.Melee.Mode.defensiveStrike",
+    dice: "2d8", dm: -2, effort: 0,     initial: false, multiplier: 0.5, onlyDrone: false, usesAmmo: false, ammoDie: null },
+  { key: "gunStrike",        label: "THREEEIGHT.Melee.Mode.gunStrike",
+    dice: "2d8", dm: -3, effort: 0,     initial: false, multiplier: 1,   onlyDrone: false, usesAmmo: true,  ammoDie: "1d8" },
+  { key: "droneNormal",      label: "THREEEIGHT.Melee.Mode.droneNormal",
+    dice: "3d8", dm:  3, effort: 1,     initial: false, multiplier: 1,   onlyDrone: true,  usesAmmo: false, ammoDie: null },
+  { key: "droneDefensive",   label: "THREEEIGHT.Melee.Mode.droneDefensive",
+    dice: "3d8", dm:  3, effort: 0,     initial: false, multiplier: 2,   onlyDrone: true,  usesAmmo: false, ammoDie: null },
+  { key: "droneGunStrike",   label: "THREEEIGHT.Melee.Mode.droneGunStrike",
+    dice: "3d8", dm:  0, effort: 1,     initial: false, multiplier: 1,   onlyDrone: true,  usesAmmo: true,  ammoDie: "1d8" },
+  { key: "droneRam",         label: "THREEEIGHT.Melee.Mode.droneRam",
+    dice: "4d8", dm:  3, effort: 1,     initial: false, multiplier: 3,   onlyDrone: true,  usesAmmo: false, ammoDie: null }
+]);
+
+/** Dialog group headers, in display order. */
+export const MELEE_ALTERATION_GROUPS = Object.freeze([
+  { key: "special",         label: "THREEEIGHT.Melee.AlterationGroup.special"         },
+  { key: "reach",           label: "THREEEIGHT.Melee.AlterationGroup.reach"           },
+  { key: "defender",        label: "THREEEIGHT.Melee.AlterationGroup.defender"        },
+  { key: "outnumbered",     label: "THREEEIGHT.Melee.AlterationGroup.outnumbered"     },
+  { key: "attackerStance",  label: "THREEEIGHT.Melee.AlterationGroup.attackerStance"  },
+  { key: "grip",            label: "THREEEIGHT.Melee.AlterationGroup.grip"            },
+  { key: "leverage",        label: "THREEEIGHT.Melee.AlterationGroup.leverage"        },
+  { key: "grappleMove",     label: "THREEEIGHT.Melee.AlterationGroup.grappleMove"     },
+  { key: "targetTerrain",   label: "THREEEIGHT.Melee.AlterationGroup.targetTerrain"   },
+  { key: "lightConditions", label: "THREEEIGHT.Melee.AlterationGroup.lightConditions" }
+]);
+
+/**
+ * Melee Attack Alteration table.
+ *
+ * `group: null` entries are standalone tickboxes. `multiple: true`
+ * groups render as multi-selects and sum their selected DMs.
+ *
+ * `multiplier` contributes `weapon.damage × multiplier` to the
+ * effective damage, alongside the mode's own multiplier.
+ */
+export const MELEE_ALTERATIONS = Object.freeze([
+  // ── Special (multiple) ─────────────────────────────
+  { key: "none",              label: "THREEEIGHT.Melee.Alteration.none",              group: "special",         dm:  0, multiple: true,  initial: true,  multiplier: 0   },
+  { key: "calledShot",        label: "THREEEIGHT.Melee.Alteration.calledShot",        group: "special",         dm: -1, multiple: true,  initial: false, multiplier: 2   },
+  { key: "improvisedWeapon",  label: "THREEEIGHT.Melee.Alteration.improvisedWeapon",  group: "special",         dm: -2, multiple: true,  initial: false, multiplier: 0   },
+  // ── Reach ──────────────────────────────────────────
+  { key: "sameReach",         label: "THREEEIGHT.Melee.Alteration.sameReach",         group: "reach",           dm:  0, multiple: false, initial: true,  multiplier: 0   },
+  { key: "longerReach",       label: "THREEEIGHT.Melee.Alteration.longerReach",       group: "reach",           dm:  1, multiple: false, initial: false, multiplier: 0   },
+  { key: "shorterReach",      label: "THREEEIGHT.Melee.Alteration.shorterReach",      group: "reach",           dm: -2, multiple: false, initial: false, multiplier: 0   },
+  // ── Defender ───────────────────────────────────────
+  { key: "defenderReady",     label: "THREEEIGHT.Melee.Alteration.defenderReady",     group: "defender",        dm:  0, multiple: false, initial: true,  multiplier: 0   },
+  { key: "defenderProne",     label: "THREEEIGHT.Melee.Alteration.defenderProne",     group: "defender",        dm:  2, multiple: false, initial: false, multiplier: 0.5 },
+  { key: "defenderHelpless",  label: "THREEEIGHT.Melee.Alteration.defenderHelpless",  group: "defender",        dm:  3, multiple: false, initial: false, multiplier: 1   },
+  { key: "smallTarget",       label: "THREEEIGHT.Melee.Alteration.smallTarget",       group: "defender",        dm: -2, multiple: false, initial: false, multiplier: 0   },
+  { key: "largeTarget",       label: "THREEEIGHT.Melee.Alteration.largeTarget",       group: "defender",        dm:  2, multiple: false, initial: false, multiplier: 0   },
+  // ── Outnumbered ────────────────────────────────────
+  { key: "duel",              label: "THREEEIGHT.Melee.Alteration.duel",              group: "outnumbered",     dm:  0, multiple: false, initial: true,  multiplier: 0   },
+  { key: "flanked",           label: "THREEEIGHT.Melee.Alteration.flanked",           group: "outnumbered",     dm: -1, multiple: false, initial: false, multiplier: 0   },
+  { key: "outnumbered2",      label: "THREEEIGHT.Melee.Alteration.outnumbered2",      group: "outnumbered",     dm: -2, multiple: false, initial: false, multiplier: 0   },
+  { key: "outnumbered3",      label: "THREEEIGHT.Melee.Alteration.outnumbered3",      group: "outnumbered",     dm: -3, multiple: false, initial: false, multiplier: 0   },
+  { key: "swarmed",           label: "THREEEIGHT.Melee.Alteration.swarmed",           group: "outnumbered",     dm: -4, multiple: false, initial: false, multiplier: 0   },
+  // ── Attacker Stance ────────────────────────────────
+  { key: "standing",          label: "THREEEIGHT.Melee.Alteration.standing",          group: "attackerStance",  dm:  0, multiple: false, initial: true,  multiplier: 0   },
+  { key: "proneKneeling",     label: "THREEEIGHT.Melee.Alteration.proneKneeling",     group: "attackerStance",  dm: -2, multiple: false, initial: false, multiplier: 0   },
+  { key: "retreating",        label: "THREEEIGHT.Melee.Alteration.retreating",        group: "attackerStance",  dm: -1, multiple: false, initial: false, multiplier: 0   },
+  // ── Grip ───────────────────────────────────────────
+  { key: "standardGrip",      label: "THREEEIGHT.Melee.Alteration.standardGrip",      group: "grip",            dm:  0, multiple: false, initial: true,  multiplier: 0   },
+  { key: "fullGrip",          label: "THREEEIGHT.Melee.Alteration.fullGrip",          group: "grip",            dm:  1, multiple: false, initial: false, multiplier: 0   },
+  { key: "halfGrip",          label: "THREEEIGHT.Melee.Alteration.halfGrip",          group: "grip",            dm: -2, multiple: false, initial: false, multiplier: 0   },
+  // ── Leverage (multiple) ────────────────────────────
+  { key: "equalSize",         label: "THREEEIGHT.Melee.Alteration.equalSize",         group: "leverage",        dm:  0, multiple: true,  initial: true,  multiplier: 0   },
+  { key: "strongerOpponent",  label: "THREEEIGHT.Melee.Alteration.strongerOpponent",  group: "leverage",        dm: -2, multiple: true,  initial: false, multiplier: 0   },
+  { key: "weakerOpponent",    label: "THREEEIGHT.Melee.Alteration.weakerOpponent",    group: "leverage",        dm:  2, multiple: true,  initial: false, multiplier: 0   },
+  { key: "proneOpponent",     label: "THREEEIGHT.Melee.Alteration.proneOpponent",     group: "leverage",        dm:  2, multiple: true,  initial: false, multiplier: 0.5 },
+  { key: "attackerProne",     label: "THREEEIGHT.Melee.Alteration.attackerProne",     group: "leverage",        dm: -2, multiple: true,  initial: false, multiplier: 0   },
+  // ── Grapple Move ───────────────────────────────────
+  { key: "grappleNone",       label: "THREEEIGHT.Melee.Alteration.grappleNone",       group: "grappleMove",     dm:  0, multiple: false, initial: true,  multiplier: 0   },
+  { key: "grapplePin",        label: "THREEEIGHT.Melee.Alteration.grapplePin",        group: "grappleMove",     dm: -2, multiple: false, initial: false, multiplier: 0   },
+  { key: "grappleChoke",      label: "THREEEIGHT.Melee.Alteration.grappleChoke",      group: "grappleMove",     dm: -3, multiple: false, initial: false, multiplier: 0   },
+  { key: "grappleTakedown",   label: "THREEEIGHT.Melee.Alteration.grappleTakedown",   group: "grappleMove",     dm: -1, multiple: false, initial: false, multiplier: 0   },
+  { key: "grappleThrow",      label: "THREEEIGHT.Melee.Alteration.grappleThrow",      group: "grappleMove",     dm: -2, multiple: false, initial: false, multiplier: 0   },
+  { key: "grappleDisarm",     label: "THREEEIGHT.Melee.Alteration.grappleDisarm",     group: "grappleMove",     dm: -2, multiple: false, initial: false, multiplier: 0   },
+  { key: "grappleHit",        label: "THREEEIGHT.Melee.Alteration.grappleHit",        group: "grappleMove",     dm: -2, multiple: false, initial: false, multiplier: 0   },
+  { key: "grappleBreakFree",  label: "THREEEIGHT.Melee.Alteration.grappleBreakFree",  group: "grappleMove",     dm: -2, multiple: false, initial: false, multiplier: 0   },
+  // ── Target Terrain ─────────────────────────────────
+  { key: "openTerrain",       label: "THREEEIGHT.Melee.Alteration.openTerrain",       group: "targetTerrain",   dm:  0, multiple: false, initial: true,  multiplier: 0   },
+  { key: "shrubland",         label: "THREEEIGHT.Melee.Alteration.shrubland",         group: "targetTerrain",   dm: -1, multiple: false, initial: false, multiplier: 0   },
+  { key: "thickFoliage",      label: "THREEEIGHT.Melee.Alteration.thickFoliage",      group: "targetTerrain",   dm: -2, multiple: false, initial: false, multiplier: 0   },
+  // ── Light Conditions ───────────────────────────────
+  { key: "lightNormal",       label: "THREEEIGHT.Melee.Alteration.lightNormal",       group: "lightConditions", dm:  0, multiple: false, initial: true,  multiplier: 0   },
+  { key: "limited",           label: "THREEEIGHT.Melee.Alteration.limited",           group: "lightConditions", dm: -1, multiple: false, initial: false, multiplier: 0   },
+  { key: "darkness",          label: "THREEEIGHT.Melee.Alteration.darkness",          group: "lightConditions", dm: -2, multiple: false, initial: false, multiplier: 0   },
+  { key: "denseSmoke",        label: "THREEEIGHT.Melee.Alteration.denseSmoke",        group: "lightConditions", dm: -3, multiple: false, initial: false, multiplier: 0   },
+  // ── Ungrouped (tickboxes) ──────────────────────────
+  { key: "elevatedPosition",  label: "THREEEIGHT.Melee.Alteration.elevatedPosition",  group: null,              dm:  1, multiple: false, initial: false, multiplier: 0.5 },
+  { key: "attackerArmored",   label: "THREEEIGHT.Melee.Alteration.attackerArmored",   group: null,              dm:  1, multiple: false, initial: false, multiplier: 0   },
+  { key: "defenderArmored",   label: "THREEEIGHT.Melee.Alteration.defenderArmored",   group: null,              dm: -1, multiple: false, initial: false, multiplier: 0   },
+  { key: "defenderShield",    label: "THREEEIGHT.Melee.Alteration.defenderShield",    group: null,              dm: -2, multiple: false, initial: false, multiplier: 0   },
+  { key: "surpriseStrike",    label: "THREEEIGHT.Melee.Alteration.surpriseStrike",    group: null,              dm:  3, multiple: false, initial: false, multiplier: 1   },
+  { key: "counterStrike",     label: "THREEEIGHT.Melee.Alteration.counterStrike",     group: null,              dm: -3, multiple: false, initial: false, multiplier: 0   }
+]);
+
+/** Characteristic whose DM drives the melee attack roll. */
+export const MELEE_ATTACK_CHARACTERISTIC = Object.freeze({
+  pc:               "fitness",
+  npc:              "fitness",
+  animal:           "fitness",
+  smallVehicle:     "integrity",
+  largeVehicle:     "integrity",
+  drone:            "integrity",
+  server:           "integrity",
+  faction:          "morale",
+  baseOfOperations: "morale"
+});
+
+/* ── Melee lookup helpers ──────────────────────────── */
+
+export function getMeleeMode(key) {
+  return MELEE_MODES.find(m => m.key === key) ?? null;
+}
+export function getMeleeAlteration(key) {
+  return MELEE_ALTERATIONS.find(a => a.key === key) ?? null;
+}
+
+/* ══════════════════════════════════════════════════════════
+   SKILL CHECKS
+   Tables driving the Skill Dialog and resolution.
+   ══════════════════════════════════════════════════════════ */
+
+/** Dialog group headers for the skill alteration menus. */
+export const SKILL_ALTERATION_GROUPS = Object.freeze([
+  { key: "familiarity",      label: "THREEEIGHT.Skill.AlterationGroup.familiarity"      },
+  { key: "equipmentQuality", label: "THREEEIGHT.Skill.AlterationGroup.equipmentQuality" },
+  { key: "time",             label: "THREEEIGHT.Skill.AlterationGroup.time"             },
+  { key: "visibility",       label: "THREEEIGHT.Skill.AlterationGroup.visibility"       }
+]);
+
+/**
+ * Skill Alteration table.
+ *
+ * `group: null` entries render as standalone tickboxes.
+ * All groups are single-select; the table's "Multiple choices?"
+ * column is NO for every entry.
+ */
+export const SKILL_ALTERATIONS = Object.freeze([
+  // ── Familiarity ────────────────────────────────────
+  { key: "completelyAlien", label: "THREEEIGHT.Skill.Alteration.completelyAlien", group: "familiarity", dm: -2, multiple: false, initial: false },
+  { key: "unfamiliar",      label: "THREEEIGHT.Skill.Alteration.unfamiliar",      group: "familiarity", dm: -1, multiple: false, initial: false },
+  { key: "familiar",        label: "THREEEIGHT.Skill.Alteration.familiar",        group: "familiarity", dm:  0, multiple: false, initial: true  },
+  { key: "wellPracticed",   label: "THREEEIGHT.Skill.Alteration.wellPracticed",   group: "familiarity", dm:  1, multiple: false, initial: false },
+  { key: "intimate",        label: "THREEEIGHT.Skill.Alteration.intimate",        group: "familiarity", dm:  2, multiple: false, initial: false },
+  // ── Equipment Quality ──────────────────────────────
+  { key: "makeshiftBroken", label: "THREEEIGHT.Skill.Alteration.makeshiftBroken", group: "equipmentQuality", dm: -2, multiple: false, initial: false },
+  { key: "poor",            label: "THREEEIGHT.Skill.Alteration.poor",            group: "equipmentQuality", dm: -1, multiple: false, initial: false },
+  { key: "standard",        label: "THREEEIGHT.Skill.Alteration.standard",        group: "equipmentQuality", dm:  0, multiple: false, initial: true  },
+  { key: "good",            label: "THREEEIGHT.Skill.Alteration.good",            group: "equipmentQuality", dm:  1, multiple: false, initial: false },
+  { key: "masterwork",      label: "THREEEIGHT.Skill.Alteration.masterwork",      group: "equipmentQuality", dm:  2, multiple: false, initial: false },
+  // ── Time ───────────────────────────────────────────
+  { key: "desperateRush",   label: "THREEEIGHT.Skill.Alteration.desperateRush",   group: "time", dm: -2, multiple: false, initial: false },
+  { key: "quick",           label: "THREEEIGHT.Skill.Alteration.quick",           group: "time", dm: -1, multiple: false, initial: false },
+  { key: "normalTime",      label: "THREEEIGHT.Skill.Alteration.normalTime",      group: "time", dm:  0, multiple: false, initial: true  },
+  { key: "careful",         label: "THREEEIGHT.Skill.Alteration.careful",         group: "time", dm:  1, multiple: false, initial: false },
+  { key: "deliberate",      label: "THREEEIGHT.Skill.Alteration.deliberate",      group: "time", dm:  2, multiple: false, initial: false },
+  // ── Visibility ─────────────────────────────────────
+  { key: "pitchDark",       label: "THREEEIGHT.Skill.Alteration.pitchDark",       group: "visibility", dm: -2, multiple: false, initial: false },
+  { key: "dim",             label: "THREEEIGHT.Skill.Alteration.dim",             group: "visibility", dm: -1, multiple: false, initial: false },
+  { key: "idealLight",      label: "THREEEIGHT.Skill.Alteration.idealLight",      group: "visibility", dm:  0, multiple: false, initial: true  },
+  // ── Ungrouped (tickboxes) ──────────────────────────
+  { key: "aided",           label: "THREEEIGHT.Skill.Alteration.aided",           group: null, dm: 1, multiple: false, initial: false }
+]);
+
+/**
+ * Characteristics selectable in the Skill Dialog, per actor type.
+ * The keys match the schema paths under
+ * `system.attributes.primary.<key>`; the DM and label lookups
+ * resolve against those.
+ */
+export const SKILL_CHARACTERISTIC_OPTIONS = Object.freeze({
+  pc:               ["fitness", "agility", "intelligence", "morale"],
+  npc:              ["fitness", "agility", "intelligence", "morale"],
+  animal:           ["fitness", "agility", "intelligence", "morale"],
+  smallVehicle:     ["class", "integrity", "speed", "capacity"],
+  largeVehicle:     ["class", "integrity", "speed", "capacity"],
+  drone:            ["class", "integrity", "speed", "capacity"],
+  server:           ["class", "integrity", "speed", "capacity"],
+  baseOfOperations: ["class", "integrity", "speed", "capacity"],
+  faction:          ["morale"]
+});
+
+export function getSkillAlteration(key) {
+  return SKILL_ALTERATIONS.find(a => a.key === key) ?? null;
+}

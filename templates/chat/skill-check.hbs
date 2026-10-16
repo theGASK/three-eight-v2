@@ -1,0 +1,56 @@
+<div class="three-eight-v2 chat-card skill-check effect-{{effectKey}} {{#if success}}success{{else}}failure{{/if}}">
+  <header class="card-header">
+    <h3>{{skillName}}</h3>
+    <span class="characteristic">{{characteristicKey}}</span>
+  </header>
+  <div class="card-content">
+    <div class="actor-line">
+      <span class="actor-name">{{actorName}}</span>
+    </div>
+
+    <div class="dice-result">
+      <span class="dice-formula">{{baseFormula}}</span>
+      <span class="dice-total">{{rollTotal}}</span>
+    </div>
+
+    {{#if effortSpent}}
+    <div class="effort-line">
+      <span class="label">{{localize "THREEEIGHT.Skill.EffortSpent"}}:</span>
+      <span class="value">{{effortSpent}}</span>
+      <span class="bonus">(+{{effortBonusTotal}})</span>
+    </div>
+    {{/if}}
+
+    <div class="total-line">
+      <span class="label">{{localize "THREEEIGHT.Skill.Total"}}:</span>
+      <span class="value">{{total}}</span>
+    </div>
+
+    <div class="tn-line">
+      <span class="tn">{{localize "THREEEIGHT.Skill.TN"}} {{tn}} ({{tnLabel}})</span>
+      <span class="difference">{{localize "THREEEIGHT.Skill.Difference"}} {{differenceSigned}}</span>
+    </div>
+
+    <div class="outcome">
+      <span class="result-label">
+        {{#if success}}{{localize "THREEEIGHT.Chat.Success"}}{{else}}{{localize "THREEEIGHT.Chat.Failure"}}{{/if}}
+      </span>
+    </div>
+
+    <div class="effect">
+      <span class="effect-label">{{localize "THREEEIGHT.Chat.Effect"}}</span>
+      <span class="effect-value">{{effect}}</span>
+      <span class="effect-tier">{{effectLabel}}</span>
+    </div>
+
+    {{#if criticalEffort}}
+    <div class="critical-effort">{{localize "THREEEIGHT.Skill.CriticalEffort"}}</div>
+    {{/if}}
+
+    <div class="gm-actions">
+      <button type="button" data-action="spend-effort">
+        {{localize "THREEEIGHT.Skill.SpendEffort"}}
+      </button>
+    </div>
+  </div>
+</div>
