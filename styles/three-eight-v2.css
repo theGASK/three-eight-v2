@@ -189,3 +189,21 @@
 .three-eight-v2.chat-card.ranged-attack .gm-actions button {
   flex: 1;
 }
+
+.three-eight-v2.chat-card.ranged-attack .skill-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95em;
+  margin-top: 2px;
+}
+.three-eight-v2.chat-card.ranged-attack .skill-line .dm {
+  margin-left: auto;
+  font-family: var(--font-mono, monospace);
+}
+
+/* ── Wounds dialog ───────────────────────────────────── */
+.three-eight-v2.wounds-dialog .wounds-current,
+.three-eight-v2 .wounds-dialog .wounds-current {
+  font-family: var(--font-mono, monospace);
+  font-weight: bold;
+}

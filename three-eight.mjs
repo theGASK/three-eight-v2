@@ -18,6 +18,7 @@ import * as Attack from "./module/attack.mjs";
 import * as Conditions from "./module/conditions.mjs";
 import { registerEquipmentHooks } from "./module/equipment.mjs";
 import * as Ranged from "./module/attacks/ranged.mjs";
+import * as Wounds from "./module/wounds.mjs";
 
 Hooks.once("init", () => {
   // ── Document classes ────────────────────────────────
@@ -124,6 +125,13 @@ Hooks.once("init", () => {
       getAttacks: ActionsCatalog.getAttackActions,
       resolve: ActionsCatalog.resolveAction,
       resolved: ActionsCatalog.resolvedCatalog
+    },
+    wounds: {
+      Error:    Wounds.WoundsError,
+      modify:   Wounds.modifyWounds,
+      set:      Wounds.setWounds,
+      restore:  Wounds.restoreWounds,
+      prompt:   Wounds.promptWoundsModification
     },
     attack: {
       Error: Attack.AttackError,

@@ -10,6 +10,19 @@
       {{#if hasTarget}}<span class="target">· {{targetName}}</span>{{/if}}
     </div>
 
+    <div class="attack-summary">
+      <span class="attacker">{{actorName}}</span>
+      <span class="target-type">→ {{targetTypeLabel}}</span>
+      {{#if hasTarget}}<span class="target">· {{targetName}}</span>{{/if}}
+    </div>
+    {{#if skillName}}
+    <div class="skill-line">
+      <span class="label">{{localize "THREEEIGHT.Ranged.Skill"}}:</span>
+      <span class="value">{{skillName}}</span>
+      <span class="dm">({{skillDM}})</span>
+    </div>
+    {{/if}}
+
     <div class="dice-result">
       <span class="dice-formula">{{formula}}</span>
       <span class="dice-total">{{rollTotal}}</span>

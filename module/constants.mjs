@@ -381,3 +381,40 @@ export function getTargetType(key) {
 export function getAlteration(key) {
   return RANGED_ALTERATIONS.find(a => a.key === key) ?? null;
 }
+
+/* ── Melee Defense ──────────────────────────────────────
+   Derived defensive value used when an actor is the target
+   of a melee attack.
+
+   Formula:
+     [base] + [characteristic DM] + [combatBonus] − [current Wounds]
+
+   For PC / NPC / Animal the characteristic term is the highest
+   DM among the listed characteristics. For every other type the
+   list contains a single characteristic, so the "highest" is
+   simply that value.
+
+   The result may be negative. */
+export const MELEE_DEFENSE_BASE = Object.freeze({
+  pc:               12,
+  npc:              12,
+  animal:           12,
+  drone:            14,
+  smallVehicle:     10,
+  largeVehicle:     10,
+  server:           10,
+  baseOfOperations: 10,
+  faction:          8
+});
+
+export const MELEE_DEFENSE_CHARACTERISTICS = Object.freeze({
+  pc:               ["fitness", "agility", "intelligence"],
+  npc:              ["fitness", "agility", "intelligence"],
+  animal:           ["fitness", "agility", "intelligence"],
+  drone:            ["integrity"],
+  smallVehicle:     ["integrity"],
+  largeVehicle:     ["integrity"],
+  server:           ["integrity"],
+  baseOfOperations: ["integrity"],
+  faction:          ["morale"]
+});

@@ -27,6 +27,8 @@ import {
   getAlteration
 } from "../constants.mjs";
 
+import { setWounds } from "../wounds.mjs";
+
 const { DialogV2 } = foundry.applications.api;
 
 /* ── Eligibility ────────────────────────────────────── */
@@ -81,6 +83,35 @@ export function getRangedAttackDM(actor) {
   return Number.isFinite(value) ? value : 0;
 }
 
+/**
+ * Every skill item on the actor, in alphabetical order. Used to
+ * populate the skill selector in the ranged attack dialog.
+ *
+ * @param {Actor} actor
+ * @returns {Item[]}
+ */
+export function getAvailableSkills(actor) {
+  const skills = actor?.items?.filter(i => i.type === "skill") ?? [];
+  return skills.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/**
+ * Dice modifier for the selected skill.
+ *
+ *   - A valid skill selection returns that skill's value as its DM.
+ *   - No selection (or an invalid one) returns a −3 penalty.
+ *
+ * @param {Actor}  actor
+ * @param {string} skillId
+ * @returns {number}
+ */
+export function getSkillDM(actor, skillId) {
+  if (!skillId) return -3;
+  const skill = actor?.items?.get(skillId);
+  if (!skill || skill.type !== "skill") return -3;
+  return Number(skill.system?.skillDM) || 0;
+}
+
 /* ── Formula assembly ───────────────────────────────── */
 
 /** @returns {number} Sum of the DMs of the selected alteration keys. */
@@ -93,9 +124,13 @@ export function sumAlterationDM(keys = []) {
 
 /**
  * Break the ranged formula into its component parts.
- * @returns {{ fireMode, fireModeDM, attackDM, alterationDM, combatBonus }}
+ * @returns {{ fireMode, fireModeDM, attackDM, skillDM, alterationDM, combatBonus }}
  */
-export function buildFormulaParts(actor, weapon, { fireModeKey, alterationKeys = [] } = {}) {
+export function buildFormulaParts(actor, weapon, {
+  fireModeKey,
+  skillId = null,
+  alterationKeys = []
+} = {}) {
   const available = getAvailableFireModes(actor, weapon);
   const fireMode = getFireMode(fireModeKey)
     ?? available.find(m => m.initial)
@@ -106,6 +141,7 @@ export function buildFormulaParts(actor, weapon, { fireModeKey, alterationKeys =
     fireMode,
     fireModeDM:    fireMode.dm,
     attackDM:      getRangedAttackDM(actor),
+    skillDM:       getSkillDM(actor, skillId),
     alterationDM:  sumAlterationDM(alterationKeys),
     combatBonus:   Number(actor?.system?.combatBonus) || 0
   };
@@ -117,6 +153,7 @@ export function formulaFromParts(parts) {
   const add = (v) => { if (v) terms.push(`${v > 0 ? "+" : "-"} ${Math.abs(v)}`); };
   add(parts.fireModeDM);
   add(parts.attackDM);
+  add(parts.skillDM);
   add(parts.alterationDM);
   add(parts.combatBonus);
   return terms.join(" ");
@@ -274,6 +311,7 @@ export async function resolveRangedAttack(actor, weapon, state, target = null) {
   const penetration = Number(weapon.effectivePenetration) || 0;
   const damage = computeDamage(weapon, parts.fireMode);
   const ammoSpent = await resolveAmmoSpent(weapon, parts.fireMode);
+  const selectedSkill = state.skillId ? actor.items.get(state.skillId) : null;
 
   const resolution = {
     actor,
@@ -281,6 +319,9 @@ export async function resolveRangedAttack(actor, weapon, state, target = null) {
     fireMode:   parts.fireMode,
     targetType,
     alterationKeys: Array.from(state.alterationKeys ?? []),
+    skillId:     state.skillId ?? null,
+    skillName:   selectedSkill?.name ?? "",
+    skillDM:     parts.skillDM,
     parts,
     formula,
     roll,
@@ -340,7 +381,8 @@ async function postRangedCard(resolution) {
     actor, weapon, fireMode, targetType, formula, rollTotal, tn, difference,
     success, penetration, damage, ammoSpent, targetName,
     protectionBefore, protectionApplied, penetrated, woundDamage,
-    woundNewValue, critical, armorPlan, targetActor
+    woundNewValue, critical, armorPlan, targetActor,
+    skillName, skillDM
   } = resolution;
 
   const flags = {
@@ -378,7 +420,9 @@ async function postRangedCard(resolution) {
       penetrated: !!penetrated,
       woundDamage: woundDamage ?? 0,
       critical: !!critical,
-      hasArmorUpdates: (armorPlan?.updates?.length ?? 0) > 0
+      hasArmorUpdates: (armorPlan?.updates?.length ?? 0) > 0,
+      skillName: selectedSkillName ?? "",
+      skillDM: resolution.skillDM ?? 0,
     }
   );
 
@@ -411,17 +455,24 @@ export async function applyRangedArmor(message) {
 /**
  * Apply the pending wound reduction from a ranged attack card.
  * GM-only.
+ *
+ * Uses `setWounds` with `enforceCap: false` — an attack may drive
+ * wounds below zero. The value written is the one already shown on
+ * the card; the Wounds API is used for a single consistent write
+ * path, not to modify the calculation.
+ *
  * @param {ChatMessage} message
  */
 export async function applyRangedWounds(message) {
-  const data = message.flags?.["three-eight-v2"]?.ranged;
-  if (!data || data.woundsApplied) return;
-  if (data.woundValue === null || data.woundValue === undefined) return;
-  const actor = data.targetActorUuid ? await fromUuid(data.targetActorUuid) : null;
-  if (!actor) return;
+    const data = message.flags?.["three-eight-v2"]?.ranged;
+    if (!data || data.woundsApplied) return;
+    if (data.woundValue === null || data.woundValue === undefined) return;
 
-  await actor.update({ [data.woundPath]: data.woundValue });
-  await message.setFlag("three-eight-v2", "ranged.woundsApplied", true);
+    const actor = data.targetActorUuid ? await fromUuid(data.targetActorUuid) : null;
+    if (!actor) return;
+
+    await setWounds(actor, data.woundValue, { enforceCap: false });
+    await message.setFlag("three-eight-v2", "ranged.woundsApplied", true);
 }
 
 /* ── Dialog ─────────────────────────────────────────── */
@@ -441,6 +492,15 @@ function buildDialogContent(actor, weapon, target) {
   const targetOptions = RANGED_TARGET_TYPES.map(t =>
     `<option value="${t.key}"${t.key === initialTarget.key ? " selected" : ""}>${game.i18n.localize(t.label)} (TN ${t.tn})</option>`
   ).join("");
+
+  // ── Skill options ─────────────────────────────────
+  const skills = getAvailableSkills(actor);
+  const skillOptions = [
+    `<option value="" selected>${game.i18n.localize("THREEEIGHT.Ranged.SkillNone")} (${signedDM(-3)})</option>`,
+    ...skills.map(s =>
+      `<option value="${s.id}">${s.name} (DM ${signedDM(s.system.skillDM)})</option>`
+    )
+  ].join("");
 
   const groupsHtml = RANGED_ALTERATION_GROUPS.map(g => {
     const opts = RANGED_ALTERATIONS.filter(a => a.group === g.key);
@@ -471,6 +531,10 @@ function buildDialogContent(actor, weapon, target) {
         <label>${game.i18n.localize("THREEEIGHT.Ranged.TargetType")}</label>
         <select name="targetType">${targetOptions}</select>
       </div>
+      <div class="form-group">
+        <label>${game.i18n.localize("THREEEIGHT.Ranged.Skill")}</label>
+        <select name="skill">${skillOptions}</select>
+      </div>
       ${groupsHtml}
       <fieldset class="ungrouped-alterations">
         <legend>${game.i18n.localize("THREEEIGHT.Ranged.OtherAlterations")}</legend>
@@ -495,12 +559,12 @@ function buildDialogContent(actor, weapon, target) {
 
 /** Read the dialog's form controls into a selection state. */
 function readDialogState(root, actor, weapon) {
-  const fireModeKey  = root.querySelector("[name='fireMode']")?.value ?? null;
+  const fireModeKey   = root.querySelector("[name='fireMode']")?.value ?? null;
   const targetTypeKey = root.querySelector("[name='targetType']")?.value ?? null;
+  const skillId       = root.querySelector("[name='skill']")?.value || null;
 
   const alterationKeys = [];
 
-  // Grouped selects.
   for (const select of root.querySelectorAll("select[name^='alt-']")) {
     if (select.multiple) {
       for (const opt of select.selectedOptions) alterationKeys.push(opt.value);
@@ -509,12 +573,11 @@ function readDialogState(root, actor, weapon) {
     }
   }
 
-  // Ungrouped tickboxes.
   for (const cb of root.querySelectorAll("input[type='checkbox'][name^='alt-ungrouped-']")) {
     if (cb.checked) alterationKeys.push(cb.value);
   }
 
-  return { fireModeKey, targetTypeKey, alterationKeys };
+  return { fireModeKey, targetTypeKey, skillId, alterationKeys };
 }
 
 /** Human-readable list of the selected alterations with their DMs. */

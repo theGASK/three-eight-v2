@@ -5,7 +5,9 @@ import {
   averageUp,
   INITIATIVE_CHARACTERISTICS,
   VEHICLE_ARMOR_TARGETS,
-  SHIELD_TARGETS
+  SHIELD_TARGETS,
+  MELEE_DEFENSE_BASE,
+  MELEE_DEFENSE_CHARACTERISTICS
 } from "./constants.mjs";
 
 const {
@@ -34,7 +36,16 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
     static defineSchema() {
         return {
             description: new HTMLField({ required: false, blank: true, initial: "" }),
+
+            // Current wounds — persistent and mutable. Reduced by combat
+            // damage (may go negative), restored by the wounds API.
+            // Never overwritten by derivation.
             wounds: new NumberField({ required: true, integer: true, initial: 0 }),
+
+            // Maximum wounds. Derived from Fitness for PC / NPC / Animal;
+            // stored and manually editable for every other actor type.
+            woundsMax: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+
             effort: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
             actions: new EmbeddedDataField(ActionsData),
             conditions: new EmbeddedDataField(ConditionsData)
@@ -54,6 +65,7 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
         this.#deriveInitiative(primary, contributions);
         this.#deriveCombatBonus(contributions);
         this.#deriveArmor();
+        this.#deriveMeleeDefense(primary);
         if (secondary) this.#deriveSecondary(primary, secondary, contributions);
     }
 
@@ -73,13 +85,15 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
     }
 
     #deriveWounds(primary, contributions) {
-        // Step 1: base value.
+        // woundsMax: derived from Fitness when Fitness exists,
+        // otherwise kept as whatever was stored (manual value).
         if (primary?.fitnessEffective !== undefined) {
-            this.wounds    = primary.fitnessEffective;
             this.woundsMax = lookupCharacteristic(primary.fitnessEffective).wounds;
         }
 
-        // Step 2: apply wounds-targeting modifiers on top of the base.
+        // wounds: the current value — never overwritten here.
+        // It is modified by combat logic and by the wounds API.
+
         const modifier  = sumContributions(contributions, "wounds");
         const effective = (Number(this.wounds) || 0) + modifier;
 
@@ -211,6 +225,35 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
         this.soak = vehicle
             ? Number(vehicle.system.soak?.value) || 0
             : 0;
+    }
+
+    /**
+     * Derives the actor's Melee Defense.
+     *
+     *   [base] + [characteristic DM] + [combatBonus] − [current Wounds]
+     *
+     * The base value and the characteristic(s) considered are
+     * per-actor-type, defined in `constants.mjs`. For PC / NPC /
+     * Animal the highest DM among Fitness, Agility and Intelligence
+     * is used; every other type names a single characteristic.
+     *
+     * The result may be negative.
+     */
+    #deriveMeleeDefense(primary) {
+        const actorType = this.parent?.type;
+        const base = MELEE_DEFENSE_BASE[actorType] ?? 0;
+        const chars = MELEE_DEFENSE_CHARACTERISTICS[actorType] ?? [];
+
+        let charDM = 0;
+        for (const key of chars) {
+            const value = primary?.[`${key}DM`];
+            if (Number.isFinite(value)) charDM = Math.max(charDM, value);
+        }
+
+        const combatBonus = Number(this.combatBonus) || 0;
+        const wounds      = Number(this.wounds) || 0;
+
+        this.meleeDefense = base + charDM + combatBonus - wounds;
     }
 
     #deriveSecondary(primary, secondary, contributions) {
@@ -671,6 +714,32 @@ export class SkillData extends ThreeEightItemData {
         }
 
         return base;
+    }
+
+        get skillValue() {
+        const specs = this.specialties;
+        let base = 0;
+        if (specs.length > 0) {
+            const sum = specs.reduce((acc, s) => acc + (Number(s.system.score) || 0), 0);
+            base = Math.ceil(sum / specs.length);
+        }
+
+        const actor = this.parent?.actor;
+        if (actor) {
+            const contributions = computeActorContributions(actor);
+            base += sumContributions(contributions, "skills.roll");
+        }
+
+        return base;
+    }
+
+    /**
+     * Dice modifier derived from the skill's current value via the
+     * characteristic table. Consumed by the attack modules when the
+     * user selects a skill for an attack roll.
+     */
+    get skillDM() {
+        return characteristicDM(this.skillValue);
     }
 }
 

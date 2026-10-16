@@ -29,6 +29,17 @@
     }
   },
   "THREEEIGHT": {
+    "Wounds": {
+      "DialogTitle": "Modify Wounds",
+      "Current": "Current Wounds",
+      "Delta": "Adjustment",
+      "Hint": "Enter a positive number to heal or a negative number to take damage.",
+      "Apply": "Apply",
+      "Restored": "Wounds restored to maximum.",
+      "Err": {
+        "OverMax": "Cannot exceed maximum wounds ({value} > {max}). No change applied."
+      }
+    },
     "Attack": {
       "Summary": "Attack",
       "Weapon": "Weapon",
@@ -64,6 +75,8 @@
     "Ranged": {
       "DialogTitle": "Ranged Attack — {weapon}",
       "FireMode": "Fire Mode",
+      "Skill": "Skill",
+      "SkillNone": "— None —",
       "TargetType": "Target Type",
       "TargetTypeLabel": "Target Type",
       "RollFormula": "Roll Formula",
