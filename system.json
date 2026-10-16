@@ -1,11 +1,14 @@
 {
   "id": "three-eight-v2",
   "title": "Three-Eight v2",
-  "version": "0.5.0",
+  "version": "0.5.2",
   "compatibility": {
     "minimum": "14",
     "verified": "14"
   },
+  "url": "https://github.com/theGASK/three-eight-v2",
+  "manifest": "https://github.com/theGASK/three-eight-v2/releases/latest/download/system.json",
+  "download": "https://github.com/theGASK/three-eight-v2/releases/latest/download/system.zip",
 
   "esmodules": ["three-eight.mjs"],
 "styles": [

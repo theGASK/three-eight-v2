@@ -1,0 +1,29 @@
+<section class="t8-tab-panel tab {{tab.cssClass}}"
+         data-group="primary" data-tab="conditions">
+  <div class="t8-tab-scroll">
+    {{#if conditionCatalog.length}}
+    <ul class="t8-condition-list">
+      {{#each conditionCatalog as |cond|}}
+      <li class="t8-condition-row {{#if cond.isActive}}active{{/if}}">
+        <span class="t8-condition-name">{{cond.label}}</span>
+        <span class="t8-condition-stacks-blocks">
+          {{#each (numberArray 6) as |n|}}
+          <button type="button"
+                  class="t8-stack-block {{#if (lte n ../cond.stacks)}}filled{{/if}}"
+                  data-action="setConditionStacks"
+                  data-condition-key="{{../cond.key}}"
+                  data-stacks="{{n}}">{{n}}</button>
+          {{/each}}
+        </span>
+        <button type="button" class="t8-condition-toggle"
+                data-action="toggleCondition" data-condition-key="{{cond.key}}">
+          <i class="fas {{#if cond.isActive}}fa-toggle-on{{else}}fa-toggle-off{{/if}}"></i>
+        </button>
+      </li>
+      {{/each}}
+    </ul>
+    {{else}}
+    <p class="t8-empty">{{localize "THREEEIGHT.Condition.None"}}</p>
+    {{/if}}
+  </div>
+</section>

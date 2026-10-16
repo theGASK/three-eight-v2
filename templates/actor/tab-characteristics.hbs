@@ -1,0 +1,82 @@
+<section class="t8-tab-panel tab {{tab.cssClass}}"
+         data-group="primary" data-tab="characteristics">
+  <div class="t8-tab-scroll">
+
+    <div class="t8-vitals-row">
+      <div class="t8-vital-block">
+        <div class="t8-vital-block-header">
+          <span class="t8-vital-block-label">{{localize "THREEEIGHT.Actor.Wounds"}}</span>
+          <button type="button" class="t8-icon-btn" data-action="modifyWounds">
+            <i class="fas fa-sliders"></i>
+          </button>
+        </div>
+        <div class="t8-vital-block-value">
+          <input type="number" name="system.wounds" value="{{wounds}}"
+                 {{#unless isEditable}}disabled{{/unless}} />
+          <span class="t8-vital-block-sep">/</span>
+          <span class="t8-vital-block-max">{{woundsMax}}</span>
+        </div>
+      </div>
+
+      <div class="t8-vital-block">
+        <div class="t8-vital-block-header">
+          <span class="t8-vital-block-label">{{localize "THREEEIGHT.Actor.Effort"}}</span>
+          <button type="button" class="t8-icon-btn" data-action="modifyEffort">
+            <i class="fas fa-sliders"></i>
+          </button>
+        </div>
+        <div class="t8-vital-block-value">
+          <input type="number" name="system.effectiveEffort" value="{{effectiveEffort}}"
+                 {{#unless isEditable}}disabled{{/unless}} />
+          <span class="t8-vital-block-sep">/</span>
+          <span class="t8-vital-block-max">{{maxEffort}}</span>
+        </div>
+      </div>
+    </div>
+
+    {{#if primaryCharacteristics.length}}
+    <h3 class="t8-section-title">{{localize "THREEEIGHT.Sheet.Primary"}}</h3>
+    <div class="t8-stat-grid">
+      {{#each primaryCharacteristics as |stat|}}
+      <div class="t8-stat">
+        <div class="t8-stat-label">{{stat.label}}</div>
+        <div class="t8-stat-values">
+          <input class="t8-stat-base" type="number"
+                 name="system.attributes.primary.{{stat.key}}"
+                 value="{{stat.base}}"
+                 {{#unless ../isEditable}}disabled{{/unless}} />
+          <span class="t8-stat-arrow">→</span>
+          <span class="t8-stat-effective">{{stat.effective}}</span>
+          <span class="t8-stat-dm">{{stat.dmSigned}}</span>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+    {{/if}}
+
+    {{#if secondaryCharacteristics.length}}
+    <h3 class="t8-section-title">{{localize "THREEEIGHT.Sheet.Secondary"}}</h3>
+    <div class="t8-stat-grid">
+      {{#each secondaryCharacteristics as |stat|}}
+      <div class="t8-stat">
+        <div class="t8-stat-label">{{stat.label}}</div>
+        <div class="t8-stat-values">
+          <input class="t8-stat-base" type="number"
+                 name="system.attributes.secondary.{{stat.key}}"
+                 value="{{stat.base}}"
+                 {{#unless ../isEditable}}disabled{{/unless}} />
+          <span class="t8-stat-arrow">→</span>
+          {{#if stat.isTextDM}}
+            <span class="t8-stat-text">{{stat.textLabel}}</span>
+          {{else}}
+            <span class="t8-stat-effective">{{stat.effective}}</span>
+            <span class="t8-stat-dm">{{stat.dmSigned}}</span>
+          {{/if}}
+        </div>
+      </div>
+      {{/each}}
+    </div>
+    {{/if}}
+
+  </div>
+</section>

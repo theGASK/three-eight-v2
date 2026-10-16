@@ -72,28 +72,24 @@ Hooks.once("init", () => {
   CONFIG.Item.dataModels.vehicleArmor = VehicleArmorData;
   CONFIG.Item.dataModels.shield = ShieldData;
 
-    // ── Sheets ──────────────────────────────────────────
-  foundry.documents.collections.Actors.registerSheet(
-    "three-eight-v2",
-    ThreeEightActorSheet,
-    { makeDefault: true, label: "THREEEIGHT.Sheet.ActorLabel" }
-  );
-
-  // ── Handlebars helpers ──────────────────────────────
-  Handlebars.registerHelper("gte", (a, b) => Number(a) >= Number(b));
-  Handlebars.registerHelper("lte", (a, b) => Number(a) <= Number(b));
-  if (!Handlebars.helpers.eq) {
-    Handlebars.registerHelper("eq", (a, b) => a === b);
-  }
-  Handlebars.registerHelper("numberArray", (n) => {
-    const len = Number(n) || 0;
-    return Array.from({ length: len }, (_, i) => i + 1);
+  // ── Sheets ──────────────────────────────────────────
+  // NOTE: omit `types` entirely. Passing `types: []` registers the
+  // sheet against zero sub-types, so it is never selected.
+  Actors.registerSheet("three-eight-v2", ThreeEightActorSheet, {
+    makeDefault: true,
+    label: "THREEEIGHT.Sheet.ActorLabel"
+  });
+  Items.registerSheet("three-eight-v2", ThreeEightItemSheet, {
+    makeDefault: true,
+    label: "THREEEIGHT.Sheet.ItemLabel"
   });
 
-  foundry.documents.collections.Items.registerSheet(
-    "three-eight-v2",
-    ThreeEightItemSheet,
-    { types: [], makeDefault: true, label: "THREEEIGHT.Sheet.ItemLabel" }
+  // ── Handlebars helpers ──────────────────────────────
+  // `eq` is registered by Foundry. These three are not.
+  Handlebars.registerHelper("gte", (a, b) => Number(a) >= Number(b));
+  Handlebars.registerHelper("lte", (a, b) => Number(a) <= Number(b));
+  Handlebars.registerHelper("numberArray", (n) =>
+    Array.from({ length: Number(n) || 0 }, (_, i) => i + 1)
   );
 
   // ── Theme setting ───────────────────────────────────

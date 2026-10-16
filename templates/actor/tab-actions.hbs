@@ -1,0 +1,24 @@
+<section class="t8-tab-panel tab {{tab.cssClass}}"
+         data-group="primary" data-tab="actions">
+  <div class="t8-tab-scroll">
+    {{#each actionGroups as |group|}}
+    <h3 class="t8-section-title">{{group.label}}</h3>
+    <div class="t8-action-grid">
+      {{#each group.actions as |action|}}
+      <button type="button"
+              class="t8-action-tile {{#if action.isAttack}}is-attack{{/if}} {{#if action.isSkill}}is-skill{{/if}}"
+              data-action="declareAction"
+              data-action-key="{{action.key}}"
+              data-economy="{{action.economy}}">
+        <span class="t8-action-tile-name">{{action.name}}</span>
+        {{#if action.requisite}}<span class="t8-action-tile-req">{{action.requisite}}</span>{{/if}}
+        <span class="t8-action-tile-badges">
+          {{#if action.isAttack}}<i class="fas fa-crosshairs"></i>{{/if}}
+          {{#if action.isSkill}}<i class="fas fa-dice-d20"></i>{{/if}}
+        </span>
+      </button>
+      {{/each}}
+    </div>
+    {{/each}}
+  </div>
+</section>

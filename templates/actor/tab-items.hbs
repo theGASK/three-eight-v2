@@ -1,0 +1,46 @@
+<section class="t8-tab-panel tab {{tab.cssClass}}"
+         data-group="primary" data-tab="items">
+  <div class="t8-tab-scroll">
+    {{#if itemGroups.length}}
+      {{#each itemGroups as |group|}}
+      <div class="t8-item-group">
+        <h3 class="t8-section-title t8-item-group-header">
+          {{group.typeLabel}}
+          <span class="t8-count">{{group.items.length}}</span>
+        </h3>
+        <table class="t8-item-table">
+          <thead>
+            <tr>
+              <th class="t8-col-name">{{localize "THREEEIGHT.Sheet.Name"}}</th>
+              {{#each group.columns as |col|}}
+              <th style="width: {{col.width}}">{{localize col.label}}</th>
+              {{/each}}
+              <th class="t8-col-actions"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each group.items as |item|}}
+            <tr class="t8-item-row" data-item-id="{{item.id}}" draggable="true">
+              <td class="t8-col-name">
+                <img class="t8-item-icon" src="{{item.img}}" alt="{{item.name}}" />
+                <span class="t8-item-name" data-action="editItem" data-item-id="{{item.id}}">{{item.name}}</span>
+              </td>
+              {{#each item.cells as |cell|}}
+              <td>{{cell.value}}</td>
+              {{/each}}
+              <td class="t8-col-actions">
+                <button type="button" data-action="deleteItem" data-item-id="{{item.id}}">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+      {{/each}}
+    {{else}}
+    <p class="t8-empty">{{localize "THREEEIGHT.Sheet.NoItems"}}</p>
+    {{/if}}
+  </div>
+</section>
