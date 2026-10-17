@@ -85,7 +85,8 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
       setConditionStacks: ThreeEightActorSheet.#onSetConditionStacks,
       deleteItem:         ThreeEightActorSheet.#onDeleteItem,
       editItem:           ThreeEightActorSheet.#onEditItem,
-      declareAction:      ThreeEightActorSheet.#onDeclareAction
+      declareAction:      ThreeEightActorSheet.#onDeclareAction,
+      toggleActionMode:   ThreeEightActorSheet.#onToggleActionMode
     }
   };
 
@@ -136,6 +137,17 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
     context.rangedArmor     = num(system.rangedArmor);
     context.meleeArmor      = num(system.meleeArmor);
     
+    // Add Action Economy context for partA
+    const economy = system.actions?.economy;
+    if (economy) {
+      context.economy = {
+        slowAvailable:  economy.slowAvailable,
+        fastAvailable:  economy.fastAvailable,
+        doubleFastMode: economy.doubleFastMode,
+        isFresh:        economy.isFresh
+      };
+    }
+
     // Tab navigation state — a simple array.
     context.tabs = TAB_DEFINITIONS.map(t => ({
       ...t,
@@ -345,6 +357,17 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
         });
       }
     } catch (err) { ui.notifications.warn(err.message); }
+  }
+
+  static async #onToggleActionMode(event, target) {
+    event.preventDefault();
+    const economy = this.document.system.actions?.economy;
+    if (!economy || !economy.isFresh) return;
+
+    const newMode = !economy.doubleFastMode;
+    await this.document.update({
+      "system.actions.economy.doubleFastMode": newMode
+    });
   }
 
   static async #onSetConditionStacks(event, target) {

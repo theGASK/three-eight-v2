@@ -511,27 +511,25 @@ function buildDialogContent(actor, weapon, target) {
     ? getTargetMeleeDefense(target.actor)
     : 10;
 
-  const groupsHtml = MELEE_ALTERATION_GROUPS.map(g => {
+  const groupsHtml = `<div class="t8-dialog-grid">` + MELEE_ALTERATION_GROUPS.map(g => {
     const opts = MELEE_ALTERATIONS.filter(a => a.group === g.key);
-    const multiple = opts.some(a => a.multiple);
     const options = opts.map(a =>
       `<option value="${a.key}"${a.initial ? " selected" : ""}>` +
       `${game.i18n.localize(a.label)} (${signedDM(a.dm)}${a.multiplier ? `, ×${a.multiplier}` : ""})` +
       `</option>`
     ).join("");
-    const selectAttrs = multiple ? `multiple size="4"` : "";
     return `
       <div class="form-group">
         <label>${game.i18n.localize(g.label)}</label>
-        <select name="alt-${g.key}" ${selectAttrs}>${options}</select>
+        <select name="alt-${g.key}">${options}</select>
       </div>`;
-  }).join("");
+  }).join("") + `</div>`;
 
   const ungrouped = MELEE_ALTERATIONS.filter(a => !a.group);
-  const ungroupedHtml = ungrouped.map(a =>
+  const ungroupedHtml = `<div class="t8-dialog-grid t8-checkbox-grid">` + ungrouped.map(a =>
     `<label class="checkbox"><input type="checkbox" name="alt-ungrouped-${a.key}" value="${a.key}"${a.initial ? " checked" : ""}> ` +
     `${game.i18n.localize(a.label)} (${signedDM(a.dm)}${a.multiplier ? `, ×${a.multiplier}` : ""})</label>`
-  ).join("");
+  ).join("") + `</div>`;
 
   return `
     <div class="three-eight-v2 melee-attack-dialog-content">

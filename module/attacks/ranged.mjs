@@ -502,24 +502,22 @@ function buildDialogContent(actor, weapon, target) {
     )
   ].join("");
 
-  const groupsHtml = RANGED_ALTERATION_GROUPS.map(g => {
+  const groupsHtml = `<div class="t8-dialog-grid">` + RANGED_ALTERATION_GROUPS.map(g => {
     const opts = RANGED_ALTERATIONS.filter(a => a.group === g.key);
-    const multiple = opts.some(a => a.multiple);
     const options = opts.map(a =>
       `<option value="${a.key}"${a.initial ? " selected" : ""}>${game.i18n.localize(a.label)} (${signedDM(a.dm)})</option>`
     ).join("");
-    const selectAttrs = multiple ? `multiple size="4"` : "";
     return `
       <div class="form-group">
         <label>${game.i18n.localize(g.label)}</label>
-        <select name="alt-${g.key}" ${selectAttrs}>${options}</select>
+        <select name="alt-${g.key}">${options}</select>
       </div>`;
-  }).join("");
+  }).join("") + `</div>`;
 
   const ungrouped = RANGED_ALTERATIONS.filter(a => !a.group);
-  const ungroupedHtml = ungrouped.map(a =>
+  const ungroupedHtml = `<div class="t8-dialog-grid t8-checkbox-grid">` + ungrouped.map(a =>
     `<label class="checkbox"><input type="checkbox" name="alt-ungrouped-${a.key}" value="${a.key}"${a.initial ? " checked" : ""}> ${game.i18n.localize(a.label)} (${signedDM(a.dm)})</label>`
-  ).join("");
+  ).join("") + `</div>`;
 
   return `
     <div class="three-eight-v2 ranged-attack-dialog-content">

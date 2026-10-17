@@ -397,3 +397,47 @@
 .three-eight-v2.chat-card.action-declared .action-buttons button {
   flex: 1;
 }
+
+/* ══════════════════════════════════════════════════════════
+   Dialog Grid Layouts (Melee & Ranged)
+   ══════════════════════════════════════════════════════════ */
+
+.t8-dialog-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.t8-checkbox-grid {
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.t8-dialog-grid .form-group {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.t8-dialog-grid .form-group label {
+  font-size: 0.8em;
+  font-weight: 600;
+  color: var(--color-text-dark-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.t8-dialog-grid select {
+  width: 100%;
+}
+
+.t8-checkbox-grid label.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85em;
+  margin: 0;
+  line-height: 1.2;
+}

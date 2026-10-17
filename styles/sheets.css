@@ -849,3 +849,129 @@ prose-mirror {
   text-align: right;
   min-width: 1.5rem;
 }
+
+/* ══════════════════════════════════════════════════════════
+   Action Grid & Tiles — Larger, no overflow
+   ══════════════════════════════════════════════════════════ */
+
+.three-eight-v2.sheet .t8-action-grid {
+  display: grid;
+  /* Increase minimum width from 140px to 220px so tiles have more room */
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.5rem;
+}
+
+.three-eight-v2.sheet .t8-action-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--t8-surface);
+  border: 1px solid var(--t8-border);
+  border-radius: var(--t8-radius-sm);
+  color: var(--t8-text);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.1s, background 0.1s;
+  
+  /* Force a minimum height so tiles are uniformly larger */
+  min-height: 95px;
+  /* Hide any stray overflow */
+  overflow: hidden;
+}
+
+.three-eight-v2.sheet .t8-action-tile:hover {
+  border-color: var(--t8-accent);
+  background: var(--t8-accent-soft);
+}
+
+/* Action Title */
+.three-eight-v2.sheet .t8-action-tile-name {
+  font-weight: 600;
+  font-size: 0.85rem;
+  line-height: 1.2;
+  /* Clamp title to 2 lines max */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Action Prerequisite / Requirement Text */
+.three-eight-v2.sheet .t8-action-tile-req {
+  font-size: 0.72rem;
+  color: var(--t8-text-dim);
+  line-height: 1.2;
+  /* Clamp requirement to 3 lines max */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  
+  /* Push the badges to the bottom of the tile */
+  margin-bottom: auto;
+}
+
+/* Badges (Attack/Skill icons) */
+.three-eight-v2.sheet .t8-action-tile-badges {
+  display: flex;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  color: var(--t8-accent);
+  margin-top: 0.25rem;
+}
+
+/* ── Action Slots in partA ────────────────────────────── */
+
+.three-eight-v2.sheet .t8-action-slots {
+  padding-left: 0.5rem;
+  border-left: 1px solid var(--t8-border);
+  gap: 0.5rem;
+}
+
+.three-eight-v2.sheet .t8-slot-badges {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.three-eight-v2.sheet .t8-slot-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-family: var(--t8-mono);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--t8-text-dim);
+  opacity: 0.5;
+  transition: opacity 0.2s, color 0.2s;
+}
+
+.three-eight-v2.sheet .t8-slot-badge i {
+  font-size: 0.7rem;
+}
+
+.three-eight-v2.sheet .t8-slot-badge.available {
+  opacity: 1;
+  color: var(--t8-accent);
+}
+
+.three-eight-v2.sheet .t8-mode-toggle {
+  margin-left: 0.5rem;
+  color: var(--t8-accent);
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.three-eight-v2.sheet .t8-mode-toggle:hover {
+  border-color: var(--t8-accent);
+  background: var(--t8-accent-soft);
+}
+
+.three-eight-v2.sheet .t8-mode-toggle.t8-disabled {
+  color: var(--t8-text-dim);
+  cursor: not-allowed;
+  opacity: 0.4;
+}

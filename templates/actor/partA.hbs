@@ -55,6 +55,30 @@
     <div class="t8-vital t8-vital-compact">
       <span class="t8-vital-label">{{localize "THREEEIGHT.Actor.MeleeArmor"}}</span>
       <span class="t8-vital-static">{{meleeArmor}}</span>
+    
+    </div>
+        <div class="t8-vital t8-vital-compact t8-action-slots">
+      <span class="t8-vital-label">{{localize "THREEEIGHT.Action.Slots"}}</span>
+      
+      <div class="t8-slot-badges">
+        <span class="t8-slot-badge slow {{#if (gt economy.slowAvailable 0)}}available{{/if}}" title="{{localize 'THREEEIGHT.Action.Slow'}}">
+          <i class="fas fa-hourglass-half"></i> {{economy.slowAvailable}}
+        </span>
+        <span class="t8-slot-badge fast {{#if (gt economy.fastAvailable 0)}}available{{/if}}" title="{{localize 'THREEEIGHT.Action.Fast'}}">
+          <i class="fas fa-bolt"></i> {{economy.fastAvailable}}
+        </span>
+      </div>
+
+      {{#if economy.isFresh}}
+        <button type="button" class="t8-icon-btn t8-mode-toggle" data-action="toggleActionMode" 
+                title="{{localize 'THREEEIGHT.Action.ToggleMode'}}">
+          <i class="fas fa-exchange-alt"></i>
+        </button>
+      {{else}}
+        <div class="t8-icon-btn t8-mode-toggle t8-disabled" title="{{localize 'THREEEIGHT.Action.ModeLocked'}}">
+          <i class="fas fa-lock"></i>
+        </div>
+      {{/if}}
     </div>
   </div>
 </section>

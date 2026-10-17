@@ -323,26 +323,29 @@
       "exceptionalSuccess": "Exceptional Success"
     },
 
-    "Action": {
-      "Slow": "Slow",
-      "Fast": "Fast",
-      "Free": "Free",
-      "Reactive": "Reactive",
-      "DoubleFast": "Double-Fast",
-      "Requisite": "Requisite",
-      "Description": "Description",
-      "IsAttack": "Attack",
-      "RollAttack": "Roll Attack",
-      "RollAttackTyped": "Roll {type} Attack",
-      "RollSkill": "Roll Skill Check",
-      "InfoOnly": "{name} — free/reactive actions do not consume a slot.",
-      "Type": { "slow": "Slow Action", "fast": "Fast Action" },
-      "Err": {
-        "NoEconomy": "This actor has no Action Economy.",
-        "NoSlot": "No {type} slot available this round.",
-        "NoActorForCard": "No actor available for this action card."
-      }
-    },
+  "Action": {
+    "Slow": "Slow",
+    "Fast": "Fast",
+    "Free": "Free",
+    "Reactive": "Reactive",
+    "DoubleFast": "Double-Fast",
+    "Slots": "Actions",
+    "ToggleMode": "Toggle Double-Fast Mode",
+    "ModeLocked": "Mode locked (action taken this round)",
+    "Requisite": "Requisite",
+    "Description": "Description",
+    "IsAttack": "Attack",
+    "RollAttack": "Roll Attack",
+    "RollAttackTyped": "Roll {type} Attack",
+    "RollSkill": "Roll Skill Check",
+    "InfoOnly": "{name} — free/reactive actions do not consume a slot.",
+    "Type": { "slow": "Slow Action", "fast": "Fast Action" },
+    "Err": {
+      "NoEconomy": "This actor has no Action Economy.",
+      "NoSlot": "No {type} slot available this round.",
+      "NoActorForCard": "No actor available for this action card."
+    }
+  },
 
     "Actions": {
       "persuade":           { "name": "Persuade",                 "description": "Verbally convince a listener who can hear you to adopt a certain belief or course of action." },
