@@ -45,20 +45,31 @@ export class ThreeEightItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     const item = this.document;
     const system = item.system;
 
-    context.item = item;
-    context.system = system;
-    context.isEditable = this.isEditable;
-    context.typeLabel = game.i18n.localize(`TYPES.Item.${item.type}`);
-    context.activeTab = this._activeTab;
+    if (item.type === "skill" || item.type === "specialty") {
+      context.system.cost = 0;
+      context.system.legal = true;
+      context.system.equipped = true;
+      context.system.encumbrance = 0;
+    }
 
-    const enrich = foundry.applications.ux.TextEditor.implementation.enrichHTML;
-    context.enrichedDescription = await enrich(system.description ?? "", {
-      async: true,
-      relativeTo: item
-    });
-
-    context.tabs = this._getTabs();
-    context.modifiers = Array.isArray(system.modifiers) ? system.modifiers : [];
+    if (item.type === "skill") {
+      // Fix: Provide a fallback if group is empty
+      context.skillGroupLabel = system.group 
+        ? game.i18n.localize(`THREEEIGHT.SkillGroup.${system.group}`) 
+        : "Unassigned";
+      context.skillValue = system.skillValue;
+      
+      // Fix: Check both UUID and sourceId for linked specialties
+      const sourceId = item.getFlag("core", "sourceId");
+      context.linkedSpecialties = game.items.filter(i => 
+        i.type === "specialty" && 
+        (i.system.skillUuid === item.uuid || (sourceId && i.system.skillUuid === sourceId))
+      );
+      
+    } else if (item.type === "specialty") {
+      const linkedSkill = await fromUuid(system.skillUuid);
+      context.linkedSkillName = linkedSkill ? linkedSkill.name : "Unknown Skill";
+    }
 
     return context;
   }

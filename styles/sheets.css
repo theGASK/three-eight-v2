@@ -1114,3 +1114,37 @@ prose-mirror {
 .three-eight-v2.sheet .t8-col-equipped .fa-check-circle {
   color: var(--t8-accent);
 }
+
+/* ── Skills Tab ───────────────────────────────────────── */
+.t8-skill-block {
+  background: var(--t8-surface);
+  border: 1px solid var(--t8-border);
+  border-radius: var(--t8-radius-sm);
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+}
+.t8-skill-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background: var(--t8-surface-alt);
+  font-weight: 600;
+  cursor: pointer;
+}
+.t8-skill-header:hover { background: var(--t8-accent-soft); }
+.t8-skill-dm { color: var(--t8-accent); font-family: var(--t8-mono); }
+
+.t8-specialty-list {
+  display: flex;
+  flex-direction: column;
+}
+.t8-specialty-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.35rem 0.75rem 0.35rem 1.5rem;
+  border-top: 1px solid var(--t8-border);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.t8-specialty-row:hover { background: var(--t8-surface-alt); }
+.t8-spec-score { font-family: var(--t8-mono); font-weight: 600; }

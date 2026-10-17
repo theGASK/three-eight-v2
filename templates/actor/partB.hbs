@@ -106,6 +106,36 @@
     </div>
   </div>
 
+  {{! ── Skills ───────────────────────────────────── }}
+  <div class="t8-tab-panel {{#if (eq activeTab 'skills')}}active{{/if}}" data-tab="skills">
+    <div class="t8-tab-scroll">
+      {{#each skillGroups as |group|}}
+      <h3 class="t8-section-title">{{group.group}}</h3>
+      <div class="t8-skill-list">
+        {{#each group.skills as |skill|}}
+        <div class="t8-skill-block">
+          <div class="t8-skill-header" data-action="rollSkill" data-item-id="{{skill.id}}">
+            <span class="t8-skill-name">{{skill.name}}</span>
+            <span class="t8-skill-dm">{{skill.dm}}</span>
+          </div>
+          {{#if skill.specialties.length}}
+          <div class="t8-specialty-list">
+            {{#each skill.specialties as |spec|}}
+            <div class="t8-specialty-row" data-action="rollSkill" data-item-id="{{skill.id}}"
+              data-spec-id="{{spec.id}}">
+              <span class="t8-spec-name">{{spec.name}}</span>
+              <span class="t8-spec-score">{{spec.score}}</span>
+            </div>
+            {{/each}}
+          </div>
+          {{/if}}
+        </div>
+        {{/each}}
+      </div>
+      {{/each}}
+    </div>
+  </div>
+
   {{! ── Actions ──────────────────────────────────── }}
   <div class="t8-tab-panel {{#if (eq activeTab 'actions')}}active{{/if}}" data-tab="actions">
     <div class="t8-tab-scroll">

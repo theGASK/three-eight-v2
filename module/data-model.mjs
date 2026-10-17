@@ -348,7 +348,8 @@ class ThreeEightItemData extends foundry.abstract.TypeDataModel {
             // Universal item fields — present on every item type.
             cost:  new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
             legal: new BooleanField({ required: true, initial: true }),
-            equipped: new BooleanField({ required: true, initial: false })
+            equipped: new BooleanField({ required: true, initial: false }),
+            encumbrance: new NumberField({ required: true, min: 0, initial: 0 }) // Added here
         };
     }
 }
@@ -533,7 +534,6 @@ export class GeneralObjectData extends ThreeEightItemData {
     static defineSchema() {
         return {
             ...super.defineSchema(),
-            encumbrance: new NumberField({ required: true, min: 0, initial: 0 })
         };
     }
 }
@@ -705,34 +705,27 @@ export class SkillData extends ThreeEightItemData {
         };
     }
 
-    get specialties() {
-        const items = this.parent?.items?.contents ?? [];
-        return items.filter(i => i.type === "specialty");
-    }
-
+    /** Skill Value = ceiling(mean of linked specialty scores on the Actor). */
     get skillValue() {
-        const specs = this.specialties;
-        let base = 0;
-        if (specs.length > 0) {
-            const sum = specs.reduce((acc, s) => acc + (Number(s.system.score) || 0), 0);
-            base = Math.ceil(sum / specs.length);
-        }
-
-        const actor = this.parent?.actor;
-        if (actor) {
-            const contributions = computeActorContributions(actor);
-            base += sumContributions(contributions, "skills.roll");
-        }
-
-        return base;
+        const actor = this.parent;
+        if (!actor || actor.documentName !== "Actor") return 0;
+        
+        // A world Skill dragged to an actor gets a new UUID (Actor.xyz.Item.abc).
+        // We check both the current UUID and the original world UUID (sourceId)
+        // to find Specialties that were linked before the drag.
+        const sourceId = this.parent.getFlag("core", "sourceId");
+        
+        const specs = actor.items.filter(i => {
+            if (i.type !== "specialty") return false;
+            const linkedUuid = i.system.skillUuid;
+            return linkedUuid === this.parent.uuid || (sourceId && linkedUuid === sourceId);
+        });
+        
+        if (specs.length === 0) return 0;
+        const sum = specs.reduce((acc, s) => acc + (Number(s.system.score) || 0), 0);
+        return Math.ceil(sum / specs.length);
     }
 
-
-    /**
-     * Dice modifier for this skill. The skill value is itself the DM.
-     * The −3 penalty for "no skill selected" is applied by the caller
-     * (getSkillDM in attacks/ranged.mjs) when no skill is chosen.
-     */
     get skillDM() {
         return this.skillValue;
     }
@@ -742,6 +735,7 @@ export class SpecialtyData extends ThreeEightItemData {
     static defineSchema() {
         return {
             ...super.defineSchema(),
+            skillUuid: new StringField({ required: true, blank: false, initial: "" }),
             score: new NumberField({
                 required: true,
                 integer: true,

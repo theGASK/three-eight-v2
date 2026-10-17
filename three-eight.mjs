@@ -36,6 +36,7 @@ import * as Effort from "./module/effort.mjs";
 import * as SkillDialog from "./module/skill-dialog.mjs";
 import { ThreeEightActorSheet } from "./module/sheets/actor-sheet.mjs";
 import { ThreeEightItemSheet } from "./module/sheets/item-sheet.mjs";
+import { SKILL_GROUPS } from "./module/constants.mjs";
 
 Hooks.once("init", () => {
 
@@ -91,6 +92,9 @@ Hooks.once("init", () => {
   Handlebars.registerHelper("numberArray", (n) =>
     Array.from({ length: Number(n) || 0 }, (_, i) => i + 1)
   );
+
+  // ── Expose Skill Groups to Handlebars ───────────────
+  CONFIG.SKILL_GROUPS = SKILL_GROUPS;
 
   // ── Theme setting ───────────────────────────────────
   game.settings.register("three-eight-v2", "theme", {

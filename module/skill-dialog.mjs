@@ -299,7 +299,7 @@ function signedDM(dm) {
   return dm >= 0 ? `+${dm}` : `${dm}`;
 }
 
-function buildDialogContent(actor, preselectedSkill) {
+function buildDialogContent(actor, preselectedSkill, preselectedSpecialty) {
   // ── Skill options ─────────────────────────────────
   const skills = getAvailableSkills(actor);
   const skillOptions = [
@@ -492,17 +492,17 @@ export class SkillDialog extends DialogV2 {
  * @param {Item}   [opts.skill]  Preselected skill (from a sheet click).
  * @returns {Promise<object|null>}
  */
-export async function promptSkillCheck(actor, { skill = null } = {}) {
-  if (!actor) {
-    ui.notifications.warn(game.i18n.localize("THREEEIGHT.Skill.Err.NoActor"));
-    return null;
-  }
+export async function promptSkillCheck(actor, { skill = null, specialty = null } = {}) {
+    if (!actor) {
+        ui.notifications.warn(game.i18n.localize("THREEEIGHT.Skill.Err.NoActor"));
+        return null;
+    }
 
-  const state = await new Promise((resolve) => {
-    const dialog = new SkillDialog(actor, { preselectedSkill: skill, resolve });
-    dialog.render({ force: true });
-  });
-  if (!state) return null;
+    const state = await new Promise((resolve) => {
+        const dialog = new SkillDialog(actor, { preselectedSkill: skill, preselectedSpecialty: specialty, resolve });
+        dialog.render({ force: true });
+    });
+    if (!state) return null;
 
-  return resolveSkill(actor, state);
+    return resolveSkill(actor, state);
 }

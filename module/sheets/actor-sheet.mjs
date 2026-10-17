@@ -4,6 +4,7 @@ const { ActorSheetV2 } = foundry.applications.sheets;
 /* Columns per item type for the Items tab. */
 const ITEM_COLUMNS = {
   weapon: [
+    { key: "system.encumbrance",    label: "THREEEIGHT.GeneralObject.Encumbrance", width: "80px" }, // Added
     { key: "system.rof",            label: "THREEEIGHT.Weapon.ROF",           width: "55px" },
     { key: "system.damage",         label: "THREEEIGHT.Weapon.Damage",        width: "55px" },
     { key: "system.range",          label: "THREEEIGHT.Weapon.Range",         width: "55px" },
@@ -11,47 +12,76 @@ const ITEM_COLUMNS = {
     { key: "system.magazine.value", label: "THREEEIGHT.Weapon.MagazineValue", width: "70px" }
   ],
   skill: [
-    { key: "system.group",      label: "THREEEIGHT.Skill.Group", label: "110px" },
-    { key: "system.skillValue", label: "THREEEIGHT.Skill.Value", label: "70px"  }
+    { key: "system.encumbrance", label: "THREEEIGHT.GeneralObject.Encumbrance", width: "80px" }, // Added
+    { key: "system.group",       label: "THREEEIGHT.Skill.Group", label: "110px" },
+    { key: "system.skillValue",  label: "THREEEIGHT.Skill.Value", label: "70px"  }
   ],
-  specialty:     [{ key: "system.score",       label: "THREEEIGHT.Specialty.Score",       width: "60px" }],
+  specialty:     [
+    { key: "system.encumbrance", label: "THREEEIGHT.GeneralObject.Encumbrance", width: "80px" },
+    { key: "system.score",       label: "THREEEIGHT.Specialty.Score",       width: "60px" }
+  ],
   spell:         [
+    { key: "system.encumbrance", label: "THREEEIGHT.GeneralObject.Encumbrance", width: "80px" },
     { key: "system.level",       label: "THREEEIGHT.Spell.Level",       width: "60px" },
     { key: "system.castingcost", label: "THREEEIGHT.Spell.CastingCost", width: "70px" }
   ],
-  generalObject: [{ key: "system.encumbrance", label: "THREEEIGHT.GeneralObject.Encumbrance", width: "80px" }],
+  generalObject: [
+    { key: "system.encumbrance", label: "THREEEIGHT.GeneralObject.Encumbrance", width: "80px" }
+  ],
   container:     [
+    { key: "system.encumbrance",    label: "THREEEIGHT.GeneralObject.Encumbrance", width: "80px" },
     { key: "system.capacity.value", label: "THREEEIGHT.Container.CapacityValue", width: "70px" },
     { key: "system.capacity.max",   label: "THREEEIGHT.Container.CapacityMax",   width: "70px" }
   ],
   ammunition:    [
+    { key: "system.encumbrance", label: "THREEEIGHT.GeneralObject.Encumbrance", width: "80px" },
     { key: "system.quantity",    label: "THREEEIGHT.Ammunition.Quantity", width: "60px" },
     { key: "system.damageBonus", label: "THREEEIGHT.Weapon.Damage",       width: "60px" },
     { key: "system.penetration", label: "THREEEIGHT.Weapon.Penetration",  width: "60px" }
   ],
   individualArmor: [
+    { key: "system.encumbrance",            label: "THREEEIGHT.GeneralObject.Encumbrance", width: "80px" },
     { key: "system.rangedProtection.value", label: "THREEEIGHT.Item.IndividualArmor.RangedProtection", width: "80px" },
     { key: "system.meleeProtection.value",  label: "THREEEIGHT.Item.IndividualArmor.MeleeProtection",  width: "80px" }
   ],
   shield: [
+    { key: "system.encumbrance",            label: "THREEEIGHT.GeneralObject.Encumbrance", width: "80px" },
     { key: "system.rangedProtection.value", label: "THREEEIGHT.Item.IndividualArmor.RangedProtection", width: "80px" },
     { key: "system.meleeProtection.value",  label: "THREEEIGHT.Item.IndividualArmor.MeleeProtection",  width: "80px" }
   ],
   vehicleArmor: [
+    { key: "system.encumbrance",      label: "THREEEIGHT.GeneralObject.Encumbrance", width: "80px" },
     { key: "system.protection.value", label: "THREEEIGHT.Item.VehicleArmor.Protection", width: "80px" },
     { key: "system.soak.value",       label: "THREEEIGHT.Item.VehicleArmor.Soak",       width: "80px" }
   ],
-  mod:     [{ key: "system.modifier", label: "THREEEIGHT.Modifier.Field.Value", width: "70px" }],
-  quality: [{ key: "system.modifier", label: "THREEEIGHT.Modifier.Field.Value", width: "70px" }],
-  flaw:    [{ key: "system.modifier", label: "THREEEIGHT.Modifier.Field.Value", width: "70px" }],
-  power:   [{ key: "system.modifier", label: "THREEEIGHT.Modifier.Field.Value", width: "70px" }],
-  disease: [],
-  default: []
+  mod:     [
+    { key: "system.encumbrance", label: "THREEEIGHT.GeneralObject.Encumbrance", width: "80px" },
+    { key: "system.modifier",    label: "THREEEIGHT.Modifier.Field.Value", width: "70px" }
+  ],
+  quality: [
+    { key: "system.encumbrance", label: "THREEEIGHT.GeneralObject.Encumbrance", width: "80px" },
+    { key: "system.modifier",    label: "THREEEIGHT.Modifier.Field.Value", width: "70px" }
+  ],
+  flaw:    [
+    { key: "system.encumbrance", label: "THREEEIGHT.GeneralObject.Encumbrance", width: "80px" },
+    { key: "system.modifier",    label: "THREEEIGHT.Modifier.Field.Value", width: "70px" }
+  ],
+  power:   [
+    { key: "system.encumbrance", label: "THREEEIGHT.GeneralObject.Encumbrance", width: "80px" },
+    { key: "system.modifier",    label: "THREEEIGHT.Modifier.Field.Value", width: "70px" }
+  ],
+  disease: [
+    { key: "system.encumbrance", label: "THREEEIGHT.GeneralObject.Encumbrance", width: "80px" }
+  ],
+  default: [
+    { key: "system.encumbrance", label: "THREEEIGHT.GeneralObject.Encumbrance", width: "80px" }
+  ]
 };
 
 const TAB_DEFINITIONS = [
   { id: "description",     icon: "fas fa-book",      label: "THREEEIGHT.Tab.Description"     },
   { id: "characteristics", icon: "fas fa-dice-d20",  label: "THREEEIGHT.Tab.Characteristics" },
+  { id: "skills",          icon: "fas fa-graduation-cap", label: "Skills" },
   { id: "actions",         icon: "fas fa-bolt",      label: "THREEEIGHT.Tab.Actions"         },
   { id: "conditions",      icon: "fas fa-heart-pulse", label: "THREEEIGHT.Tab.Conditions"    },
   { id: "items",           icon: "fas fa-briefcase", label: "THREEEIGHT.Tab.Items"           }
@@ -87,7 +117,8 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
       editItem:           ThreeEightActorSheet.#onEditItem,
       toggleEquip:        ThreeEightActorSheet.#onToggleEquip,
       declareAction:      ThreeEightActorSheet.#onDeclareAction,
-      toggleActionMode:   ThreeEightActorSheet.#onToggleActionMode
+      toggleActionMode:   ThreeEightActorSheet.#onToggleActionMode,
+      rollSkill:          ThreeEightActorSheet.#onRollSkill
     }
   };
 
@@ -118,6 +149,7 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
     context.commonName = system.commonName ?? "";
     context.age        = system.age        ?? "";
     context.typeLabel  = game.i18n.localize(`TYPES.Actor.${actor.type}`);
+    context.skillGroups = this.#buildSkillGroups(actor);
 
     const enrich = foundry.applications.ux.TextEditor.implementation.enrichHTML;
     context.enrichedDescription = await enrich(system.description ?? "", {
@@ -222,6 +254,38 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
           isTextDM:  isText
         };
       });
+  }
+
+  /* ── Skills -────────────────────────────────────── */
+
+  #buildSkillGroups(actor) {
+    const skills = actor.items.filter(i => i.type === "skill");
+    const specs = actor.items.filter(i => i.type === "specialty");
+    
+    const grouped = {};
+    const sortedSkills = [...skills].sort((a, b) => a.name.localeCompare(b.name));
+    
+    for (const skill of sortedSkills) {
+      const groupName = skill.system.group || "Unassigned";
+      (grouped[groupName] ??= []).push({
+        id: skill.id,
+        name: skill.name,
+        value: skill.system.skillValue,
+        dm: skill.system.skillDM,
+        specialties: specs
+          .filter(s => {
+            const sourceId = skill.getFlag("core", "sourceId");
+            return s.system.skillUuid === skill.uuid || (sourceId && s.system.skillUuid === sourceId);
+          })
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map(s => ({ id: s.id, name: s.name, score: s.system.score }))
+      });
+    }
+    
+    // Sort groups alphabetically
+    return Object.entries(grouped)
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .map(([group, skills]) => ({ group, skills }));
   }
 
   /* ── Actions ────────────────────────────────────── */
@@ -402,6 +466,24 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
   static async #onDeleteItem(event, target) {
     const item = this.document.items.get(target.dataset.itemId);
     if (!item) return;
+
+    if (item.type === "skill") {
+      const sourceId = item.getFlag("core", "sourceId");
+      const linkedSpecs = this.document.items.filter(i => {
+        if (i.type !== "specialty") return false;
+        return i.system.skillUuid === item.uuid || (sourceId && i.system.skillUuid === sourceId);
+      });
+      
+      if (linkedSpecs.length > 0) {
+        const confirmed = await foundry.applications.api.DialogV2.confirm({
+          window: { title: "Delete Skill" },
+          content: `<p>Deleting <strong>${item.name}</strong> will also delete ${linkedSpecs.length} linked Specialty item(s). Are you sure?</p>`
+        });
+        if (!confirmed) return;
+        await this.document.deleteEmbeddedDocuments("Item", linkedSpecs.map(i => i.id));
+      }
+    }
+    
     const confirmed = await foundry.applications.api.DialogV2.confirm({
       window: { title: game.i18n.localize("THREEEIGHT.Sheet.DeleteItem") },
       content: `<p>${game.i18n.format("THREEEIGHT.Sheet.ConfirmDelete", { name: item.name })}</p>`
@@ -447,6 +529,45 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
     } catch (err) {
       if (err instanceof game.threeEightV2.action.Error) ui.notifications.warn(err.message);
       else throw err;
+    }
+  }
+
+  async _onDropItem(event, data) {
+    const item = await Item.fromDropData(data);
+    if (!item) return;
+
+    if (item.type === "skill") {
+      if (!item.system.group) {
+        ui.notifications.warn("A Skill must have a Group assigned before it can be added to an actor.");
+        return;
+      }
+    } else if (item.type === "specialty") {
+      if (!item.system.skillUuid) {
+        ui.notifications.warn("A Specialty must be linked to a Skill before it can be added to an actor.");
+        return;
+      }
+      // Check if the linked Skill is present via UUID or sourceId
+      const hasSkill = this.document.items.some(i => {
+        if (i.type !== "skill") return false;
+        const sourceId = i.getFlag("core", "sourceId");
+        return i.uuid === item.system.skillUuid || (sourceId && sourceId === item.system.skillUuid);
+      });
+      if (!hasSkill) {
+        ui.notifications.warn(`The linked Skill is not present on this actor.`);
+        return;
+      }
+    }
+    return super._onDropItem(event, data);
+  }
+
+  static async #onRollSkill(event, target) {
+    event.preventDefault();
+    const skillId = target.dataset.itemId;
+    const specId = target.dataset.specId;
+    const skill = this.document.items.get(skillId);
+    const specialty = specId ? this.document.items.get(specId) : null;
+    if (skill) {
+      await game.threeEightV2.skill.prompt(this.document, { skill, specialty });
     }
   }
 }
