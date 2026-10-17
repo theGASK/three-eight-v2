@@ -39,11 +39,14 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
             description: new HTMLField({ required: false, blank: true, initial: "" }),
             age:         new StringField({ required: false, blank: true, initial: "" }),
 
-            wounds: new NumberField({ required: true, integer: true, initial: 0 }),
-            woundsMax: new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+            // Current values — persist, may go negative.
+            // (damage, exertion). Never used as maximums.
+            wounds:          new NumberField({ required: true, integer: true, initial: 1 }),
+            effectiveEffort: new NumberField({ required: true, integer: true, initial: 1 }),
 
-            effectiveEffort: new NumberField({ required: true, integer: true, initial: 0 }),
-            maxEffort:       new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+            // Maximums — always ≥ 1, never negative.
+            woundsMax:       new NumberField({ required: true, integer: true, min: 1, initial: 1 }),
+            maxEffort:       new NumberField({ required: true, integer: true, min: 1, initial: 1 }),
 
             actions:    new EmbeddedDataField(ActionsData),
             conditions: new EmbeddedDataField(ConditionsData)
@@ -84,14 +87,13 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
     }
 
     #deriveWounds(primary, contributions) {
-        // woundsMax: derived from Fitness when Fitness exists,
-        // otherwise kept as whatever was stored (manual value).
         if (primary?.fitnessEffective !== undefined) {
-            this.woundsMax = lookupCharacteristic(primary.fitnessEffective).wounds;
+            this.woundsMax = Math.max(1, lookupCharacteristic(primary.fitnessEffective).wounds);
         }
 
-        // wounds: the current value — never overwritten here.
-        // It is modified by combat logic and by the wounds API.
+        // wounds is not overwritten here — it is controlled by the
+        // createActor hook, the updateActor re-derivation hook, and
+        // the wounds API.
 
         const modifier  = sumContributions(contributions, "wounds");
         const effective = (Number(this.wounds) || 0) + modifier;
@@ -102,15 +104,21 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
     }
 
     #deriveEffort(primary, contributions) {
-        // maxEffort: derived from Fitness + Morale when both exist,
-        // otherwise kept as whatever was stored (manual value).
+        // maxEffort = table lookup on the Effort Score, where
+        //   Effort Score = average-up of Fitness and Morale.
+        // (Previously the score itself was assigned as the maximum,
+        // which produced values far above the table.)
         if (primary?.fitnessEffective !== undefined &&
             primary?.moraleEffective  !== undefined) {
-            this.maxEffort = averageUp(primary.fitnessEffective, primary.moraleEffective);
+            const effortScore = averageUp(
+                primary.fitnessEffective,
+                primary.moraleEffective
+            );
+            this.maxEffort = Math.max(1, lookupCharacteristic(effortScore).effort);
         }
 
-        // effectiveEffort: the current value — never overwritten here.
-        // It is modified by game events and by the Effort API.
+        // effectiveEffort: never overwritten here — controlled by
+        // the updateActor re-derivation hook and the effort API.
 
         const modifier  = sumContributions(contributions, "effort");
         const effective = (Number(this.effectiveEffort) || 0) + modifier;

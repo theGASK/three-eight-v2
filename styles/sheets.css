@@ -839,3 +839,13 @@ prose-mirror {
 .three-eight-v2.sheet .t8-item-icon           { width: 18px; height: 18px; }
 .three-eight-v2.sheet .t8-item-name           { font-size: 0.78rem; }
 .three-eight-v2.sheet .t8-col-actions button  { font-size: 0.7rem; }
+
+/* Display-only value in partA — replaces the removed input. */
+.three-eight-v2.sheet .t8-vital-current {
+  font-family: var(--t8-mono);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--t8-text);
+  text-align: right;
+  min-width: 1.5rem;
+}

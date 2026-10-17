@@ -35,17 +35,17 @@ export const SKILL_ROLL_FORMULA = "2d8";
    resolves its score through this table. */
 export const CHARACTERISTIC_TABLE = Object.freeze([
   {
-    min: 0, max: 0, dm: -3, effort: 0, wounds: 1, stress: 1,
+    min: 0, max: 0, dm: -3, effort: 1, wounds: 1, stress: 1,
     reputation: "THREEEIGHT.Reputation.enemyOfState",
     wealth: "THREEEIGHT.Wealth.destitute"
   },
   {
-    min: 1, max: 3, dm: -2, effort: 0, wounds: 3, stress: 3,
+    min: 1, max: 3, dm: -2, effort: 1, wounds: 3, stress: 3,
     reputation: "THREEEIGHT.Reputation.undesirable",
     wealth: "THREEEIGHT.Wealth.personalOnly"
   },
   {
-    min: 4, max: 6, dm: -1, effort: 0, wounds: 6, stress: 5,
+    min: 4, max: 6, dm: -1, effort: 1, wounds: 6, stress: 5,
     reputation: "THREEEIGHT.Reputation.secondClass",
     wealth: "THREEEIGHT.Wealth.modest"
   },

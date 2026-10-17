@@ -244,7 +244,69 @@ Hooks.once("init", () => {
   Hooks.on("combatStart", (combat) => onCombatRound(combat));
   Hooks.on("combatRound", (combat) => onCombatRound(combat));
 
+  /* ── Wounds / Effort — initial seeding ──────────────────
+     On actor creation, copy each derived maximum onto its
+     current value. New actors therefore start at full health
+     and full effort, with the floor of 1 enforced for actors
+     whose maximums are stored rather than derived (Faction,
+     vehicles, installations). Runs once per document.
 
+     The `threeEightInit` option flag prevents the update we
+     issue from re-triggering the updateActor re-derivation
+     hook below. */
+  Hooks.on("createActor", async (actor, options, userId) => {
+    if (userId !== game.user.id) return;
+    if (options?.threeEightInit) return;
+
+    const sys = actor.system;
+    const woundsMax = Math.max(1, Number(sys.woundsMax) || 0);
+    const maxEffort = Math.max(1, Number(sys.maxEffort) || 0);
+
+    await actor.update({
+      "system.woundsMax":       woundsMax,
+      "system.wounds":          woundsMax,
+      "system.maxEffort":       maxEffort,
+      "system.effectiveEffort": maxEffort
+    }, { threeEightInit: true });
+  });
+
+  /* ── Wounds / Effort re-derivation on advancement ───────
+     When any primary characteristic changes, prepareDerivedData
+     recomputes woundsMax and maxEffort from the characteristic
+     table. This hook then copies the new maximums onto the
+     current values, so a character who trains Fitness from 10
+     to 14 goes from 9 wounds to 12 wounds, and one who raises
+     Fitness+Morale goes to the new max effort.
+
+     Fires only on updates that touch `system.attributes.primary`,
+     so damage and effort expenditure are unaffected.
+     Skipped on the actor's own re-derivation update via the
+     `threeEightRedrive` option flag. */
+  Hooks.on("updateActor", async (actor, changes, options, userId) => {
+    if (userId !== game.user.id) return;
+    if (options?.threeEightRedrive) return;
+
+    const primaryChange = foundry.utils.getProperty(
+      changes, "system.attributes.primary"
+    );
+    if (!primaryChange) return;
+
+    const sys = actor.system;
+    const woundsMax = Math.max(1, Number(sys.woundsMax) || 1);
+    const maxEffort = Math.max(1, Number(sys.maxEffort) || 1);
+
+    const updates = {};
+    if (Number(sys.wounds) !== woundsMax) {
+      updates["system.wounds"] = woundsMax;
+    }
+    if (Number(sys.effectiveEffort) !== maxEffort) {
+      updates["system.effectiveEffort"] = maxEffort;
+    }
+
+    if (Object.keys(updates).length === 0) return;
+    await actor.update(updates, { threeEightRedrive: true });
+  });
+  
   // ── Public API ──────────────────────────────────────
   game.threeEightV2 = Object.freeze({
     promptSkillRoll,

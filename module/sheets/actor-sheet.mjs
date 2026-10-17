@@ -123,14 +123,19 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
       relativeTo: actor
     });
 
-    context.wounds          = system.wounds          ?? 0;
-    context.woundsMax       = system.woundsMax       ?? 0;
-    context.effectiveEffort = system.effectiveEffort ?? 0;
-    context.maxEffort       = system.maxEffort       ?? 0;
-    context.meleeDefense    = system.meleeDefense    ?? 0;
-    context.rangedArmor     = system.rangedArmor     ?? 0;
-    context.meleeArmor      = system.meleeArmor      ?? 0;
+    const num = (v, fallback = 0) => {
+      const n = Number(v);
+      return Number.isFinite(n) ? n : fallback;
+    };
 
+    context.wounds          = num(system.wounds);
+    context.woundsMax       = num(system.woundsMax, 1);
+    context.effectiveEffort = num(system.effectiveEffort);
+    context.maxEffort       = num(system.maxEffort, 1);
+    context.meleeDefense    = num(system.meleeDefense);
+    context.rangedArmor     = num(system.rangedArmor);
+    context.meleeArmor      = num(system.meleeArmor);
+    
     // Tab navigation state — a simple array.
     context.tabs = TAB_DEFINITIONS.map(t => ({
       ...t,
