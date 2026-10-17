@@ -674,7 +674,7 @@ prose-mirror {
 
 .t8-item-table thead {
   position: sticky;
-  top: 1.6rem;
+  top: 0;
   background: var(--t8-surface-alt);
   z-index: 1;
 }
@@ -974,4 +974,143 @@ prose-mirror {
   color: var(--t8-text-dim);
   cursor: not-allowed;
   opacity: 0.4;
+}
+/* ══════════════════════════════════════════════════════════
+   Dialog Grid Layouts (Melee & Ranged)
+   ══════════════════════════════════════════════════════════ */
+
+.t8-dialog-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem 0.75rem; /* Tighter vertical gap, moderate horizontal gap */
+  margin-bottom: 0.5rem;
+}
+
+.t8-checkbox-grid {
+  gap: 0.2rem 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.t8-dialog-grid .form-group {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem; /* Pull label closer to the dropdown */
+}
+
+.t8-dialog-grid .form-group label {
+  font-size: 0.72rem; 
+  font-weight: 600;
+  color: var(--color-text-dark-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.t8-dialog-grid select {
+  width: 100%;
+  height: 28px; /* Force a compact height for the dropdowns */
+  padding: 0 0.4rem;
+  font-size: 0.85rem;
+}
+
+.t8-checkbox-grid label.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* ── Item Details Tab ─────────────────────────────────── */
+.t8-field-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+  align-content: start;
+}
+
+.t8-field-grid .t8-field-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.t8-field-grid .t8-field-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--t8-text-dim);
+}
+
+.t8-field-grid input[type="text"],
+.t8-field-grid input[type="number"] {
+  background: var(--t8-surface);
+  border: 1px solid var(--t8-border);
+  border-radius: var(--t8-radius-sm);
+  padding: 0.35rem 0.5rem;
+  color: var(--t8-text);
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.t8-field-grid input:focus {
+  outline: none;
+  border-color: var(--t8-accent);
+}
+
+/* ── Item Modifiers Tab ───────────────────────────────── */
+.t8-modifier-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.t8-modifier-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background: var(--t8-surface);
+  border: 1px solid var(--t8-border);
+  border-radius: var(--t8-radius-sm);
+  font-family: var(--t8-mono);
+  font-size: 0.85rem;
+}
+
+.t8-mod-op {
+  color: var(--t8-accent);
+  font-weight: 700;
+}
+
+/* ── Carry Capacity Tooltips ─────────────────────────── */
+.three-eight-v2.sheet .t8-vital[title] {
+  cursor: help;
+}
+
+/* ── Item Equipped Column ────────────────────────────── */
+.three-eight-v2.sheet .t8-col-equipped {
+  width: 28px;
+  text-align: center;
+}
+
+.three-eight-v2.sheet .t8-col-equipped a {
+  color: var(--t8-text-dim);
+  cursor: pointer;
+  display: inline-block;
+  padding: 0.2rem;
+  border-radius: var(--t8-radius-sm);
+  transition: color 0.1s, background 0.1s;
+}
+
+.three-eight-v2.sheet .t8-col-equipped a:hover {
+  color: var(--t8-accent);
+  background: var(--t8-accent-soft);
+}
+
+.three-eight-v2.sheet .t8-col-equipped .fa-check-circle {
+  color: var(--t8-accent);
 }

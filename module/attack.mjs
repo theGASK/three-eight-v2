@@ -238,7 +238,10 @@ export async function promptFromWeapon(actor, weapon, { target = null } = {}) {
   const attackType = await promptAttackType(weapon);
   if (!attackType) return null;
 
-  return runAttack(actor, attackType, { weapon, target });
+  // ── Fallback to the user's currently targeted token ──
+  const activeTarget = target ?? Array.from(game.user.targets)[0] ?? null;
+
+  return runAttack(actor, attackType, { weapon, target: activeTarget });
 }
 
 /**
@@ -247,9 +250,12 @@ export async function promptFromWeapon(actor, weapon, { target = null } = {}) {
  * shows the modifier prompt, then rolls.
  */
 async function promptAndRequest(actor, attackType, { target = null } = {}) {
+  // ── Fallback to the user's currently targeted token ──
+  const activeTarget = target ?? Array.from(game.user.targets)[0] ?? null;
+
   const weapon = await promptWeaponSelection(actor, attackType);
   if (!weapon) return null;
-  return runAttack(actor, attackType, { weapon, target });
+  return runAttack(actor, attackType, { weapon, target: activeTarget });
 }
 
 async function runAttack(actor, attackType, { weapon, target = null } = {}) {

@@ -42,6 +42,15 @@
       </div>
     </div>
 
+    <div class="t8-vital" title="Ready: {{readyCarryCapacity}} | Ideal: {{idealCarryCapacity}} | Max: {{maxCarryCapacity}}">
+      <span class="t8-vital-label">{{localize "THREEEIGHT.Actor.CarryCapacity"}}</span>
+      <div class="t8-vital-value">
+        <span class="t8-vital-current">{{effectiveCarryCapacity}}</span>
+        <span class="t8-vital-sep">/</span>
+        <span class="t8-vital-max">{{maxCarryCapacity}}</span>
+      </div>
+    </div>
+
     <div class="t8-vital t8-vital-compact">
       <span class="t8-vital-label">{{localize "THREEEIGHT.Actor.MeleeDefense"}}</span>
       <span class="t8-vital-static">{{meleeDefense}}</span>

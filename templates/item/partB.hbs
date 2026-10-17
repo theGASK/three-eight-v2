@@ -1,64 +1,106 @@
 <section class="t8-partB">
-  {{#with tabs.primary}}
-  {{#each this}}
-  {{#if active}}
-  <div class="t8-tab-panel active" data-tab="{{id}}" data-group="primary">
 
-    {{#if (eq id "description")}}
-    <div class="t8-tab-content">
-      <div class="t8-prose">{{{enrichedDescription}}}</div>
-      {{#if isEditable}}
-      <prose-mirror name="system.description" value="{{system.description}}"></prose-mirror>
-      {{/if}}
-    </div>
-    {{/if}}
-
-    {{#if (eq id "details")}}
-    <div class="t8-tab-content">
-      {{#if detailFields.length}}
-      <div class="t8-detail-grid">
-        {{#each detailFields as |field|}}
-        <div class="t8-detail-row">
-          <label class="t8-detail-label">{{field.key}}</label>
-          {{#if (eq field.type "boolean")}}
-            <input type="checkbox" name="system.{{field.key}}" {{#if field.value}}checked{{/if}}
-                   {{#unless ../isEditable}}disabled{{/unless}} />
-          {{else if (eq field.type "number")}}
-            <input type="number" name="system.{{field.key}}" value="{{field.value}}"
-                   {{#unless ../isEditable}}disabled{{/unless}} />
-          {{else}}
-            <input type="text" name="system.{{field.key}}" value="{{field.value}}"
-                   {{#unless ../isEditable}}disabled{{/unless}} />
-          {{/if}}
-        </div>
-        {{/each}}
+  {{! ── Description Tab ─────────────────────────────────── }}
+  <div class="t8-tab-panel {{#if (eq activeTab 'description')}}active{{/if}}" data-tab="description">
+    <div class="t8-tab-scroll">
+      <div class="t8-field-row t8-field-row-block">
+        <label class="t8-field-label">{{localize "THREEEIGHT.Item.Description"}}</label>
+        {{#if isEditable}}
+          <prose-mirror name="system.description" value="{{system.description}}"></prose-mirror>
+        {{else}}
+          <div class="t8-prose">{{{enrichedDescription}}}</div>
+        {{/if}}
       </div>
-      {{else}}
-      <p class="t8-empty">{{localize "THREEEIGHT.Sheet.NoDetails"}}</p>
-      {{/if}}
     </div>
-    {{/if}}
-
-    {{#if (eq id "modifiers")}}
-    <div class="t8-tab-content">
-      {{#if modifiers.length}}
-      <ul class="t8-modifier-list">
-        {{#each modifiers as |mod|}}
-        <li class="t8-modifier-row">
-          <span class="t8-mod-target">{{mod.target}}</span>
-          <span class="t8-mod-op">{{mod.operator}}</span>
-          <span class="t8-mod-value">{{mod.value}}</span>
-        </li>
-        {{/each}}
-      </ul>
-      {{else}}
-      <p class="t8-empty">{{localize "THREEEIGHT.ModifierItem.Modifiers"}} — {{localize "THREEEIGHT.Sheet.None"}}</p>
-      {{/if}}
-    </div>
-    {{/if}}
-
   </div>
-  {{/if}}
-  {{/each}}
-  {{/with}}
+
+  {{! ── Details Tab ─────────────────────────────────────── }}
+  <div class="t8-tab-panel {{#if (eq activeTab 'details')}}active{{/if}}" data-tab="details">
+    <div class="t8-tab-scroll t8-field-grid">
+
+      {{#if (eq item.type "weapon")}}
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Weapon.Type"}}</label><input type="text" name="system.type" value="{{system.type}}" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Weapon.Caliber"}}</label><input type="text" name="system.caliber" value="{{system.caliber}}" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Weapon.Damage"}}</label><input type="number" name="system.damage" value="{{system.damage}}" min="0" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Weapon.ROF"}}</label><input type="number" name="system.rof" value="{{system.rof}}" min="0" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Weapon.Range"}}</label><input type="number" name="system.range" value="{{system.range}}" min="0" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Weapon.Penetration"}}</label><input type="number" name="system.penetration" value="{{system.penetration}}" min="0" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Weapon.Reliability"}}</label><input type="number" name="system.reliability" value="{{system.reliability}}" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Weapon.Critical"}}</label><input type="text" name="system.critical" value="{{system.critical}}" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Weapon.Blast"}}</label><input type="number" name="system.blast" value="{{system.blast}}" min="0" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Weapon.MagazineValue"}}</label><input type="number" name="system.magazine.value" value="{{system.magazine.value}}" min="0" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Weapon.MagazineMax"}}</label><input type="number" name="system.magazine.max" value="{{system.magazine.max}}" min="0" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+      {{/if}}
+
+      {{#if (eq item.type "container")}}
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Container.CapacityValue"}}</label><input type="number" name="system.capacity.value" value="{{system.capacity.value}}" min="0" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Container.CapacityMax"}}</label><input type="number" name="system.capacity.max" value="{{system.capacity.max}}" min="0" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+      {{/if}}
+
+      {{#if (or (eq item.type "individualArmor") (eq item.type "shield"))}}
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Item.IndividualArmor.RangedProtection"}} (Value)</label><input type="number" name="system.rangedProtection.value" value="{{system.rangedProtection.value}}" min="0" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Item.IndividualArmor.RangedProtection"}} (Max)</label><input type="number" name="system.rangedProtection.max" value="{{system.rangedProtection.max}}" min="0" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Item.IndividualArmor.MeleeProtection"}} (Value)</label><input type="number" name="system.meleeProtection.value" value="{{system.meleeProtection.value}}" min="0" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Item.IndividualArmor.MeleeProtection"}} (Max)</label><input type="number" name="system.meleeProtection.max" value="{{system.meleeProtection.max}}" min="0" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+      {{/if}}
+
+      {{#if (eq item.type "vehicleArmor")}}
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Item.VehicleArmor.Protection"}} (Value)</label><input type="number" name="system.protection.value" value="{{system.protection.value}}" min="0" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Item.VehicleArmor.Protection"}} (Max)</label><input type="number" name="system.protection.max" value="{{system.protection.max}}" min="0" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Item.VehicleArmor.Soak"}} (Value)</label><input type="number" name="system.soak.value" value="{{system.soak.value}}" min="0" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Item.VehicleArmor.Soak"}} (Max)</label><input type="number" name="system.soak.max" value="{{system.soak.max}}" min="0" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+      {{/if}}
+
+      {{#if (eq item.type "spell")}}
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Spell.Level"}}</label><input type="number" name="system.level" value="{{system.level}}" min="1" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Spell.CastingCost"}}</label><input type="number" name="system.castingcost" value="{{system.castingcost}}" min="0" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Spell.School"}}</label><input type="text" name="system.school" value="{{system.school}}" {{#unless isEditable}}disabled{{/unless}} /></div>
+      {{/if}}
+
+      {{#if (eq item.type "skill")}}
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Skill.Group"}}</label><input type="text" name="system.group" value="{{system.group}}" {{#unless isEditable}}disabled{{/unless}} /></div>
+      {{/if}}
+
+      {{#if (eq item.type "specialty")}}
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Specialty.Score"}}</label><input type="number" name="system.score" value="{{system.score}}" min="-1" max="5" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+      {{/if}}
+
+      {{#if (eq item.type "generalObject")}}
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.GeneralObject.Encumbrance"}}</label><input type="number" name="system.encumbrance" value="{{system.encumbrance}}" min="0" step="0.1" {{#unless isEditable}}disabled{{/unless}} /></div>
+      {{/if}}
+
+      {{#if (eq item.type "ammunition")}}
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Ammunition.Quantity"}}</label><input type="number" name="system.quantity" value="{{system.quantity}}" min="0" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Weapon.Penetration"}}</label><input type="number" name="system.penetration" value="{{system.penetration}}" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Weapon.Damage"}} Bonus</label><input type="number" name="system.damageBonus" value="{{system.damageBonus}}" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+      {{/if}}
+
+      {{#if (or (eq item.type "mod") (eq item.type "power") (eq item.type "quality") (eq item.type "flaw") (eq item.type "disease"))}}
+        <div class="t8-field-row"><label class="t8-field-label">{{localize "THREEEIGHT.Modifier.Field.Value"}}</label><input type="number" name="system.modifier" value="{{system.modifier}}" step="1" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">Applies To</label><input type="text" name="system.appliesTo" value="{{system.appliesTo}}" {{#unless isEditable}}disabled{{/unless}} /></div>
+        <div class="t8-field-row"><label class="t8-field-label">Target Type</label><input type="text" name="system.targetType" value="{{system.targetType}}" {{#unless isEditable}}disabled{{/unless}} /></div>
+      {{/if}}
+
+    </div>
+  </div>
+
+  {{! ── Modifiers Tab ───────────────────────────────────── }}
+  <div class="t8-tab-panel {{#if (eq activeTab 'modifiers')}}active{{/if}}" data-tab="modifiers">
+    <div class="t8-tab-scroll">
+      {{#if modifiers.length}}
+        <ul class="t8-modifier-list">
+          {{#each modifiers as |mod|}}
+          <li class="t8-modifier-row">
+            <span class="t8-mod-target">{{mod.target}}</span>
+            <span class="t8-mod-op">{{mod.operator}}</span>
+            <span class="t8-mod-value">{{mod.value}}</span>
+          </li>
+          {{/each}}
+        </ul>
+      {{else}}
+        <p class="t8-empty">{{localize "THREEEIGHT.ModifierItem.Modifiers"}} — {{localize "THREEEIGHT.Sheet.None"}}</p>
+      {{/if}}
+    </div>
+  </div>
+
 </section>

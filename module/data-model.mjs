@@ -7,7 +7,8 @@ import {
   VEHICLE_ARMOR_TARGETS,
   SHIELD_TARGETS,
   MELEE_DEFENSE_BASE,
-  MELEE_DEFENSE_CHARACTERISTICS
+  MELEE_DEFENSE_CHARACTERISTICS,
+CARRY_CAPACITY_CHARACTERISTIC
 } from "./constants.mjs";
 
 const {
@@ -49,7 +50,14 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
             maxEffort:       new NumberField({ required: true, integer: true, min: 1, initial: 1 }),
 
             actions:    new EmbeddedDataField(ActionsData),
-            conditions: new EmbeddedDataField(ConditionsData)
+            conditions: new EmbeddedDataField(ConditionsData),
+
+            // Carry Capacity derived fields
+            maxCarryCapacity:       new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+            effectiveCarryCapacity: new NumberField({ required: true, integer: true, initial: 0 }),
+            readyCarryCapacity:     new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+            idealCarryCapacity:     new NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+            encumbrance:            new NumberField({ required: true, min: 0, initial: 0 })
         };
     }
 
@@ -68,6 +76,7 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
         this.#deriveCombatBonus(contributions);
         this.#deriveArmor();
         this.#deriveMeleeDefense(primary);
+        this.#deriveCarryCapacity(primary);
         if (secondary) this.#deriveSecondary(primary, secondary, contributions);
     }
 
@@ -303,6 +312,31 @@ class ThreeEightActorData extends foundry.abstract.TypeDataModel {
             );
             secondary.wealthDM        = characteristicDM(effective);
         }
+    }
+        /**
+     * Derives the actor's Carry Capacity.
+     *   Max = 2x Characteristic
+     *   Ideal = 1x Characteristic
+     *   Ready = 1/2x Characteristic
+     *
+     * The effective capacity is the max capacity reduced by the
+     * encumbrance of all currently equipped items.
+     */
+    #deriveCarryCapacity(primary) {
+        const actorType = this.parent?.type;
+        const charKey = CARRY_CAPACITY_CHARACTERISTIC[actorType] ?? "fitness";
+        const charVal = primary?.[`${charKey}Effective`] || 0;
+
+        this.readyCarryCapacity = Math.floor(charVal / 2);
+        this.idealCarryCapacity = Math.floor(charVal);
+        this.maxCarryCapacity = Math.floor(charVal * 2);
+
+        const equippedEncumbrance = this.parent?.items
+            ?.filter(i => i.system?.equipped && i.system?.encumbrance)
+            .reduce((sum, i) => sum + (Number(i.system.encumbrance) || 0), 0) || 0;
+
+        this.encumbrance = equippedEncumbrance;
+        this.effectiveCarryCapacity = this.maxCarryCapacity - equippedEncumbrance;
     }
 }
 

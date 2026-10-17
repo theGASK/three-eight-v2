@@ -534,7 +534,7 @@ function buildDialogContent(actor, weapon, target) {
   return `
     <div class="three-eight-v2 melee-attack-dialog-content">
       <div class="form-group">
-        <label>${game.i18n.localize("THREEEIGHT.Melee.Mode")}</label>
+        <label>${game.i18n.localize("THREEEIGHT.Melee.ModeLabel")}</label>
         <select name="mode">${modeOptions}</select>
       </div>
       <div class="form-group">
@@ -610,6 +610,7 @@ export class MeleeAttackDialog extends DialogV2 {
     super({
       window: { title: game.i18n.format("THREEEIGHT.Melee.DialogTitle", { weapon: weapon.name }) },
       classes: ["three-eight-v2", "melee-attack-dialog"],
+      position: { width: 620, height: "auto" },
       content: buildDialogContent(actor, weapon, target),
       modal: true,
       rejectClose: false,

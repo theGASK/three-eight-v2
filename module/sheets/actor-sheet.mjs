@@ -85,6 +85,7 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
       setConditionStacks: ThreeEightActorSheet.#onSetConditionStacks,
       deleteItem:         ThreeEightActorSheet.#onDeleteItem,
       editItem:           ThreeEightActorSheet.#onEditItem,
+      toggleEquip:        ThreeEightActorSheet.#onToggleEquip,
       declareAction:      ThreeEightActorSheet.#onDeclareAction,
       toggleActionMode:   ThreeEightActorSheet.#onToggleActionMode
     }
@@ -136,6 +137,12 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
     context.meleeDefense    = num(system.meleeDefense);
     context.rangedArmor     = num(system.rangedArmor);
     context.meleeArmor      = num(system.meleeArmor);
+    
+    // Add Capacity context
+    context.maxCarryCapacity       = num(system.maxCarryCapacity);
+    context.effectiveCarryCapacity = num(system.effectiveCarryCapacity);
+    context.readyCarryCapacity     = num(system.readyCarryCapacity);
+    context.idealCarryCapacity     = num(system.idealCarryCapacity);
     
     // Add Action Economy context for partA
     const economy = system.actions?.economy;
@@ -270,6 +277,10 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
   #buildItemGroups(actor) {
     const groups = {};
     for (const item of actor.items) {
+      // Only include top-level items in the inventory list.
+      // Embedded items (like a Specialty inside a Skill) will be ignored.
+      if (item.parent !== actor) continue; 
+      
       (groups[item.type] ??= []).push(item);
     }
 
@@ -282,10 +293,11 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
         typeLabel: game.i18n.localize(`TYPES.Item.${type}`),
         columns,
         items: sorted.map(item => ({
-          id:   item.id,
-          name: item.name,
-          img:  item.img,
-          cells: columns.map(col => ({ value: this.#resolveCell(item, col.key) }))
+          id:       item.id,
+          name:     item.name,
+          img:      item.img,
+          equipped: item.system.equipped === true, // Add this
+          cells:    columns.map(col => ({ value: this.#resolveCell(item, col.key) }))
         }))
       };
     });
@@ -401,6 +413,20 @@ export class ThreeEightActorSheet extends HandlebarsApplicationMixin(ActorSheetV
     const item = this.document.items.get(target.dataset.itemId);
     if (item) item.sheet.render(true);
   }
+
+  static async #onToggleEquip(event, target) {
+    event.preventDefault();
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if (!item) return;
+
+    const isEquipped = !item.system.equipped;
+    try {
+      await item.update({ "system.equipped": isEquipped });
+    } catch (err) {
+      // Errors are handled by the preUpdateItem hook
+    }
+  }  
 
   static async #onDeclareAction(event, target) {
     const { actionKey, economy } = target.dataset;

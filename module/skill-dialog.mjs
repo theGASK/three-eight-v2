@@ -429,8 +429,10 @@ export class SkillDialog extends DialogV2 {
     super({
       window: { title: game.i18n.localize("THREEEIGHT.Skill.DialogTitle") },
       classes: ["three-eight-v2", "skill-dialog"],
+      position: { width: 550, height: "auto" },
       content: buildDialogContent(actor, preselectedSkill),
       modal: true,
+      // ...
       rejectClose: false,
       buttons: [
         {

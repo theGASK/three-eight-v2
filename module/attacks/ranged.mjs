@@ -522,7 +522,7 @@ function buildDialogContent(actor, weapon, target) {
   return `
     <div class="three-eight-v2 ranged-attack-dialog-content">
       <div class="form-group">
-        <label>${game.i18n.localize("THREEEIGHT.Ranged.FireMode")}</label>
+        <label>${game.i18n.localize("THREEEIGHT.Ranged.FireModeLabel")}</label>
         <select name="fireMode">${modeOptions}</select>
       </div>
       <div class="form-group">
@@ -596,8 +596,10 @@ export class RangedAttackDialog extends DialogV2 {
     super({
       window: { title: game.i18n.format("THREEEIGHT.Ranged.DialogTitle", { weapon: weapon.name }) },
       classes: ["three-eight-v2", "ranged-attack-dialog"],
+      position: { width: 620, height: "auto" },
       content: buildDialogContent(actor, weapon, target),
       modal: true,
+      // ...
       rejectClose: false,
       buttons: [
         {

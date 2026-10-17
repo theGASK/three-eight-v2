@@ -62,4 +62,34 @@ export function registerEquipmentHooks() {
 
         await unequipSiblings(item, actor);
     });
+
+    Hooks.on("preUpdateItem", (item, changes, options, userId) => {
+        if (options?.threeEightEquipment) return true;
+        
+        const isEquipping = foundry.utils.getProperty(changes, "system.equipped") === true;
+        if (!isEquipping) return true;
+        if (item.system?.equipped === true) return true; // Already equipped
+
+        const actor = item.actor;
+        if (!actor) return true;
+
+        // Calculate current encumbrance of OTHER equipped items
+        const currentEncumbrance = actor.items
+            .filter(i => i.id !== item.id && i.system?.equipped && i.system?.encumbrance)
+            .reduce((sum, i) => sum + (Number(i.system.encumbrance) || 0), 0);
+
+        const newItemEncumbrance = Number(item.system?.encumbrance) || 0;
+        const maxCapacity = Number(actor.system?.maxCarryCapacity) || 0;
+
+        if (currentEncumbrance + newItemEncumbrance > maxCapacity) {
+            ui.notifications.error(
+                game.i18n.format("THREEEIGHT.Equip.Err.Encumbrance", { 
+                    name: item.name, 
+                    max: maxCapacity 
+                })
+            );
+            return false; // Cancels the update
+        }
+        return true;
+    });
 }

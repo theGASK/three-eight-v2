@@ -635,3 +635,18 @@ export const SKILL_CHARACTERISTIC_OPTIONS = Object.freeze({
 export function getSkillAlteration(key) {
   return SKILL_ALTERATIONS.find(a => a.key === key) ?? null;
 }
+
+/* ── Carry Capacity ─────────────────────────────────────
+   Maps actor types to the characteristic that drives their
+   maximum carry capacity. */
+export const CARRY_CAPACITY_CHARACTERISTIC = Object.freeze({
+  pc:               "fitness",
+  npc:              "fitness",
+  animal:           "fitness",
+  smallVehicle:     "capacity",
+  largeVehicle:     "capacity",
+  drone:            "capacity",
+  server:           "capacity",
+  faction:          "morale",
+  baseOfOperations: "capacity"
+});

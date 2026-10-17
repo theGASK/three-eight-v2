@@ -6,23 +6,23 @@
 
       <div class="t8-field-row">
         <label class="t8-field-label">{{localize "THREEEIGHT.Actor.CommonName"}}</label>
-        <input class="t8-field-input" type="text" name="system.commonName" value="{{commonName}}"
-               {{#unless isEditable}}disabled{{/unless}} />
+        <input class="t8-field-input" type="text" name="system.commonName" value="{{commonName}}" {{#unless
+          isEditable}}disabled{{/unless}} />
       </div>
 
       <div class="t8-field-row t8-field-row-block">
         <label class="t8-field-label">{{localize "THREEEIGHT.Actor.Description"}}</label>
         {{#if isEditable}}
-          <prose-mirror name="system.description" value="{{system.description}}"></prose-mirror>
+        <prose-mirror name="system.description" value="{{system.description}}"></prose-mirror>
         {{else}}
-          <div class="t8-prose">{{{enrichedDescription}}}</div>
+        <div class="t8-prose">{{{enrichedDescription}}}</div>
         {{/if}}
       </div>
 
       <div class="t8-field-row">
         <label class="t8-field-label">{{localize "THREEEIGHT.Actor.Age"}}</label>
-        <input class="t8-field-input" type="text" name="system.age" value="{{age}}"
-               {{#unless isEditable}}disabled{{/unless}} />
+        <input class="t8-field-input" type="text" name="system.age" value="{{age}}" {{#unless
+          isEditable}}disabled{{/unless}} />
       </div>
 
     </div>
@@ -41,8 +41,7 @@
             </button>
           </div>
           <div class="t8-vital-block-value">
-            <input type="number" name="system.wounds" value="{{wounds}}"
-                   {{#unless isEditable}}disabled{{/unless}} />
+            <input type="number" name="system.wounds" value="{{wounds}}" {{#unless isEditable}}disabled{{/unless}} />
             <span class="t8-vital-block-sep">/</span>
             <span class="t8-vital-block-max">{{woundsMax}}</span>
           </div>
@@ -56,8 +55,8 @@
             </button>
           </div>
           <div class="t8-vital-block-value">
-            <input type="number" name="system.effectiveEffort" value="{{effectiveEffort}}"
-                   {{#unless isEditable}}disabled{{/unless}} />
+            <input type="number" name="system.effectiveEffort" value="{{effectiveEffort}}" {{#unless
+              isEditable}}disabled{{/unless}} />
             <span class="t8-vital-block-sep">/</span>
             <span class="t8-vital-block-max">{{maxEffort}}</span>
           </div>
@@ -71,10 +70,8 @@
         <div class="t8-stat">
           <div class="t8-stat-label">{{stat.label}}</div>
           <div class="t8-stat-values">
-            <input class="t8-stat-base" type="number"
-                   name="system.attributes.primary.{{stat.key}}"
-                   value="{{stat.base}}"
-                   {{#unless ../isEditable}}disabled{{/unless}} />
+            <input class="t8-stat-base" type="number" name="system.attributes.primary.{{stat.key}}"
+              value="{{stat.base}}" {{#unless ../isEditable}}disabled{{/unless}} />
             <span class="t8-stat-arrow">→</span>
             <span class="t8-stat-effective">{{stat.effective}}</span>
             <span class="t8-stat-dm">{{stat.dmFmt}}</span>
@@ -91,16 +88,14 @@
         <div class="t8-stat">
           <div class="t8-stat-label">{{stat.label}}</div>
           <div class="t8-stat-values">
-            <input class="t8-stat-base" type="number"
-                   name="system.attributes.secondary.{{stat.key}}"
-                   value="{{stat.base}}"
-                   {{#unless ../isEditable}}disabled{{/unless}} />
+            <input class="t8-stat-base" type="number" name="system.attributes.secondary.{{stat.key}}"
+              value="{{stat.base}}" {{#unless ../isEditable}}disabled{{/unless}} />
             <span class="t8-stat-arrow">→</span>
             {{#if stat.isTextDM}}
-              <span class="t8-stat-text">{{stat.textLabel}}</span>
+            <span class="t8-stat-text">{{stat.textLabel}}</span>
             {{else}}
-              <span class="t8-stat-effective">{{stat.effective}}</span>
-              <span class="t8-stat-dm">{{stat.dmFmt}}</span>
+            <span class="t8-stat-effective">{{stat.effective}}</span>
+            <span class="t8-stat-dm">{{stat.dmFmt}}</span>
             {{/if}}
           </div>
         </div>
@@ -119,10 +114,8 @@
       <div class="t8-action-grid">
         {{#each group.actions as |action|}}
         <button type="button"
-                class="t8-action-tile {{#if action.isAttack}}is-attack{{/if}} {{#if action.isSkill}}is-skill{{/if}}"
-                data-action="declareAction"
-                data-action-key="{{action.key}}"
-                data-economy="{{action.economy}}">
+          class="t8-action-tile {{#if action.isAttack}}is-attack{{/if}} {{#if action.isSkill}}is-skill{{/if}}"
+          data-action="declareAction" data-action-key="{{action.key}}" data-economy="{{action.economy}}">
           <span class="t8-action-tile-name">{{action.name}}</span>
           {{#if action.requisite}}<span class="t8-action-tile-req">{{action.requisite}}</span>{{/if}}
           <span class="t8-action-tile-badges">
@@ -146,15 +139,12 @@
           <span class="t8-condition-name">{{cond.label}}</span>
           <span class="t8-condition-stacks-blocks">
             {{#each (numberArray 6) as |n|}}
-            <button type="button"
-                    class="t8-stack-block {{#if (lte n ../cond.stacks)}}filled{{/if}}"
-                    data-action="setConditionStacks"
-                    data-condition-key="{{../cond.key}}"
-                    data-stacks="{{n}}">{{n}}</button>
+            <button type="button" class="t8-stack-block {{#if (lte n ../cond.stacks)}}filled{{/if}}"
+              data-action="setConditionStacks" data-condition-key="{{../cond.key}}" data-stacks="{{n}}">{{n}}</button>
             {{/each}}
           </span>
-          <button type="button" class="t8-condition-toggle"
-                  data-action="toggleCondition" data-condition-key="{{cond.key}}">
+          <button type="button" class="t8-condition-toggle" data-action="toggleCondition"
+            data-condition-key="{{cond.key}}">
             <i class="fas {{#if cond.isActive}}fa-toggle-on{{else}}fa-toggle-off{{/if}}"></i>
           </button>
         </li>
@@ -170,43 +160,49 @@
   <div class="t8-tab-panel {{#if (eq activeTab 'items')}}active{{/if}}" data-tab="items">
     <div class="t8-tab-scroll">
       {{#if itemGroups.length}}
-        {{#each itemGroups as |group|}}
-        <div class="t8-item-group">
-          <h3 class="t8-section-title">
-            {{group.typeLabel}}
-            <span class="t8-count">{{group.items.length}}</span>
-          </h3>
-          <table class="t8-item-table">
-            <thead>
-              <tr>
-                <th class="t8-col-name">{{localize "THREEEIGHT.Sheet.Name"}}</th>
-                {{#each group.columns as |col|}}
-                <th style="width: {{col.width}}">{{localize col.label}}</th>
-                {{/each}}
-                <th class="t8-col-actions"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {{#each group.items as |item|}}
-              <tr class="t8-item-row" data-item-id="{{item.id}}" draggable="true">
-                <td class="t8-col-name">
-                  <img class="t8-item-icon" src="{{item.img}}" alt="{{item.name}}" />
-                  <span class="t8-item-name" data-action="editItem" data-item-id="{{item.id}}">{{item.name}}</span>
-                </td>
-                {{#each item.cells as |cell|}}
-                <td>{{cell.value}}</td>
-                {{/each}}
-                <td class="t8-col-actions">
-                  <button type="button" data-action="deleteItem" data-item-id="{{item.id}}">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </td>
-              </tr>
+      {{#each itemGroups as |group|}}
+      <div class="t8-item-group">
+        <h3 class="t8-section-title">
+          {{group.typeLabel}}
+          <span class="t8-count">{{group.items.length}}</span>
+        </h3>
+        <table class="t8-item-table">
+          <thead>
+            <tr>
+              <th class="t8-col-equipped"></th>
+              <th class="t8-col-name">{{localize "THREEEIGHT.Sheet.Name"}}</th>
+              {{#each group.columns as |col|}}
+              <th style="width: {{col.width}}">{{localize col.label}}</th>
               {{/each}}
-            </tbody>
-          </table>
-        </div>
-        {{/each}}
+              <th class="t8-col-actions"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each group.items as |item|}}
+            <tr class="t8-item-row" data-item-id="{{item.id}}" draggable="true">
+              <td class="t8-col-equipped">
+                <a data-action="toggleEquip" data-item-id="{{item.id}}" title="{{localize 'THREEEIGHT.Item.Equipped'}}">
+                  <i class="fas {{#if item.equipped}}fa-check-circle{{else}}fa-circle{{/if}}"></i>
+                </a>
+              </td>
+              <td class="t8-col-name">
+                <img class="t8-item-icon" src="{{item.img}}" alt="{{item.name}}" />
+                <span class="t8-item-name" data-action="editItem" data-item-id="{{item.id}}">{{item.name}}</span>
+              </td>
+              {{#each item.cells as |cell|}}
+              <td>{{cell.value}}</td>
+              {{/each}}
+              <td class="t8-col-actions">
+                <button type="button" data-action="deleteItem" data-item-id="{{item.id}}">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+      {{/each}}
       {{else}}
       <p class="t8-empty">{{localize "THREEEIGHT.Sheet.NoItems"}}</p>
       {{/if}}

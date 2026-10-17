@@ -3,36 +3,24 @@
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ItemSheetV2 } = foundry.applications.sheets;
 
-/**
- * Three-Eight v2 Item Sheet.
- *
- * Same grid layout as the actor sheet, scaled down. Tabs:
- *   description, details, modifiers
- *
- * "Details" renders every schema field that is not `description`
- * or `modifiers`, so item subtypes added later appear automatically.
- */
 export class ThreeEightItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
   static DEFAULT_OPTIONS = {
     classes: ["three-eight-v2", "sheet", "item"],
-    position: { width: 560, height: 600 },
+    position: { width: 560, height: 650 },
     window: { resizable: true, controls: [] },
     form: { submitOnChange: true, closeOnSubmit: false },
     actions: {
-      editImage: ThreeEightItemSheet.#onEditImage
+      editImage: ThreeEightItemSheet.#onEditImage,
+      changeTab: ThreeEightItemSheet.#onChangeTab
     }
   };
 
   static PARTS = {
-    partA: {
-      template: "systems/three-eight-v2/templates/item/partA.hbs"
-    },
-    ribbon: {
-      template: "systems/three-eight-v2/templates/item/ribbon.hbs"
-    },
-    partB: {
+    partA: { template: "systems/three-eight-v2/templates/item/partA.hbs" },
+    ribbon: { template: "systems/three-eight-v2/templates/item/ribbon.hbs" },
+    partB: { 
       template: "systems/three-eight-v2/templates/item/partB.hbs",
-      scrollable: [".t8-tab-panel"]
+      scrollable: [".t8-tab-scroll"] 
     }
   };
 
@@ -47,7 +35,11 @@ export class ThreeEightItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     }
   };
 
-  /** @override */
+  constructor(options = {}) {
+    super(options);
+    this._activeTab = options.activeTab ?? "description";
+  }
+
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     const item = this.document;
@@ -56,8 +48,8 @@ export class ThreeEightItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     context.item = item;
     context.system = system;
     context.isEditable = this.isEditable;
-    context.tabs = this._getTabs();
     context.typeLabel = game.i18n.localize(`TYPES.Item.${item.type}`);
+    context.activeTab = this._activeTab;
 
     const enrich = foundry.applications.ux.TextEditor.implementation.enrichHTML;
     context.enrichedDescription = await enrich(system.description ?? "", {
@@ -65,10 +57,7 @@ export class ThreeEightItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
       relativeTo: item
     });
 
-    // Generic detail fields: every schema field except description, modifiers
-    context.detailFields = this.#detailFields(system);
-
-    // Modifier rules
+    context.tabs = this._getTabs();
     context.modifiers = Array.isArray(system.modifiers) ? system.modifiers : [];
 
     return context;
@@ -77,32 +66,20 @@ export class ThreeEightItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
   _getTabs() {
     const tabs = {};
     for (const [groupId, config] of Object.entries(this.constructor.TABS)) {
-      tabs[groupId] = config.tabs.map(t => ({ ...t, active: false, cssClass: "" }));
-      const activeId = this.tabGroups[groupId] ?? config.initial;
-      const activeTab = tabs[groupId].find(t => t.id === activeId);
-      if (activeTab) {
-        activeTab.active = true;
-        activeTab.cssClass = "active";
-      }
+      tabs[groupId] = config.tabs.map(t => {
+        const isActive = t.id === this._activeTab;
+        return { ...t, active: isActive, cssClass: isActive ? "active" : "" };
+      });
     }
     return tabs;
   }
 
-  /**
-   * Produce a flat list of { key, value, type } entries for every
-   * schema field that isn't description or modifiers. SchemaField
-   * and ArrayField values are skipped — they need bespoke rendering.
-   */
-  #detailFields(system) {
-    const skip = new Set(["description", "modifiers"]);
-    const fields = [];
-    for (const [key, value] of Object.entries(system)) {
-      if (skip.has(key)) continue;
-      if (value === null || value === undefined) continue;
-      if (typeof value === "object") continue;
-      fields.push({ key, value, type: typeof value });
-    }
-    return fields;
+  static #onChangeTab(event, target) {
+    event.preventDefault();
+    const tab = target.dataset.tab;
+    if (!tab || tab === this._activeTab) return;
+    this._activeTab = tab;
+    return this.render();
   }
 
   static async #onEditImage(event, target) {

@@ -81,6 +81,11 @@
       "EffortDM": "Effort DM",
       "MaxEffort": "Effort (Max)",
       "EffectiveEffort": "Effort (Current)",
+      "CarryCapacity": "Carry Capacity",
+      "EffectiveCarryCapacity": "Effective Carry Capacity",
+      "MaxCarryCapacity": "Max Carry Capacity",
+      "ReadyCarryCapacity": "Ready Carry Capacity",
+      "IdealCarryCapacity": "Ideal Carry Capacity",
 
       "Primary": {
         "Fitness": "Fitness",
@@ -119,7 +124,11 @@
         "Soak": "Soak"
       }
     },
-
+    "Equip": {
+      "Err": {
+        "Encumbrance": "Cannot equip {name}: Exceeds maximum carry capacity ({max})."
+      }
+    },
     "Item": {
       "Description": "Description",
       "Cost": "Cost",
@@ -508,7 +517,7 @@
 
     "Melee": {
       "DialogTitle": "Melee Attack — {weapon}",
-      "Mode": "Melee Mode",
+      "ModeLabel": "Melee Mode",
       "Defender": "Defender",
       "DefenderValue": "Defender Melee Defense",
       "RollFormula": "Roll Formula",
@@ -598,7 +607,7 @@
 
     "Ranged": {
       "DialogTitle": "Ranged Attack — {weapon}",
-      "FireMode": "Fire Mode",
+      "FireModelabel": "Fire Mode",
       "Skill": "Skill",
       "SkillNone": "— None —",
       "TargetType": "Target Type",

@@ -15,12 +15,17 @@
   <div class="t8-vitals">
     <div class="t8-vital t8-vital-compact">
       <span class="t8-vital-label">{{localize "THREEEIGHT.Item.Cost"}}</span>
-      <input type="number" name="system.cost" value="{{system.cost}}"
+      <input type="number" name="system.cost" value="{{system.cost}}" min="0" step="1"
              {{#unless isEditable}}disabled{{/unless}} />
     </div>
     <div class="t8-vital t8-vital-compact">
       <span class="t8-vital-label">{{localize "THREEEIGHT.Item.Legal"}}</span>
       <input type="checkbox" name="system.legal" {{#if system.legal}}checked{{/if}}
+             {{#unless isEditable}}disabled{{/unless}} />
+    </div>
+    <div class="t8-vital t8-vital-compact">
+      <span class="t8-vital-label">{{localize "THREEEIGHT.Item.Equipped"}}</span>
+      <input type="checkbox" name="system.equipped" {{#if system.equipped}}checked{{/if}}
              {{#unless isEditable}}disabled{{/unless}} />
     </div>
   </div>
